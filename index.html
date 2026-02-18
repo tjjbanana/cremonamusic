@@ -50,6 +50,8 @@ nav {
   display:none; background:none; border:none; cursor:pointer;
   font-size:1.5rem; color:var(--brown-dark); padding:4px 8px; line-height:1;
 }
+.mobile-top-right { display:none; align-items:center; gap:10px; }
+@media (max-width:860px) { .mobile-top-right { display:flex; } }
 
 /* MOBILE NAV DRAWER */
 .mobile-nav {
@@ -110,8 +112,11 @@ section { padding:100px 40px; }
 .divider { width:50px; height:1px; background:var(--gold); margin-bottom:20px; }
 
 /* LESSONS */
-#lessons { background:var(--cream); }
-.lessons-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:60px; }
+#lessons { background:#F5EFE6; }
+#about { background:#F2EBE0; }
+#shop { background:#EDE4D8; }
+#events { background:#F7F2EC; }
+#achievements { background:#F0EAE0; }.lessons-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:60px; }
 @media (max-width:768px) { .lessons-grid { grid-template-columns:1fr; } }
 .lesson-card { background:var(--cream-dark); padding:48px 36px; border:1px solid rgba(107,62,38,0.1); transition:all 0.3s; position:relative; overflow:hidden; }
 .lesson-card::before { content:''; position:absolute; bottom:0; left:0; width:100%; height:3px; background:var(--brown); transform:scaleX(0); transition:transform 0.3s; }
@@ -136,7 +141,7 @@ section { padding:100px 40px; }
 
 
 /* SHOP */
-#shop { background:var(--cream-dark); }
+#shop { background:#EDE4D8; }
 .shop-layout { display:grid; grid-template-columns:1fr 1fr; gap:4px; margin-top:60px; }
 .shop-img-block { position:relative; overflow:hidden; height:480px; }
 .shop-img-block img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s; }
@@ -154,7 +159,7 @@ section { padding:100px 40px; }
 @media (max-width:768px) { .shop-layout { grid-template-columns:1fr; } .shop-img-block { height:300px; } .shop-tap-hint { opacity:1; transform:none; } }
 
 /* UPCOMING EVENTS */
-#events { background:var(--cream); }
+#events { background:#F7F2EC; }
 .events-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; margin-top:60px; }
 .event-card { background:var(--cream-dark); padding:36px 30px; border:1px solid rgba(107,62,38,0.1); transition:all 0.3s; position:relative; }
 .event-card:hover { background:#EDE0D0; }
@@ -166,7 +171,7 @@ section { padding:100px 40px; }
 .event-card p { font-size:0.8rem; line-height:1.7; color:#6B4A2E; }
 .event-placeholder { opacity:0.4; }
 @media (max-width:768px) { .events-grid { grid-template-columns:1fr; } }
-#about { background:var(--cream); }
+#about { background:#F2EBE0; }
 .about-layout { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
 .about-imgs { display:grid; grid-template-columns:1fr 1fr; gap:4px; }
 .about-imgs img { width:100%; height:220px; object-fit:cover; }
@@ -255,8 +260,57 @@ body.zh span[data-en] { display:none; }
 }
 .modal-cta:hover { background:var(--brown-dark); }
 .modal-cta svg { width:16px; height:16px; fill:#fff; }
-/* make cards clickable */
-.lesson-card { cursor:pointer; }
+/* LESSON CARD ACCENTS */
+.lesson-card { cursor:pointer; position:relative; }
+.lesson-card:nth-child(1) { border-top:4px solid #D4C5A9; } /* Piano - cream */
+.lesson-card:nth-child(2) { border-top:4px solid #8B5E3C; } /* Violin - same as cello */
+.lesson-card:nth-child(3) { border-top:4px solid #3E1F0A; } /* Cello - dark red */
+.lesson-card:nth-child(4) { border-top:4px solid #1A3A5C; } /* Singing - dark blue */
+.lesson-card:nth-child(5) { border-top:4px solid #C4622D; } /* Percussion - burnt orange */
+.lesson-card:nth-child(6) { border-top:4px solid #6B1A1A; } /* Marimba - terracotta */
+.lesson-card:nth-child(1) .lesson-icon { color:#D4C5A9; }
+.lesson-card:nth-child(2) .lesson-icon { color:#8B5E3C; }
+.lesson-card:nth-child(3) .lesson-icon { color:#3E1F0A; }
+.lesson-card:nth-child(4) .lesson-icon { color:#1A3A5C; }
+.lesson-card:nth-child(5) .lesson-icon { color:#C4622D; }
+.lesson-card:nth-child(6) .lesson-icon { color:#6B1A1A; }
+.lesson-card:nth-child(1) .lesson-badge { background:#D4C5A9; color:#3E1F0A; }
+.lesson-card:nth-child(2) .lesson-badge { background:#8B5E3C; }
+.lesson-card:nth-child(3) .lesson-badge { background:#3E1F0A; }
+.lesson-card:nth-child(4) .lesson-badge { background:#1A3A5C; }
+.lesson-card:nth-child(5) .lesson-badge { background:#C4622D; }
+.lesson-card:nth-child(6) .lesson-badge { background:#6B1A1A; }
+.lesson-card:nth-child(1)::before { background:#D4C5A9; }
+.lesson-card:nth-child(2)::before { background:#8B5E3C; }
+.lesson-card:nth-child(3)::before { background:#3E1F0A; }
+.lesson-card:nth-child(4)::before { background:#1A3A5C; }
+.lesson-card:nth-child(5)::before { background:#C4622D; }
+.lesson-card:nth-child(7) { border-top:4px solid #1A1008; } /* Music Theory - grey */
+.lesson-card:nth-child(7) .lesson-icon { color:#1A1008; }
+.lesson-card:nth-child(7) .lesson-badge { background:#1A1008; }
+.lesson-card:nth-child(7)::before { background:#1A1008; }
+
+/* CAROUSEL */
+.carousel-section { overflow:hidden; background:var(--brown-dark); padding:20px 0; position:relative; }
+.carousel-viewport { position:relative; width:100%; display:flex; align-items:center; justify-content:center; height:280px; }
+.carousel-slide {
+  position:absolute; height:260px; width:380px; object-fit:cover;
+  transition:all 0.8s cubic-bezier(0.4,0,0.2,1);
+  border-radius:2px;
+}
+.carousel-slide.center { transform:translateX(0) scale(1); opacity:1; z-index:3; }
+.carousel-slide.left  { transform:translateX(-420px) scale(0.85); opacity:0.4; z-index:2; }
+.carousel-slide.right { transform:translateX(420px) scale(0.85); opacity:0.4; z-index:2; }
+.carousel-slide.far-left  { transform:translateX(-820px) scale(0.7); opacity:0; z-index:1; }
+.carousel-slide.far-right { transform:translateX(820px) scale(0.7); opacity:0; z-index:1; }
+@media (max-width:768px) {
+  .carousel-viewport { height:200px; }
+  .carousel-slide { height:180px; width:260px; }
+  .carousel-slide.left  { transform:translateX(-280px) scale(0.85); }
+  .carousel-slide.right { transform:translateX(280px) scale(0.85); }
+  .carousel-slide.far-left  { transform:translateX(-560px) scale(0.7); }
+  .carousel-slide.far-right { transform:translateX(560px) scale(0.7); }
+}
 
 /* ACHIEVEMENTS */
 .achievements-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:3px; margin-top:60px; }
@@ -294,7 +348,10 @@ body.zh span[data-en] { display:none; }
       <a href="#contact" onclick="navTo('contact')"><span data-en>Contact</span><span data-zh>聯絡我們</span></a>
       <button class="lang-btn" id="langToggle">中文</button>
     </div>
-    <button class="mobile-menu-btn" id="mobileBtn" onclick="toggleMobileMenu()">☰</button>
+    <div class="mobile-top-right">
+      <button class="lang-btn" id="langToggleMobile2">中文</button>
+      <button class="mobile-menu-btn" id="mobileBtn" onclick="toggleMobileMenu()">☰</button>
+    </div>
   </div>
 </nav>
 
@@ -308,7 +365,6 @@ body.zh span[data-en] { display:none; }
   <a href="#achievements" onclick="mobileNavTo('achievements')"><span data-en>Achievements</span><span data-zh>學生成就</span></a>
   <a href="#events" onclick="mobileNavTo('events')"><span data-en>Events</span><span data-zh>活動</span></a>
   <a href="#contact" onclick="mobileNavTo('contact')"><span data-en>Contact</span><span data-zh>聯絡我們</span></a>
-  <button class="lang-btn" id="langToggleMobile">中文</button>
 </div>
 
 <!-- HERO -->
@@ -347,6 +403,11 @@ body.zh span[data-en] { display:none; }
   </div>
 </section>
 
+<!-- PHOTO CAROUSEL -->
+<div class="carousel-section">
+  <div class="carousel-viewport" id="carouselViewport"></div>
+</div>
+
 <!-- LESSONS -->
 <section id="lessons">
   <div class="container">
@@ -355,6 +416,12 @@ body.zh span[data-en] { display:none; }
     <h2 class="section-title fade-in"><span data-en>Music <em>Lessons</em> for Every Stage</span><span data-zh>每個階段的<em>音樂課程</em></span></h2>
     <p class="section-desc fade-in"><span data-en>Whether you are picking up a bow for the first time or preparing for a competition, our experienced teachers guide you with structured, personalised instruction.</span><span data-zh>無論您是第一次拿起琴弓，還是準備參加比賽，我們經驗豐富的老師都會以有條理、個人化的方式指導您。</span></p>
     <div class="lessons-grid fade-in">
+      <div class="lesson-card">
+        <span class="lesson-icon">🎹</span>
+        <h3><span data-en>Piano</span><span data-zh>鋼琴</span></h3>
+        <p><span data-en>Classical piano education for children and adults. Authorised dealer of Kawai pianos — explore a range of instruments in our showroom.</span><span data-zh>適合兒童和成人的古典鋼琴教育。Kawai鋼琴授權經銷商——在我們的展示室探索各種樂器。</span></p>
+        <span class="lesson-badge"><span data-en>One-on-One · All Levels</span><span data-zh>一對一 · 所有程度</span></span>
+      </div>
       <div class="lesson-card">
         <span class="lesson-icon">🎻</span>
         <h3><span data-en>Violin</span><span data-zh>小提琴</span></h3>
@@ -365,12 +432,6 @@ body.zh span[data-en] { display:none; }
         <span class="lesson-icon">🎻</span>
         <h3><span data-en>Cello</span><span data-zh>大提琴</span></h3>
         <p><span data-en>Deep, resonant and expressive — our cello programme nurtures tone, technique and musical sensitivity from the very first lesson.</span><span data-zh>深沉、共鳴而富有表現力——我們的大提琴課程從第一堂課開始培養音色、技術和音樂敏感性。</span></p>
-        <span class="lesson-badge"><span data-en>One-on-One · All Levels</span><span data-zh>一對一 · 所有程度</span></span>
-      </div>
-      <div class="lesson-card">
-        <span class="lesson-icon">🎹</span>
-        <h3><span data-en>Piano</span><span data-zh>鋼琴</span></h3>
-        <p><span data-en>Classical piano education for children and adults. Authorised dealer of Kawai pianos — explore a range of instruments in our showroom.</span><span data-zh>適合兒童和成人的古典鋼琴教育。Kawai鋼琴授權經銷商——在我們的展示室探索各種樂器。</span></p>
         <span class="lesson-badge"><span data-en>One-on-One · All Levels</span><span data-zh>一對一 · 所有程度</span></span>
       </div>
       <div class="lesson-card">
@@ -390,6 +451,12 @@ body.zh span[data-en] { display:none; }
         <h3><span data-en>Marimba</span><span data-zh>馬林巴琴</span></h3>
         <p><span data-en>Specialised marimba lessons focusing on mallet technique, musicality and repertoire — from classical to contemporary pieces.</span><span data-zh>專業馬林巴琴課程，專注於槌法技術、音樂性和曲目——從古典到當代作品。</span></p>
         <span class="lesson-badge"><span data-en>One-on-One · All Levels</span><span data-zh>一對一 · 所有程度</span></span>
+      </div>
+      <div class="lesson-card">
+        <span class="lesson-icon">📖</span>
+        <h3><span data-en>Music Theory</span><span data-zh>樂理</span></h3>
+        <p><span data-en>Structured music theory classes covering notation, harmony, ear training and more — up to ABRSM Grade 8. Available as group or one-on-one sessions.</span><span data-zh>有條理的樂理課程，涵蓋記譜法、和聲、聽音訓練等——至ABRSM八級。提供小組或一對一課程。</span></p>
+        <span class="lesson-badge"><span data-en>Group &amp; One-on-One</span><span data-zh>小組及一對一</span></span>
       </div>
     </div>
   </div>
@@ -462,7 +529,7 @@ body.zh span[data-en] { display:none; }
 </section>
 
 <!-- ACHIEVEMENTS -->
-<section id="achievements" style="background:var(--cream-dark);">
+<section id="achievements" style="background:#F0EAE0;">
   <div class="container">
     <p class="section-label fade-in"><span data-en>Our Pride</span><span data-zh>我們的驕傲</span></p>
     <div class="divider"></div>
@@ -626,8 +693,8 @@ var shopItems = {
   },
   piano: {
     icon: '🎹',
-    en: { title: 'Kawai Pianos', subtitle: 'Authorised Kawai Dealer', desc: 'As an authorised Kawai dealer, we stock a selection of Kawai digital and grand pianos in our showroom. Kawai is renowned worldwide for exceptional touch, tone and durability. Our team can help you find the perfect piano for your home or studio.', features: ['Authorised Kawai dealer', 'Digital pianos & grand pianos', 'Suitable for home, studio & stage', 'Expert advice from our team', 'Contact us for pricing & demos'] },
-    zh: { title: 'Kawai 鋼琴', subtitle: 'Kawai 授權經銷商', desc: '作為Kawai授權經銷商，我們在展示室備有精選的Kawai數位和三角鋼琴。Kawai以卓越的觸鍵感、音色和耐用性享譽全球。我們的團隊可幫您找到完美的鋼琴。', features: ['Kawai授權經銷商', '數位鋼琴及三角鋼琴', '適合家用、錄音室及舞台', '專業建議', '聯絡我們了解價格及示範'] }
+    en: { title: 'Kawai Pianos', subtitle: 'Authorised Kawai Dealer', desc: 'As an authorised Kawai dealer, we stock a selection of Kawai digital and grand pianos in our showroom. Kawai is renowned worldwide for exceptional touch, tone and durability. Our team can help you find the perfect piano for your home or studio.', features: ['Authorised Kawai dealer', 'Digital pianos & grand pianos', 'Suitable for home, studio & stage', 'Expert advice from our team', 'Contact us for pricing & demos'], link: { url: 'https://www.kawaipiano.com.my/', label: 'Visit Kawai Malaysia Website' } },
+    zh: { title: 'Kawai 鋼琴', subtitle: 'Kawai 授權經銷商', desc: '作為Kawai授權經銷商，我們在展示室備有精選的Kawai數位和三角鋼琴。Kawai以卓越的觸鍵感、音色和耐用性享譽全球。我們的團隊可幫您找到完美的鋼琴。', features: ['Kawai授權經銷商', '數位鋼琴及三角鋼琴', '適合家用、錄音室及舞台', '專業建議', '聯絡我們了解價格及示範'], link: { url: 'https://www.kawaipiano.com.my/', label: '瀏覽 Kawai 馬來西亞官網' } }
   }
 };
 function openShopModal(key) {
@@ -641,9 +708,54 @@ function openShopModal(key) {
   var feats = document.getElementById('modalFeatures');
   feats.innerHTML = '';
   d.features.forEach(function(f) { var div = document.createElement('div'); div.className = 'modal-feature'; div.textContent = f; feats.appendChild(div); });
+  // Add external link if present
+  var existingLink = document.getElementById('modalExternalLink');
+  if (existingLink) existingLink.remove();
+  if (d.link) {
+    var a = document.createElement('a');
+    a.id = 'modalExternalLink';
+    a.href = d.link.url;
+    a.target = '_blank';
+    a.textContent = '🌐 ' + d.link.label;
+    a.style.cssText = 'display:inline-block;margin-top:8px;margin-bottom:16px;font-size:0.78rem;color:var(--brown);text-decoration:underline;letter-spacing:0.05em;';
+    feats.after(a);
+  }
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
+
+// Carousel - centered single slide with neighbors
+var carouselImgs = [IMG_showroom, IMG_cello_room, IMG_violin_shop, IMG_logo_wall, IMG_reception, IMG_awards, IMG_reception2];
+var carouselIndex = 0;
+var viewport = document.getElementById('carouselViewport');
+
+// Create img elements
+var slides = carouselImgs.map(function(src) {
+  var img = document.createElement('img');
+  img.src = src; img.alt = 'Cremona Music'; img.className = 'carousel-slide';
+  viewport.appendChild(img);
+  return img;
+});
+
+function updateCarousel() {
+  var total = slides.length;
+  slides.forEach(function(slide, i) {
+    var diff = (i - carouselIndex + total) % total;
+    if (diff === 0) slide.className = 'carousel-slide center';
+    else if (diff === 1) slide.className = 'carousel-slide right';
+    else if (diff === total - 1) slide.className = 'carousel-slide left';
+    else if (diff === 2) slide.className = 'carousel-slide far-right';
+    else if (diff === total - 2) slide.className = 'carousel-slide far-left';
+    else { slide.className = 'carousel-slide'; slide.style.opacity = '0'; return; }
+    slide.style.opacity = '';
+  });
+}
+
+updateCarousel();
+setInterval(function() {
+  carouselIndex = (carouselIndex + 1) % carouselImgs.length;
+  updateCarousel();
+}, 4000);
 
 // Assign images
 document.getElementById('navLogoImg').src = IMG_logo;
@@ -747,6 +859,21 @@ var lessons = {
       desc: '馬林巴琴是一種美麗而多才多藝的槌擊打擊樂器。我們的專業馬林巴琴課程專注於槌法技術、四槌演奏、音色和豐富的曲目，涵蓋古典、爵士和當代風格。',
       features: ['初學至進階程度', '雙槌與四槌技術', '古典至當代曲目', '音樂性與表現力', '比賽及考試準備']
     }
+  },
+  theory: {
+    icon: '📖',
+    en: {
+      title: 'Music Theory',
+      subtitle: 'Group & One-on-One · Up to ABRSM Grade 8',
+      desc: 'Our structured music theory classes cover notation, harmony, ear training, rhythm and more — progressing all the way up to ABRSM Grade 8. Available as group classes or private one-on-one sessions to suit your learning style.',
+      features: ['Beginner to ABRSM Grade 8', 'Notation, harmony & ear training', 'Rhythm & musical structure', 'Group classes & one-on-one sessions', 'Children & adults welcome']
+    },
+    zh: {
+      title: '樂理課程',
+      subtitle: '小組及一對一 · 至ABRSM八級',
+      desc: '我們有條理的樂理課程涵蓋記譜法、和聲、聽音訓練、節奏等，進展至ABRSM八級。提供小組課程或私人一對一課程，配合您的學習方式。',
+      features: ['初學至ABRSM八級', '記譜法、和聲與聽音訓練', '節奏與音樂結構', '小組課程及一對一課程', '歡迎兒童及成人']
+    }
   }
 };
 
@@ -779,7 +906,7 @@ function closeModal(e) {
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModalBtn(); });
 
 // Assign click handlers to lesson cards
-var cardKeys = ['violin','cello','piano','singing','percussion','marimba'];
+var cardKeys = ['piano','violin','cello','singing','percussion','marimba','theory'];
 document.querySelectorAll('.lesson-card').forEach(function(card, i) {
   card.addEventListener('click', function() { openModal(cardKeys[i]); });
 });
@@ -808,12 +935,14 @@ function setLang(zh) {
   document.body.classList.toggle('zh', zh);
   var label = zh ? 'English' : '中文';
   document.getElementById('langToggle').textContent = label;
-  document.getElementById('langToggleMobile').textContent = label;
+  var m2 = document.getElementById('langToggleMobile2');
+  if (m2) m2.textContent = label;
 }
 document.getElementById('langToggle').addEventListener('click', function() {
   setLang(!document.body.classList.contains('zh'));
 });
-document.getElementById('langToggleMobile').addEventListener('click', function() {
+var m2 = document.getElementById('langToggleMobile2');
+if (m2) m2.addEventListener('click', function() {
   setLang(!document.body.classList.contains('zh'));
 });
 
