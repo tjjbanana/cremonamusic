@@ -31,11 +31,26 @@ nav {
   display:flex; align-items:center; justify-content:space-between;
   height:100%; padding:0 40px;
 }
-.nav-logo img { height:42px; }
+.nav-logo img { height:42px; filter:sepia(1) saturate(2) hue-rotate(340deg) brightness(0.55); }
 
 @media (max-width:860px) {
   #navLogoImg { display:none; }
-  #navLogoMobile { display:block !important; height:36px; }
+  #navLogoMobile { 
+    display:block !important; 
+    height:34px;
+    /* Crop right portion to hide Chinese character */
+    max-width:90px;
+    object-fit:cover;
+    object-position:left center;
+    filter:sepia(1) saturate(2) hue-rotate(340deg) brightness(0.55);
+  }
+}
+/* iPad specific - logo shifted more left, tighter nav */
+@media (min-width:861px) and (max-width:1100px) {
+  .nav-inner { padding:0 16px 0 12px; }
+  .nav-links { gap:14px; }
+  .nav-links a { font-size:0.58rem; }
+  .nav-logo { margin-right:8px; }
 }
 
 .nav-links { display:flex; gap:22px; align-items:center; }
@@ -46,7 +61,7 @@ nav {
 }
 .nav-links a::after {
   content:''; position:absolute; bottom:0; left:0; width:0; height:1.5px;
-  background:var(--brown); transition:width 0.3s;
+  background:var(--brown); transition:width 0.4s cubic-bezier(0.4,0,0.2,1);
 }
 .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
 .nav-links a:hover, .nav-links a.active { color:var(--brown); }
@@ -85,10 +100,14 @@ nav {
 @media (max-width:768px) { .lesson-tap-hint { opacity:0.85; transform:none; } }
 .mobile-menu-btn {
   display:none; background:none; border:none; cursor:pointer;
-  font-size:1.5rem; color:var(--brown-dark); padding:4px 8px; line-height:1;
+  font-size:1.5rem; color:var(--brown); padding:4px 8px; line-height:1;
 }
 .mobile-top-right { display:none; align-items:center; gap:10px; }
-@media (max-width:860px) { .mobile-top-right { display:flex; } }
+@media (max-width:860px) { 
+  .mobile-top-right { display:flex; }
+  .mobile-top-right .nav-social a { color:var(--brown); }
+  .mobile-top-right .nav-social a:hover { color:var(--brown-dark); }
+}
 
 /* MOBILE NAV DRAWER */
 .mobile-nav {
@@ -485,9 +504,9 @@ body.zh span[data-en] { display:none; }
       <a href="#about" onclick="navTo('about')"><span data-en>About Us</span><span data-zh>關於我們</span></a>
       <a href="#lessons" onclick="navTo('lessons')"><span data-en>Music Lessons</span><span data-zh>音樂課程</span></a>
       <a href="#recital" onclick="navTo('recital')"><span data-en>Recital Hall</span><span data-zh>演奏廳</span></a>
-      <a href="#shop" onclick="navTo('shop')"><span data-en>Instrument Shop</span><span data-zh>樂器店</span></a>
       <a href="#achievements" onclick="navTo('achievements')"><span data-en>Achievements</span><span data-zh>學生成就</span></a>
       <a href="#events" onclick="navTo('events')"><span data-en>Events</span><span data-zh>活動</span></a>
+      <a href="#shop" onclick="navTo('shop')"><span data-en>Instrument Shop</span><span data-zh>樂器店</span></a>
       <a href="#contact" onclick="navTo('contact')"><span data-en>Contact</span><span data-zh>聯絡我們</span></a>
       <div class="nav-social">
         <a href="https://www.facebook.com/share/1AdGYzPMc4/?mibextid=wwXIfr" target="_blank" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.413c0-3.025 1.791-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg></a>
@@ -512,9 +531,9 @@ body.zh span[data-en] { display:none; }
   <a href="#about" onclick="mobileNavTo('about')"><span data-en>About Us</span><span data-zh>關於我們</span></a>
   <a href="#lessons" onclick="mobileNavTo('lessons')"><span data-en>Music Lessons</span><span data-zh>音樂課程</span></a>
   <a href="#recital" onclick="mobileNavTo('recital')"><span data-en>Recital Hall</span><span data-zh>演奏廳</span></a>
-  <a href="#shop" onclick="mobileNavTo('shop')"><span data-en>Instrument Shop</span><span data-zh>樂器店</span></a>
   <a href="#achievements" onclick="mobileNavTo('achievements')"><span data-en>Achievements</span><span data-zh>學生成就</span></a>
   <a href="#events" onclick="mobileNavTo('events')"><span data-en>Events</span><span data-zh>活動</span></a>
+  <a href="#shop" onclick="mobileNavTo('shop')"><span data-en>Instrument Shop</span><span data-zh>樂器店</span></a>
   <a href="#contact" onclick="mobileNavTo('contact')"><span data-en>Contact</span><span data-zh>聯絡我們</span></a>
   <div style="display:flex;gap:16px;align-items:center;padding:16px 0 4px;border-top:1px solid rgba(107,62,38,0.1);margin-top:8px;">
     <a href="https://www.facebook.com/share/1AdGYzPMc4/?mibextid=wwXIfr" target="_blank" style="color:var(--brown-dark);"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.413c0-3.025 1.791-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg></a>
@@ -1110,8 +1129,22 @@ if (m2) m2.addEventListener('click', function() {
   setLang(!document.body.classList.contains('zh'));
 });
 
-// Active nav on scroll
-var navSections = ['home','about','lessons','recital','shop','achievements','events','contact'];
+// Crop favicon to remove Chinese character
+(function() {
+  var faviconLink = document.querySelector('link[rel="icon"]');
+  if (!faviconLink) return;
+  var img = new Image();
+  img.onload = function() {
+    var canvas = document.createElement('canvas');
+    canvas.width = 64; canvas.height = 64;
+    var ctx = canvas.getContext('2d');
+    // Draw only left 65% of image to crop out Chinese character on right
+    ctx.drawImage(img, 0, 0, img.width * 0.65, img.height, 0, 0, 64, 64);
+    faviconLink.href = canvas.toDataURL('image/png');
+  };
+  img.src = faviconLink.href;
+})();
+var navSections = ['home','about','lessons','recital','achievements','events','shop','contact'];
 function updateActiveNav() {
   var scrollY = window.scrollY + 120;
   var current = 'home';
