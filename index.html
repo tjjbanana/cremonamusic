@@ -31,18 +31,14 @@ nav {
   display:flex; align-items:center; justify-content:space-between;
   height:100%; padding:0 40px;
 }
-.nav-logo img { height:42px; filter:sepia(1) saturate(2) hue-rotate(340deg) brightness(0.55); }
+.nav-logo img { height:48px; filter:sepia(1) saturate(3) hue-rotate(5deg) brightness(0.42) contrast(1.1); }
 
 @media (max-width:860px) {
   #navLogoImg { display:none; }
   #navLogoMobile { 
     display:block !important; 
-    height:34px;
-    /* Crop right portion to hide Chinese character */
-    max-width:90px;
-    object-fit:cover;
-    object-position:left center;
-    filter:sepia(1) saturate(2) hue-rotate(340deg) brightness(0.55);
+    height:40px;
+    filter:sepia(1) saturate(3) hue-rotate(5deg) brightness(0.42) contrast(1.1);
   }
 }
 /* iPad specific - logo shifted more left, tighter nav */
@@ -144,11 +140,11 @@ nav {
 .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.4rem,6vw,5rem); font-weight:300; color:#fff; line-height:1.15; margin-bottom:10px; }
 .hero h1 em { font-style:italic; color:var(--gold); }
 .hero-sub { color:rgba(255,255,255,0.8); font-size:0.82rem; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:40px; }
-.hero-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+.hero-btns { display:flex; gap:16px; justify-content:center; flex-wrap:wrap; align-items:center; }
 .btn-primary {
   color:var(--cream); padding:16px 40px; text-decoration:none; font-size:0.7rem;
   letter-spacing:0.22em; text-transform:uppercase; font-family:'Josefin Sans',sans-serif;
-  display:inline-block; position:relative; overflow:hidden;
+  display:inline-block; position:relative; overflow:hidden; text-align:center;
   background:linear-gradient(135deg, #6B3515 0%, #8B4A1A 45%, #5A2E10 100%);
   border:1px solid rgba(201,168,92,0.45);
   box-shadow:0 4px 20px rgba(62,31,10,0.35), inset 0 1px 0 rgba(255,220,150,0.2);
@@ -217,7 +213,11 @@ section { padding:100px 40px; }
 .divider { width:50px; height:1px; background:var(--gold); margin-bottom:20px; }
 
 /* LESSONS */
-#lessons { background:#F5EFE6; }
+#lessons {
+  background-color:#F0E8DC;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cline x1='0' y1='0' x2='80' y2='80' stroke='%23C9A85C' stroke-width='0.5' opacity='0.12'/%3E%3Cline x1='80' y1='0' x2='0' y2='80' stroke='%23C9A85C' stroke-width='0.5' opacity='0.1'/%3E%3Ccircle cx='40' cy='40' r='16' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.1'/%3E%3Ccircle cx='40' cy='40' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='0' cy='0' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='80' cy='0' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='0' cy='80' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='80' cy='80' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Crect x='32' y='32' width='16' height='16' fill='none' stroke='%23C9A85C' stroke-width='0.4' opacity='0.07' transform='rotate(45 40 40)'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+}
 #shop {
   background-color:#EDE4D8;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cline x1='0' y1='0' x2='80' y2='80' stroke='%23C9A85C' stroke-width='0.5' opacity='0.1'/%3E%3Cline x1='80' y1='0' x2='0' y2='80' stroke='%23C9A85C' stroke-width='0.5' opacity='0.1'/%3E%3Ccircle cx='40' cy='40' r='14' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.09'/%3E%3Ccircle cx='40' cy='40' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.07'/%3E%3Ccircle cx='0' cy='0' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.07'/%3E%3Ccircle cx='80' cy='0' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.07'/%3E%3Ccircle cx='0' cy='80' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.07'/%3E%3Ccircle cx='80' cy='80' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.07'/%3E%3C/svg%3E");
@@ -464,7 +464,7 @@ body.zh span[data-en] { display:none; }
   transition:all 0.8s cubic-bezier(0.4,0,0.2,1);
   border-radius:2px; flex-shrink:0;
 }
-.carousel-slide.center { transform:translateX(0) scale(1); opacity:1; z-index:3; outline:4px solid #8B6343; outline-offset:2px; }
+.carousel-slide.center { transform:translateX(0) scale(1); opacity:1; z-index:3; }
 .carousel-slide.left  { transform:translateX(calc(-1 * min(440px,52vw))) scale(0.85); opacity:0.4; z-index:2; }
 .carousel-slide.right { transform:translateX(calc(min(440px,52vw))) scale(0.85); opacity:0.4; z-index:2; }
 .carousel-slide.far-left  { transform:translateX(calc(-2 * min(440px,52vw))) scale(0.7); opacity:0; z-index:1; }
@@ -546,7 +546,7 @@ body.zh span[data-en] { display:none; }
   <div class="hero-img" id="heroBg"></div>
   <div class="hero-bg-overlay"></div>
   <div class="hero-content">
-    <p class="hero-tagline"><span data-en>Setia Alam · Selangor · Malaysia</span><span data-zh>士地亞拉姆 · 雪蘭莪 · 馬來西亞</span></p>
+    <p class="hero-tagline"><span data-en>Setia Alam · Malaysia</span><span data-zh>士地亞拉姆 · 馬來西亞</span></p>
     <h1><span data-en>Cremona <em>Music</em><br>of Strings</span><span data-zh>克雷莫納<em>音樂</em><br>弦樂工作室</span></h1>
     <p class="hero-sub"><span data-en>Music School &amp; Instrument Shop · 台北音樂工作室</span><span data-zh>音樂學校 &amp; 樂器店 · 台北音樂工作室</span></p>
     <div class="hero-btns">
@@ -875,8 +875,8 @@ var shopItems = {
   },
   piano: {
     icon: '🎹',
-    en: { title: 'Kawai Pianos', subtitle: 'Authorised Kawai Dealer', desc: 'As an authorised Kawai dealer, we stock a selection of Kawai digital and grand pianos in our showroom. Kawai is renowned worldwide for exceptional touch, tone and durability. Our team can help you find the perfect piano for your home or studio.', features: ['Authorised Kawai dealer', 'Digital pianos & grand pianos', 'Suitable for home, studio & stage', 'Expert advice from our team', 'Contact us for pricing & demos'], link: { url: 'https://www.kawaipiano.com.my/', label: 'Visit Kawai Malaysia Website' } },
-    zh: { title: 'Kawai 鋼琴', subtitle: 'Kawai 授權經銷商', desc: '作為Kawai授權經銷商，我們在展示室備有精選的Kawai數位和三角鋼琴。Kawai以卓越的觸鍵感、音色和耐用性享譽全球。我們的團隊可幫您找到完美的鋼琴。', features: ['Kawai授權經銷商', '數位鋼琴及三角鋼琴', '適合家用、錄音室及舞台', '專業建議', '聯絡我們了解價格及示範'], link: { url: 'https://www.kawaipiano.com.my/', label: '瀏覽 Kawai 馬來西亞官網' } }
+    en: { title: 'Kawai Pianos', subtitle: 'Authorised Kawai Dealer', desc: 'As an authorised Kawai dealer, we stock a selection of Kawai digital and grand pianos in our showroom. Kawai is renowned worldwide for exceptional touch, tone and durability. Our team can help you find the perfect piano for your home or studio.', features: ['Authorised Kawai dealer', 'Digital pianos & grand pianos', 'Suitable for home, studio & stage', 'Expert advice from our team', '🎉 Exclusive RM500 Discount on selected Kawai pianos — limited time offer!'], link: { url: 'products.html', label: 'Browse Our Piano Collection' } },
+    zh: { title: 'Kawai 鋼琴', subtitle: 'Kawai 授權經銷商', desc: '作為Kawai授權經銷商，我們在展示室備有精選的Kawai數位和三角鋼琴。Kawai以卓越的觸鍵感、音色和耐用性享譽全球。我們的團隊可幫您找到完美的鋼琴。', features: ['Kawai授權經銷商', '數位鋼琴及三角鋼琴', '適合家用、錄音室及舞台', '專業建議', '🎉 精選Kawai鋼琴獨家優惠RM500折扣——限時優惠！'], link: { url: 'products.html', label: '瀏覽我們的鋼琴系列' } }
   }
 };
 function openShopModal(key) {
@@ -889,7 +889,22 @@ function openShopModal(key) {
   document.getElementById('modalDesc').textContent = d.desc;
   var feats = document.getElementById('modalFeatures');
   feats.innerHTML = '';
-  d.features.forEach(function(f) { var div = document.createElement('div'); div.className = 'modal-feature'; div.textContent = f; feats.appendChild(div); });
+  d.features.forEach(function(f) { 
+    var div = document.createElement('div'); 
+    div.className = 'modal-feature'; 
+    if (f.includes('RM500') || f.includes('折扣')) {
+      div.style.cssText = 'background:linear-gradient(135deg,rgba(201,168,92,0.15),rgba(201,168,92,0.05));border:1px solid rgba(201,168,92,0.4);padding:10px 14px;border-radius:2px;font-weight:600;color:var(--brown-dark);';
+      div.classList.remove('modal-feature');
+      var before = document.createElement('span');
+      before.textContent = '★ ';
+      before.style.color = '#C9A85C';
+      div.prepend(before);
+      div.appendChild(document.createTextNode(f.replace('🎉 ','').replace('🎉','')));
+    } else {
+      div.textContent = f; 
+    }
+    feats.appendChild(div); 
+  });
   // Add external link if present
   var existingLink = document.getElementById('modalExternalLink');
   if (existingLink) existingLink.remove();
@@ -897,9 +912,10 @@ function openShopModal(key) {
     var a = document.createElement('a');
     a.id = 'modalExternalLink';
     a.href = d.link.url;
-    a.target = '_blank';
-    a.textContent = '🌐 ' + d.link.label;
-    a.style.cssText = 'display:inline-block;margin-top:8px;margin-bottom:16px;font-size:0.78rem;color:var(--brown);text-decoration:underline;letter-spacing:0.05em;';
+    a.textContent = d.link.label;
+    a.style.cssText = 'display:inline-block;margin-top:8px;margin-bottom:16px;padding:12px 26px;background:var(--brown);color:var(--cream);font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;font-family:\'Josefin Sans\',sans-serif;transition:background 0.2s;border:1px solid rgba(201,168,92,0.3);';
+    a.onmouseover = function(){ this.style.background='#3E1F0A'; };
+    a.onmouseout = function(){ this.style.background='var(--brown)'; };
     feats.after(a);
   }
   document.getElementById('modalOverlay').classList.add('open');

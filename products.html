@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Products — Cremona Music of Strings</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F8F3EC; --cream-dark: #EFE6D8;
+  --brown: #6B3E26; --brown-light: #8B5E3C; --brown-dark: #3E1F0A;
+  --gold: #C9A85C; --text: #2E1A0E; --footer-bg: #1C0F06;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--cream); color:var(--text); font-family:'Josefin Sans',sans-serif; font-weight:300; letter-spacing:0.04em; }
+
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  background:rgba(248,243,236,0.96);
+  backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
+  border-bottom:none;
+  box-shadow:0 1px 20px rgba(62,31,10,0.08);
+  height:70px;
+}
+.nav-inner {
+  max-width:1180px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  height:100%; padding:0 40px;
+}
+.nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:400; color:var(--brown-dark); text-decoration:none; letter-spacing:0.05em; }
+.nav-back {
+  display:inline-flex; align-items:center; gap:8px;
+  color:var(--brown); text-decoration:none; font-size:0.65rem; letter-spacing:0.14em; text-transform:uppercase;
+  transition:color 0.2s;
+}
+.nav-back:hover { color:var(--brown-dark); }
+.nav-back svg { width:14px; height:14px; fill:currentColor; }
+
+/* HERO BANNER */
+.page-hero {
+  padding:140px 40px 80px;
+  text-align:center;
+  background-color:#EDE4D8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cline x1='0' y1='0' x2='80' y2='80' stroke='%23C9A85C' stroke-width='0.5' opacity='0.12'/%3E%3Cline x1='80' y1='0' x2='0' y2='80' stroke='%23C9A85C' stroke-width='0.5' opacity='0.1'/%3E%3Ccircle cx='40' cy='40' r='16' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.1'/%3E%3Ccircle cx='40' cy='40' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='0' cy='0' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='80' cy='0' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='0' cy='80' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='80' cy='80' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Crect x='32' y='32' width='16' height='16' fill='none' stroke='%23C9A85C' stroke-width='0.4' opacity='0.07' transform='rotate(45 40 40)'/%3E%3C/svg%3E");
+  background-size:80px 80px;
+}
+.page-label { font-size:0.65rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; display:block; }
+.page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,5vw,3.8rem); font-weight:300; color:var(--brown-dark); line-height:1.2; margin-bottom:16px; }
+.page-title em { font-style:italic; color:var(--brown); }
+.page-divider { width:50px; height:1px; background:var(--gold); margin:0 auto 20px; }
+.page-desc { font-size:0.88rem; line-height:1.9; color:#5A3A22; max-width:540px; margin:0 auto; }
+
+/* CATEGORY FILTERS */
+.filter-bar { max-width:1180px; margin:0 auto; padding:50px 40px 0; display:flex; gap:12px; flex-wrap:wrap; }
+.filter-btn {
+  padding:8px 20px; font-size:0.63rem; letter-spacing:0.14em; text-transform:uppercase;
+  font-family:'Josefin Sans',sans-serif; cursor:pointer; border:1px solid rgba(107,62,38,0.3);
+  background:transparent; color:var(--brown); transition:all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active { background:var(--brown); color:var(--cream); border-color:var(--brown); }
+
+/* PRODUCTS GRID */
+.products-section { padding:40px 40px 100px; max-width:1180px; margin:0 auto; }
+.products-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; }
+@media (max-width:900px) { .products-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px) { .products-grid { grid-template-columns:1fr; } .filter-bar, .products-section { padding-left:20px; padding-right:20px; } }
+
+/* PRODUCT CARD */
+.product-card {
+  background-color:#EAE0D0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23EAE0D0'/%3E%3Cpath d='M0,20 Q60,14 120,22 Q200,32 280,18 Q340,10 400,20' stroke='%23C8B090' stroke-width='0.8' fill='none' opacity='0.22'/%3E%3Cpath d='M0,55 Q70,47 140,57 Q225,69 305,54 Q360,45 400,55' stroke='%23BEA47E' stroke-width='0.6' fill='none' opacity='0.18'/%3E%3Cpath d='M0,92 Q65,84 130,94 Q215,106 295,90 Q355,80 400,92' stroke='%23C8B090' stroke-width='1' fill='none' opacity='0.2'/%3E%3Cpath d='M0,130 Q72,122 145,132 Q228,144 308,128 Q365,118 400,130' stroke='%23BEA47E' stroke-width='0.7' fill='none' opacity='0.18'/%3E%3Cpath d='M0,168 Q68,160 138,170 Q222,182 302,166 Q362,156 400,168' stroke='%23C8B090' stroke-width='0.9' fill='none' opacity='0.2'/%3E%3Cpath d='M0,208 Q75,200 148,210 Q232,222 312,206 Q368,196 400,208' stroke='%23BEA47E' stroke-width='0.6' fill='none' opacity='0.17'/%3E%3Cpath d='M0,248 Q70,240 142,250 Q226,262 306,246 Q364,236 400,248' stroke='%23C8B090' stroke-width='0.8' fill='none' opacity='0.19'/%3E%3Cpath d='M0,282 Q66,275 135,284 Q220,295 300,280 Q360,270 400,282' stroke='%23BEA47E' stroke-width='0.7' fill='none' opacity='0.17'/%3E%3C/svg%3E");
+  background-size:400px 300px;
+  position:relative; overflow:hidden; cursor:pointer;
+  transition:all 0.35s; border:1px solid rgba(107,62,38,0.08);
+}
+.product-card:hover { background-color:#DDD0BE; }
+.product-card::before {
+  content:''; position:absolute; bottom:0; left:0; width:100%; height:3px;
+  background:var(--gold); transform:scaleX(0); transition:transform 0.35s; z-index:1;
+}
+.product-card:hover::before { transform:scaleX(1); }
+
+/* Discount badge */
+.discount-badge {
+  position:absolute; top:16px; right:16px; z-index:2;
+  background:linear-gradient(135deg, #8B1C1C, #B22222);
+  color:#FFF5E0; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase;
+  padding:5px 12px; font-weight:600; font-family:'Josefin Sans',sans-serif;
+  box-shadow:0 2px 10px rgba(139,28,28,0.35);
+}
+.new-badge {
+  position:absolute; top:16px; right:16px; z-index:2;
+  background:var(--brown);
+  color:var(--cream); font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase;
+  padding:5px 12px; font-weight:600; font-family:'Josefin Sans',sans-serif;
+}
+
+.product-img-wrap { width:100%; height:260px; overflow:hidden; background:#D8CCBA; display:flex; align-items:center; justify-content:center; }
+.product-img-wrap .placeholder-icon { font-size:5rem; opacity:0.4; }
+.product-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s; }
+.product-card:hover .product-img-wrap img { transform:scale(1.06); }
+
+.product-info { padding:28px 26px 32px; }
+.product-category { font-size:0.6rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; display:block; }
+.product-name { font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:400; color:var(--brown-dark); margin-bottom:8px; line-height:1.25; }
+.product-desc { font-size:0.78rem; line-height:1.75; color:#6B4A2E; margin-bottom:16px; }
+.product-price-row { display:flex; align-items:baseline; gap:10px; margin-bottom:18px; }
+.product-price { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:var(--brown-dark); }
+.product-price-old { font-size:0.9rem; color:#999; text-decoration:line-through; }
+.product-price-save { font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:#B22222; font-weight:600; }
+.product-cta {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--brown); color:var(--cream);
+  padding:10px 22px; text-decoration:none; font-size:0.65rem;
+  letter-spacing:0.14em; text-transform:uppercase; font-family:'Josefin Sans',sans-serif;
+  transition:background 0.2s; border:none; cursor:pointer;
+}
+.product-cta:hover { background:var(--brown-dark); }
+
+/* ENQUIRY BANNER */
+.enquiry-banner {
+  margin-top:60px;
+  padding:56px 40px;
+  text-align:center;
+  color:var(--cream);
+  background-color:#3E1F0A;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cline x1='0' y1='0' x2='80' y2='80' stroke='%23C9A85C' stroke-width='0.5' opacity='0.1'/%3E%3Cline x1='80' y1='0' x2='0' y2='80' stroke='%23C9A85C' stroke-width='0.5' opacity='0.08'/%3E%3Ccircle cx='40' cy='40' r='16' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.09'/%3E%3Ccircle cx='0' cy='0' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.07'/%3E%3Ccircle cx='80' cy='80' r='6' fill='none' stroke='%23C9A85C' stroke-width='0.5' opacity='0.07'/%3E%3C/svg%3E");
+  background-size:80px 80px;
+}
+.enquiry-banner h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,4vw,2.8rem); font-weight:300; margin-bottom:12px; }
+.enquiry-banner h2 em { font-style:italic; color:var(--gold); }
+.enquiry-banner p { font-size:0.85rem; color:rgba(248,243,236,0.75); margin-bottom:32px; max-width:480px; margin-left:auto; margin-right:auto; line-height:1.8; }
+.enquiry-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+.btn-gold {
+  display:inline-block; padding:14px 36px; background:var(--gold); color:var(--brown-dark);
+  font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase;
+  font-family:'Josefin Sans',sans-serif; text-decoration:none; transition:filter 0.2s; font-weight:600;
+}
+.btn-gold:hover { filter:brightness(1.1); }
+.btn-outline-light {
+  display:inline-block; padding:14px 36px; border:1px solid rgba(201,168,92,0.5); color:var(--cream);
+  font-size:0.68rem; letter-spacing:0.18em; text-transform:uppercase;
+  font-family:'Josefin Sans',sans-serif; text-decoration:none; transition:all 0.2s;
+}
+.btn-outline-light:hover { background:rgba(201,168,92,0.1); border-color:var(--gold); }
+
+/* FOOTER MINI */
+footer {
+  background:#1C0F06; padding:32px 40px;
+  text-align:center; color:rgba(248,243,236,0.35);
+  font-size:0.65rem; letter-spacing:0.1em;
+}
+footer a { color:rgba(201,168,92,0.6); text-decoration:none; margin:0 12px; }
+footer a:hover { color:var(--gold); }
+
+/* HIDDEN state for filter */
+.product-card.hidden { display:none; }
+
+/* FADE IN */
+.fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease,transform 0.6s ease; }
+.fade-in.visible { opacity:1; transform:translateY(0); }
+
+/* SECTION DIVIDER */
+.cat-heading { max-width:1180px; margin:0 auto; padding:56px 40px 20px; }
+.cat-heading h2 { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; color:var(--brown-dark); }
+.cat-heading p { font-size:0.8rem; color:#6B4A2E; margin-top:6px; }
+.cat-divider { width:40px; height:1px; background:var(--gold); margin:12px 0; }
+@media (max-width:560px) { .cat-heading { padding-left:20px; padding-right:20px; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="index.html">Cremona <em style="font-style:italic;">Music</em></a>
+    <a class="nav-back" href="index.html">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      Back to Home
+    </a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <span class="page-label">Instrument Shop</span>
+  <h1 class="page-title">Our <em>Products</em> &amp; Listings</h1>
+  <div class="page-divider"></div>
+  <p class="page-desc">Fine instruments, accessories and exclusive offers — curated by our team for students, educators and discerning musicians.</p>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+  <button class="filter-btn" onclick="filterProducts('piano', this)">Pianos</button>
+  <button class="filter-btn" onclick="filterProducts('strings', this)">Strings</button>
+  <button class="filter-btn" onclick="filterProducts('accessories', this)">Accessories</button>
+</div>
+
+<!-- PIANOS SECTION -->
+<div class="cat-heading fade-in" data-cat="piano">
+  <h2>Kawai <em style="font-style:italic;color:var(--brown);">Pianos</em></h2>
+  <div class="cat-divider"></div>
+  <p>As an authorised Kawai dealer, we offer exclusive pricing and expert guidance on the full Kawai range.</p>
+</div>
+
+<div class="products-section">
+  <div class="products-grid">
+
+    <!-- Kawai CA901 -->
+    <div class="product-card fade-in" data-category="piano">
+      <span class="discount-badge">RM500 OFF</span>
+      <div class="product-img-wrap"><span class="placeholder-icon">🎹</span></div>
+      <div class="product-info">
+        <span class="product-category">Kawai · Digital Piano</span>
+        <h2 class="product-name">Kawai CA901</h2>
+        <p class="product-desc">Concert Artist flagship digital piano. Renowned Shigeru Kawai SK-EX Grand Piano samples with Grand Feel Wooden-key Action. Ideal for the serious musician seeking authentic grand piano feel at home.</p>
+        <div class="product-price-row">
+          <span class="product-price">From RM 17,888</span>
+          <span class="product-price-old">RM 18,388</span>
+          <span class="product-price-save">Save RM500</span>
+        </div>
+        <a class="product-cta" href="index.html#contact">Enquire Now</a>
+      </div>
+    </div>
+
+    <!-- Kawai CN201 -->
+    <div class="product-card fade-in" data-category="piano">
+      <span class="discount-badge">RM500 OFF</span>
+      <div class="product-img-wrap"><span class="placeholder-icon">🎹</span></div>
+      <div class="product-info">
+        <span class="product-category">Kawai · Digital Piano</span>
+        <h2 class="product-name">Kawai CN201</h2>
+        <p class="product-desc">The perfect beginner-to-intermediate digital piano. Features Responsive Hammer Compact II action and 88 wooden-feel keys for a natural piano touch. Elegant upright cabinet design.</p>
+        <div class="product-price-row">
+          <span class="product-price">From RM 5,388</span>
+          <span class="product-price-old">RM 5,888</span>
+          <span class="product-price-save">Save RM500</span>
+        </div>
+        <a class="product-cta" href="index.html#contact">Enquire Now</a>
+      </div>
+    </div>
+
+    <!-- Kawai ES920 -->
+    <div class="product-card fade-in" data-category="piano">
+      <span class="discount-badge">RM500 OFF</span>
+      <div class="product-img-wrap"><span class="placeholder-icon">🎹</span></div>
+      <div class="product-info">
+        <span class="product-category">Kawai · Stage Piano</span>
+        <h2 class="product-name">Kawai ES920</h2>
+        <p class="product-desc">A versatile stage piano with Responsive Hammer Compact II keyboard. Lightweight and gig-ready with Bluetooth MIDI connectivity. Suitable for studio, stage and practice.</p>
+        <div class="product-price-row">
+          <span class="product-price">From RM 4,388</span>
+          <span class="product-price-old">RM 4,888</span>
+          <span class="product-price-save">Save RM500</span>
+        </div>
+        <a class="product-cta" href="index.html#contact">Enquire Now</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STRINGS SECTION -->
+<div class="cat-heading fade-in" data-cat="strings">
+  <h2>Handcrafted <em style="font-style:italic;color:var(--brown);">String Instruments</em></h2>
+  <div class="cat-divider"></div>
+  <p>Violins and cellos crafted by skilled Taiwanese luthiers — exceptional tone, craftsmanship and value.</p>
+</div>
+
+<div class="products-section" style="padding-top:0;">
+  <div class="products-grid">
+
+    <!-- Student Violin Set -->
+    <div class="product-card fade-in" data-category="strings">
+      <span class="new-badge">Student Set</span>
+      <div class="product-img-wrap"><span class="placeholder-icon">🎻</span></div>
+      <div class="product-info">
+        <span class="product-category">Violin · Beginner</span>
+        <h2 class="product-name">Student Violin Set</h2>
+        <p class="product-desc">Complete starter package for beginners. Handcrafted by Taiwanese luthiers. Available in sizes 1/16 to 4/4. Includes bow, rosin, and case.</p>
+        <div class="product-price-row">
+          <span class="product-price">Contact for Pricing</span>
+        </div>
+        <a class="product-cta" href="index.html#contact">Enquire Now</a>
+      </div>
+    </div>
+
+    <!-- Intermediate Violin -->
+    <div class="product-card fade-in" data-category="strings">
+      <div class="product-img-wrap"><span class="placeholder-icon">🎻</span></div>
+      <div class="product-info">
+        <span class="product-category">Violin · Intermediate</span>
+        <h2 class="product-name">Intermediate Violin</h2>
+        <p class="product-desc">Step-up instrument with richer tone and improved playability. Handcrafted by selected Taiwanese luthiers. Ideal for ABRSM Grade 3–6 students.</p>
+        <div class="product-price-row">
+          <span class="product-price">Contact for Pricing</span>
+        </div>
+        <a class="product-cta" href="index.html#contact">Enquire Now</a>
+      </div>
+    </div>
+
+    <!-- Student Cello Set -->
+    <div class="product-card fade-in" data-category="strings">
+      <span class="new-badge">Student Set</span>
+      <div class="product-img-wrap"><span class="placeholder-icon">🎻</span></div>
+      <div class="product-info">
+        <span class="product-category">Cello · Beginner</span>
+        <h2 class="product-name">Student Cello Set</h2>
+        <p class="product-desc">Full starter package for aspiring cellists. Sizes 1/8 to 4/4 available. Includes bow, rosin, and protective bag. Handcrafted by Taiwanese luthiers.</p>
+        <div class="product-price-row">
+          <span class="product-price">Contact for Pricing</span>
+        </div>
+        <a class="product-cta" href="index.html#contact">Enquire Now</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ACCESSORIES SECTION -->
+<div class="cat-heading fade-in" data-cat="accessories">
+  <h2>Accessories &amp; <em style="font-style:italic;color:var(--brown);">Essentials</em></h2>
+  <div class="cat-divider"></div>
+  <p>Everything you need to maintain, protect and enhance your playing experience.</p>
+</div>
+
+<div class="products-section" style="padding-top:0;">
+  <div class="products-grid">
+
+    <!-- Rosin -->
+    <div class="product-card fade-in" data-category="accessories">
+      <div class="product-img-wrap"><span class="placeholder-icon">🎵</span></div>
+      <div class="product-info">
+        <span class="product-category">Accessories · Strings</span>
+        <h2 class="product-name">Premium Rosin</h2>
+        <p class="product-desc">High-quality rosin for violin, viola and cello. Available in light and dark varieties. Smooth, consistent application for enhanced bow grip and tone.</p>
+        <div class="product-price-row">
+          <span class="product-price">Contact for Pricing</span>
+        </div>
+        <a class="product-cta" href="index.html#contact">Enquire Now</a>
+      </div>
+    </div>
+
+    <!-- Piano Bench -->
+    <div class="product-card fade-in" data-category="accessories">
+      <div class="product-img-wrap"><span class="placeholder-icon">🪑</span></div>
+      <div class="product-info">
+        <span class="product-category">Accessories · Piano</span>
+        <h2 class="product-name">Adjustable Piano Bench</h2>
+        <p class="product-desc">Sturdy, height-adjustable piano bench with padded seat cushion. Suitable for all ages. Matches the aesthetic of Kawai instruments beautifully.</p>
+        <div class="product-price-row">
+          <span class="product-price">Contact for Pricing</span>
+        </div>
+        <a class="product-cta" href="index.html#contact">Enquire Now</a>
+      </div>
+    </div>
+
+    <!-- Instrument Cleaning Kit -->
+    <div class="product-card fade-in" data-category="accessories">
+      <div class="product-img-wrap"><span class="placeholder-icon">✨</span></div>
+      <div class="product-info">
+        <span class="product-category">Accessories · Care</span>
+        <h2 class="product-name">String Care Kit</h2>
+        <p class="product-desc">Complete cleaning and maintenance kit for string instruments. Includes microfiber cloth, fingerboard cleaner and string cleaner. Extends the life of your instrument.</p>
+        <div class="product-price-row">
+          <span class="product-price">Contact for Pricing</span>
+        </div>
+        <a class="product-cta" href="index.html#contact">Enquire Now</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ENQUIRY BANNER -->
+  <div class="enquiry-banner fade-in">
+    <h2>Can't Find What You're <em>Looking For?</em></h2>
+    <p>We source and order instruments on request. Get in touch with our team and we will be happy to assist you find the perfect instrument.</p>
+    <div class="enquiry-btns">
+      <a class="btn-gold" href="index.html#contact">Contact Us</a>
+      <a class="btn-outline-light" href="https://wa.me/60" target="_blank">WhatsApp Us</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Cremona Music of Strings · Setia Alam, Malaysia &nbsp;|&nbsp;
+    <a href="index.html">Home</a>
+    <a href="index.html#shop">Instrument Shop</a>
+    <a href="index.html#contact">Contact</a>
+  </p>
+</footer>
+
+<script>
+// Filter
+function filterProducts(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.product-card').forEach(function(card) {
+    if (cat === 'all' || card.dataset.category === cat) card.classList.remove('hidden');
+    else card.classList.add('hidden');
+  });
+  // Show/hide cat headings
+  document.querySelectorAll('[data-cat]').forEach(function(el){
+    if (cat === 'all' || el.dataset.cat === cat) el.style.display = '';
+    else el.style.display = 'none';
+  });
+}
+
+// Fade in observer
+var obs = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.08});
+document.querySelectorAll('.fade-in').forEach(function(el){ obs.observe(el); });
+</script>
+</body>
+</html>
