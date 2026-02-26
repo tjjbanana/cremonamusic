@@ -46,12 +46,13 @@ nav {
 /* iPad specific - logo shifted more left, tighter nav */
 @media (min-width:861px) and (max-width:2000px) {
   .nav-inner { padding:0 16px 0 12px; }
-  .nav-links { gap:14px; }
+  .nav-links > a + a { margin-left:14px; }
   .nav-links a { font-size:0.58rem; }
   .nav-logo { margin-right:15px; }
 }
 
-.nav-links { display:flex; gap:22px; align-items:center; }
+.nav-links { display:flex; align-items:center; }
+.nav-links > a + a { margin-left:22px; }
 .nav-links a {
   text-decoration:none; color:var(--brown-dark);
   font-size:0.63rem; letter-spacing:0.1em; text-transform:uppercase;
