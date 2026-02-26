@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cremona Admin Editor</title>
+  <style>
+    :root { --brown:#3E1F0A; --gold:#C9A85C; --bg:#f7f2ec; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--brown); }
+    .login, .app { max-width:1100px; margin:30px auto; padding:0 16px; }
+    .card { background:#fff; border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,.08); padding:18px; }
+    h1,h2 { margin:0 0 10px; }
+    .muted { color:#7a5f4a; font-size:.92rem; }
+    input, textarea { width:100%; padding:9px; border:1px solid #ddd; border-radius:8px; font:inherit; }
+    textarea { min-height:72px; resize:vertical; }
+    .btn { border:none; border-radius:999px; padding:9px 14px; cursor:pointer; }
+    .primary { background:var(--brown); color:#fff; }
+    .ghost { background:#f1ece7; color:var(--brown); }
+    .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .grid { display:grid; gap:10px; margin-top:12px; }
+    .item { border:1px solid #eee; border-radius:10px; padding:10px; background:#fff; }
+    label { display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:#7a5f4a; margin-bottom:6px; }
+    iframe { width:100%; height:520px; border:1px solid #ddd; border-radius:12px; background:#fff; }
+    .hidden { display:none; }
+  </style>
+</head>
+<body>
+  <div class="login" id="loginView">
+    <div class="card">
+      <h1>Private Website Editor</h1>
+      <p class="muted">Only people with the access code can open this editor. Share only this file link: <strong>admin.html</strong>.</p>
+      <label for="pass">Access code</label>
+      <input id="pass" type="password" placeholder="Enter your private code" />
+      <div class="row">
+        <button class="btn primary" id="unlockBtn" type="button">Unlock Editor</button>
+      </div>
+      <p class="muted">Tip: change the code in this file by editing <code>ADMIN_ACCESS_CODE</code>.</p>
+    </div>
+  </div>
+
+  <div class="app hidden" id="appView">
+    <div class="card">
+      <h2>Cremona Content Manager (Private)</h2>
+      <p class="muted">Save updates here. The public page (<code>index.html</code>) has no edit button now.</p>
+      <div class="row">
+        <button class="btn primary" id="saveBtn" type="button">Save Changes</button>
+        <button class="btn ghost" id="exportBtn" type="button">Export JSON</button>
+        <button class="btn ghost" id="importBtn" type="button">Import JSON</button>
+        <button class="btn ghost" id="resetBtn" type="button">Reset to Original</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h2>Text</h2>
+      <div class="grid" id="textFields"></div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h2>Images</h2>
+      <div class="grid" id="imageFields"></div>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h2>Live Preview</h2>
+      <iframe id="preview" src="index.html"></iframe>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var ADMIN_ACCESS_CODE = 'CremonaOnly2026!';
+  var STORAGE_KEY = 'cremona-content-v2';
+
+  var loginView = document.getElementById('loginView');
+  var appView = document.getElementById('appView');
+  var unlockBtn = document.getElementById('unlockBtn');
+  var passInput = document.getElementById('pass');
+  var preview = document.getElementById('preview');
+  var textWrap = document.getElementById('textFields');
+  var imageWrap = document.getElementById('imageFields');
+
+  function readState(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ return {}; } }
+  function writeState(state){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+  function buildFields(doc){
+    var textNodes = Array.from(doc.querySelectorAll('[data-en], [data-zh]')).filter(function(el){ return el.children.length === 0; });
+    var imageNodes = Array.from(doc.querySelectorAll('img'));
+    var heroBg = doc.getElementById('heroBg');
+
+    textNodes.forEach(function(el, i){ if (!el.dataset.cmsKey) el.dataset.cmsKey = 'txt-' + (i+1); });
+    imageNodes.forEach(function(el, i){ if (!el.dataset.cmsKey) el.dataset.cmsKey = 'img-' + (el.id || (i+1)); });
+
+    var state = readState();
+    textWrap.innerHTML = '';
+    imageWrap.innerHTML = '';
+
+    textNodes.forEach(function(el){
+      var box = document.createElement('div'); box.className = 'item';
+      var label = document.createElement('label');
+      label.textContent = (el.hasAttribute('data-en') ? 'EN' : 'ZH') + ' · ' + el.dataset.cmsKey;
+      var ta = document.createElement('textarea');
+      ta.dataset.target = el.dataset.cmsKey;
+      ta.value = (state.text && state.text[el.dataset.cmsKey]) || el.textContent.trim();
+      box.appendChild(label); box.appendChild(ta); textWrap.appendChild(box);
+    });
+
+    if (heroBg){
+      var heroBox = document.createElement('div'); heroBox.className = 'item';
+      heroBox.innerHTML = '<label>Hero Background</label><input type="text" data-hero-bg placeholder="https://...">';
+      imageWrap.appendChild(heroBox);
+      var currentBg = '';
+      var m = heroBg.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
+      if (m) currentBg = m[1];
+      heroBox.querySelector('input').value = state.heroBg || currentBg;
+    }
+
+    imageNodes.forEach(function(el){
+      var box = document.createElement('div'); box.className = 'item';
+      var label = document.createElement('label'); label.textContent = (el.alt || 'Image') + ' · ' + el.dataset.cmsKey;
+      var inp = document.createElement('input'); inp.type = 'text'; inp.dataset.target = el.dataset.cmsKey;
+      inp.value = (state.images && state.images[el.dataset.cmsKey]) || (el.getAttribute('src') || '');
+      box.appendChild(label); box.appendChild(inp); imageWrap.appendChild(box);
+    });
+  }
+
+  function applyToPreview(){
+    var doc = preview.contentDocument;
+    if (!doc) return;
+    var state = readState();
+
+    Array.from(doc.querySelectorAll('[data-en], [data-zh]')).filter(function(el){ return el.children.length === 0; }).forEach(function(el, i){
+      if (!el.dataset.cmsKey) el.dataset.cmsKey = 'txt-' + (i+1);
+      var v = state.text && state.text[el.dataset.cmsKey];
+      if (typeof v === 'string') el.textContent = v;
+    });
+
+    Array.from(doc.querySelectorAll('img')).forEach(function(el, i){
+      if (!el.dataset.cmsKey) el.dataset.cmsKey = 'img-' + (el.id || (i+1));
+      var v = state.images && state.images[el.dataset.cmsKey];
+      if (typeof v === 'string' && v.trim()) el.src = v.trim();
+    });
+
+    var heroBg = doc.getElementById('heroBg');
+    if (heroBg && typeof state.heroBg === 'string' && state.heroBg.trim()) {
+      heroBg.style.backgroundImage = 'url(' + state.heroBg.trim() + ')';
+    }
+  }
+
+  unlockBtn.addEventListener('click', function(){
+    if (passInput.value !== ADMIN_ACCESS_CODE){ alert('Wrong access code.'); return; }
+    loginView.classList.add('hidden');
+    appView.classList.remove('hidden');
+    preview.addEventListener('load', function(){
+      buildFields(preview.contentDocument);
+      applyToPreview();
+    });
+    preview.src = 'index.html';
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', function(){
+    var state = { text:{}, images:{} };
+    textWrap.querySelectorAll('textarea[data-target]').forEach(function(el){ state.text[el.dataset.target] = el.value; });
+    imageWrap.querySelectorAll('input[data-target]').forEach(function(el){ state.images[el.dataset.target] = el.value; });
+    var hero = imageWrap.querySelector('input[data-hero-bg]');
+    if (hero) state.heroBg = hero.value;
+    writeState(state);
+    applyToPreview();
+    alert('Saved. Open index.html to view your updated content.');
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    localStorage.removeItem(STORAGE_KEY);
+    preview.src = 'index.html';
+  });
+
+  document.getElementById('exportBtn').addEventListener('click', function(){
+    var data = localStorage.getItem(STORAGE_KEY) || '{}';
+    navigator.clipboard.writeText(data).then(function(){ alert('JSON copied to clipboard.'); }, function(){ alert(data); });
+  });
+
+  document.getElementById('importBtn').addEventListener('click', function(){
+    var raw = prompt('Paste content JSON');
+    if (!raw) return;
+    try {
+      JSON.parse(raw);
+      localStorage.setItem(STORAGE_KEY, raw);
+      preview.src = 'index.html';
+    } catch(e){ alert('Invalid JSON.'); }
+  });
+})();
+</script>
+</body>
+</html>
