@@ -520,6 +520,56 @@ body.zh span[data-en] { display:none; }
 /* FADE IN */
 .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease,transform 0.7s ease; }
 .fade-in.visible { opacity:1; transform:translateY(0); }
+
+
+/* SIMPLE CONTENT MANAGER */
+.cms-toggle {
+  position: fixed;
+  bottom: 28px;
+  left: 28px;
+  z-index: 1800;
+  border: none;
+  background: #3E1F0A;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+.cms-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(440px, 100%);
+  height: 100vh;
+  background: #fff;
+  color: #3E1F0A;
+  z-index: 1900;
+  box-shadow: -16px 0 30px rgba(0,0,0,0.18);
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+.cms-panel.open { transform: translateX(0); }
+.cms-head { padding: 16px; border-bottom: 1px solid #eee; display:flex; justify-content:space-between; gap:8px; align-items:center; }
+.cms-head h3 { margin: 0; font-size: 1rem; }
+.cms-body { padding: 16px; overflow: auto; }
+.cms-grid { display: grid; gap: 10px; }
+.cms-item { border: 1px solid #eee; border-radius: 10px; padding: 10px; }
+.cms-item label { display:block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; color: #7a5f4a; }
+.cms-item input, .cms-item textarea { width:100%; border:1px solid #ddd; border-radius: 8px; padding:8px; font-size: 0.85rem; font-family: inherit; }
+.cms-item textarea { min-height: 72px; resize: vertical; }
+.cms-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.cms-actions button { border:none; border-radius: 999px; padding:8px 12px; cursor:pointer; font-size:0.75rem; }
+.cms-primary { background:#3E1F0A; color:#fff; }
+.cms-muted { background:#f1ece7; color:#3E1F0A; }
+.cms-help { font-size:0.74rem; color:#7a5f4a; margin: 0 0 10px; line-height:1.5; }
+@media (max-width: 768px){ .cms-toggle{left:18px; bottom:20px; font-size:0.65rem;} }
+
 </style>
 </head>
 <body>
@@ -1239,6 +1289,135 @@ window.addEventListener('scroll', function() {
   var trigger = shopEl ? shopEl.offsetTop - window.innerHeight : 9999;
   document.getElementById('backToTop').classList.toggle('visible', window.scrollY >= trigger);
 });
+</script>
+
+
+<button class="cms-toggle" id="cmsToggleBtn" type="button">Edit Website</button>
+<aside class="cms-panel" id="cmsPanel" aria-label="Content Manager">
+  <div class="cms-head">
+    <h3>Content Manager</h3>
+    <button class="cms-muted" id="cmsCloseBtn" type="button">Close</button>
+  </div>
+  <div class="cms-body">
+    <p class="cms-help">Update text and photo URLs here anytime. Click <strong>Save Changes</strong> to store permanently in this browser. Use Export/Import to move content to another device.</p>
+    <div class="cms-grid" id="cmsTextFields"></div>
+    <div class="cms-grid" id="cmsImageFields" style="margin-top:10px;"></div>
+    <div class="cms-actions">
+      <button class="cms-primary" id="cmsSaveBtn" type="button">Save Changes</button>
+      <button class="cms-muted" id="cmsExportBtn" type="button">Export JSON</button>
+      <button class="cms-muted" id="cmsImportBtn" type="button">Import JSON</button>
+      <button class="cms-muted" id="cmsResetBtn" type="button">Reset to Original</button>
+    </div>
+  </div>
+</aside>
+
+
+<script>
+(function(){
+  var STORAGE_KEY = 'cremona-content-v1';
+  var panel = document.getElementById('cmsPanel');
+  var openBtn = document.getElementById('cmsToggleBtn');
+  var closeBtn = document.getElementById('cmsCloseBtn');
+  var textWrap = document.getElementById('cmsTextFields');
+  var imageWrap = document.getElementById('cmsImageFields');
+  if (!panel || !openBtn || !textWrap || !imageWrap) return;
+
+  var textNodes = Array.from(document.querySelectorAll('[data-en], [data-zh]')).filter(function(el){
+    return el.children.length === 0;
+  });
+  var imageNodes = Array.from(document.querySelectorAll('img')).filter(function(el){
+    return !el.closest('#cmsPanel');
+  });
+  var heroBg = document.getElementById('heroBg');
+
+  textNodes.forEach(function(el, i){ if(!el.dataset.cmsKey) el.dataset.cmsKey = 'txt-' + (i+1); });
+  imageNodes.forEach(function(el, i){ if(!el.dataset.cmsKey) el.dataset.cmsKey = 'img-' + (el.id || (i+1)); });
+
+  function getState(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    catch(e){ return {}; }
+  }
+
+  function applyState(state){
+    textNodes.forEach(function(el){
+      var v = state.text && state.text[el.dataset.cmsKey];
+      if (typeof v === 'string') el.textContent = v;
+    });
+    imageNodes.forEach(function(el){
+      var v = state.images && state.images[el.dataset.cmsKey];
+      if (typeof v === 'string' && v.trim()) el.src = v.trim();
+    });
+    if (heroBg && state.heroBg) heroBg.style.backgroundImage = 'url(' + state.heroBg + ')';
+  }
+
+  function makeTextFields(){
+    textWrap.innerHTML = '<div class="cms-item"><label>Text Content</label></div>';
+    textNodes.forEach(function(el){
+      var item = document.createElement('div'); item.className = 'cms-item';
+      var label = document.createElement('label');
+      label.textContent = (el.hasAttribute('data-en') ? 'EN' : 'ZH') + ' · ' + el.dataset.cmsKey;
+      var ta = document.createElement('textarea');
+      ta.value = el.textContent.trim();
+      ta.dataset.target = el.dataset.cmsKey;
+      item.appendChild(label); item.appendChild(ta); textWrap.appendChild(item);
+    });
+  }
+
+  function makeImageFields(){
+    imageWrap.innerHTML = '<div class="cms-item"><label>Image URLs</label></div>';
+    if (heroBg){
+      var heroItem = document.createElement('div'); heroItem.className = 'cms-item';
+      heroItem.innerHTML = '<label>Hero Background</label><input type="text" data-hero-bg placeholder="https://...">';
+      imageWrap.appendChild(heroItem);
+      var m = heroBg.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
+      heroItem.querySelector('input').value = m ? m[1] : '';
+    }
+    imageNodes.forEach(function(el){
+      var item = document.createElement('div'); item.className = 'cms-item';
+      var label = document.createElement('label'); label.textContent = (el.alt || 'Image') + ' · ' + el.dataset.cmsKey;
+      var inp = document.createElement('input'); inp.type = 'text'; inp.value = el.getAttribute('src') || ''; inp.dataset.target = el.dataset.cmsKey;
+      item.appendChild(label); item.appendChild(inp); imageWrap.appendChild(item);
+    });
+  }
+
+  function save(){
+    var state = { text:{}, images:{} };
+    textWrap.querySelectorAll('textarea[data-target]').forEach(function(el){ state.text[el.dataset.target] = el.value; });
+    imageWrap.querySelectorAll('input[data-target]').forEach(function(el){ state.images[el.dataset.target] = el.value; });
+    var heroInput = imageWrap.querySelector('input[data-hero-bg]');
+    if (heroInput) state.heroBg = heroInput.value;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    applyState(state);
+    alert('Saved! Your website content is now updated on this browser.');
+  }
+
+  openBtn.addEventListener('click', function(){ panel.classList.add('open'); });
+  closeBtn.addEventListener('click', function(){ panel.classList.remove('open'); });
+  document.getElementById('cmsSaveBtn').addEventListener('click', save);
+  document.getElementById('cmsResetBtn').addEventListener('click', function(){
+    localStorage.removeItem(STORAGE_KEY);
+    window.location.reload();
+  });
+  document.getElementById('cmsExportBtn').addEventListener('click', function(){
+    var data = localStorage.getItem(STORAGE_KEY) || '{}';
+    navigator.clipboard.writeText(data).then(function(){ alert('Content JSON copied to clipboard.'); }, function(){ alert(data); });
+  });
+  document.getElementById('cmsImportBtn').addEventListener('click', function(){
+    var raw = prompt('Paste exported JSON');
+    if (!raw) return;
+    try {
+      JSON.parse(raw);
+      localStorage.setItem(STORAGE_KEY, raw);
+      applyState(getState());
+      makeTextFields(); makeImageFields();
+      alert('Imported successfully.');
+    } catch(e){ alert('Invalid JSON'); }
+  });
+
+  applyState(getState());
+  makeTextFields();
+  makeImageFields();
+})();
 </script>
 
 </body>
