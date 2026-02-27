@@ -1242,100 +1242,113 @@ window.addEventListener('scroll', function() {
 });
 </script>
 
-<!-- ADMIN CUSTOMIZATION LOADER -->
-<script>
-(function() {
-  try {
-    var data = localStorage.getItem('cremona_admin_data');
-    if (!data) return;
-    var d = JSON.parse(data);
+<!-- FIREBASE CONTENT LOADER -->
+<!-- ════════════════════════════════════════════════════════
+     SETUP: Replace the firebaseConfig values below with
+     your own from the Firebase console (Project Settings).
+     ════════════════════════════════════════════════════════ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-    // Hero section
-    if (d.heroTitle) {
-      var heroEl = document.querySelector('#home h1 [data-en]');
-      if (heroEl) heroEl.innerHTML = d.heroTitle;
-    }
-    if (d.heroSubtitle) {
-      var heroSub = document.querySelector('.hero-sub [data-en]');
-      if (heroSub) heroSub.textContent = d.heroSubtitle;
-    }
-    if (d.heroTagline) {
-      var heroTag = document.querySelector('.hero-tagline [data-en]');
-      if (heroTag) heroTag.textContent = d.heroTagline;
-    }
-    if (d.heroBg) {
-      document.getElementById('heroBg').style.backgroundImage = 'url(' + d.heroBg + ')';
-    }
+// ⚙️ PASTE YOUR FIREBASE CONFIG HERE
+const firebaseConfig = {
+  apiKey:            "AIzaSyAPJXymdQ6GM7IA48w5kl7jmousEjOR0PU",
+  authDomain:        "cremonamusic-ef623.firebaseapp.com",
+  databaseURL:       "https://cremonamusic-ef623-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  projectId:         "cremonamusic-ef623",
+  storageBucket:     "cremonamusic-ef623.firebasestorage.app",
+  messagingSenderId: "345722193469",
+  appId:             "1:345722193469:web:bd814cf0f91eb50ba3cc54"
+};
 
-    // About section
-    if (d.aboutP1) {
-      var aboutPs = document.querySelectorAll('#about .section-desc [data-en]');
-      if (aboutPs[0]) aboutPs[0].textContent = d.aboutP1;
-    }
-    if (d.aboutP2) {
-      var aboutPs2 = document.querySelectorAll('#about .section-desc [data-en]');
-      if (aboutPs2[1]) aboutPs2[1].textContent = d.aboutP2;
-    }
+function applyContent(d) {
+  if (!d) return;
 
-    // Achievements photos
-    if (d.achievements && d.achievements.length) {
-      var grid = document.querySelector('.achievements-grid');
-      if (grid) {
-        grid.innerHTML = '';
-        d.achievements.forEach(function(item) {
-          var card = document.createElement('div');
-          card.className = 'achievement-card';
-          if (item.img) {
-            var img = document.createElement('img');
-            img.src = item.img;
-            img.alt = item.caption || '';
-            card.appendChild(img);
-            if (item.caption) {
-              var overlay = document.createElement('div');
-              overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(62,31,10,0.8));padding:16px;color:#fff;font-size:0.75rem;letter-spacing:0.08em;';
-              overlay.textContent = item.caption;
-              card.appendChild(overlay);
-            }
-          } else {
-            card.innerHTML = '<div class="achievement-placeholder"><span>' + (item.icon || '🏆') + '</span><p>' + (item.caption || 'Photo coming soon') + '</p></div>';
+  // ── Hero ──────────────────────────────────────────────
+  if (d.heroTagline) {
+    const el = document.querySelector('.hero-tagline [data-en]');
+    if (el) el.textContent = d.heroTagline;
+  }
+  if (d.heroTitle) {
+    const el = document.querySelector('#home h1 [data-en]');
+    if (el) el.innerHTML = d.heroTitle;
+  }
+  if (d.heroSubtitle) {
+    const el = document.querySelector('.hero-sub [data-en]');
+    if (el) el.textContent = d.heroSubtitle;
+  }
+  if (d.heroBg) {
+    const el = document.getElementById('heroBg');
+    if (el) el.style.backgroundImage = 'url(' + d.heroBg + ')';
+  }
+
+  // ── About ─────────────────────────────────────────────
+  const aboutPs = document.querySelectorAll('#about .section-desc [data-en]');
+  if (d.aboutP1 && aboutPs[0]) aboutPs[0].textContent = d.aboutP1;
+  if (d.aboutP2 && aboutPs[1]) aboutPs[1].textContent = d.aboutP2;
+
+  // ── Achievements ──────────────────────────────────────
+  if (d.achievements && d.achievements.length) {
+    const grid = document.querySelector('.achievements-grid');
+    if (grid) {
+      grid.innerHTML = '';
+      d.achievements.forEach(function(item) {
+        const card = document.createElement('div');
+        card.className = 'achievement-card';
+        if (item.img) {
+          const img = document.createElement('img');
+          img.src = item.img;
+          img.alt = item.caption || '';
+          card.appendChild(img);
+          if (item.caption) {
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(62,31,10,0.8));padding:16px;color:#fff;font-size:0.75rem;letter-spacing:0.08em;';
+            overlay.textContent = item.caption;
+            card.appendChild(overlay);
           }
-          grid.appendChild(card);
-        });
-      }
+        } else {
+          card.innerHTML = '<div class="achievement-placeholder"><span>' + (item.icon||'🏆') + '</span><p>' + (item.caption||'Photo coming soon') + '</p></div>';
+        }
+        grid.appendChild(card);
+      });
     }
+  }
 
-    // Events
-    if (d.events && d.events.length) {
-      var evGrid = document.querySelector('.events-grid');
-      if (evGrid) {
-        evGrid.innerHTML = '';
-        d.events.forEach(function(ev) {
-          var card = document.createElement('div');
-          card.className = 'event-card';
-          if (!ev.title && !ev.date) {
-            card.classList.add('event-placeholder');
-          }
-          card.innerHTML =
-            '<div class="event-date">' + (ev.date || 'TBA') + '</div>' +
-            '<span class="event-month">' + (ev.month || 'Coming Soon') + '</span>' +
-            (ev.photo ? '<img src="' + ev.photo + '" alt="" style="width:100%;height:160px;object-fit:cover;margin-bottom:12px;border-radius:4px;">' : '') +
-            '<h3>' + (ev.title || 'Event') + '</h3>' +
-            '<p>' + (ev.desc || '') + '</p>';
-          evGrid.appendChild(card);
-        });
-      }
+  // ── Events ────────────────────────────────────────────
+  if (d.events && d.events.length) {
+    const evGrid = document.querySelector('.events-grid');
+    if (evGrid) {
+      evGrid.innerHTML = '';
+      d.events.forEach(function(ev) {
+        const card = document.createElement('div');
+        card.className = 'event-card';
+        card.innerHTML =
+          '<div class="event-date">' + (ev.date||'TBA') + '</div>' +
+          '<span class="event-month">' + (ev.month||'Coming Soon') + '</span>' +
+          (ev.photo ? '<img src="'+ev.photo+'" alt="" style="width:100%;height:160px;object-fit:cover;margin-bottom:12px;border-radius:4px;">' : '') +
+          '<h3>' + (ev.title||'Event') + '</h3>' +
+          '<p>' + (ev.desc||'') + '</p>';
+        evGrid.appendChild(card);
+      });
     }
+  }
 
-    // Contact info
-    if (d.contactPhone) {
-      document.querySelectorAll('.contact-phone').forEach(function(el) { el.textContent = d.contactPhone; });
-    }
-    if (d.contactEmail) {
-      document.querySelectorAll('.contact-email').forEach(function(el) { el.textContent = d.contactEmail; });
-    }
+  // ── Contact ───────────────────────────────────────────
+  if (d.contactPhone) document.querySelectorAll('.contact-phone').forEach(el => el.textContent = d.contactPhone);
+  if (d.contactEmail) document.querySelectorAll('.contact-email').forEach(el => el.textContent = d.contactEmail);
+}
 
-  } catch(e) { console.warn('Admin data load error:', e); }
-})();
+try {
+  const app = initializeApp(firebaseConfig);
+  const db  = getDatabase(app);
+  // Live-sync: page updates instantly when admin saves
+  onValue(ref(db, 'siteContent'), (snap) => {
+    applyContent(snap.val());
+  });
+} catch(e) {
+  console.warn('Firebase not configured yet:', e.message);
+}
 </script>
 
 </body>
