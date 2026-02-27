@@ -26,9 +26,9 @@ nav {
   border:none;
   border-color:transparent;
   outline:none;
-  border-bottom:none;
-  box-shadow:none;
-  box-shadow:0 0 0 transparent;
+  border-bottom:none !important;
+  box-shadow:none !important;
+  box-shadow:0 0 0 transparent !important;
   height:70px;
 }
 .nav-inner {
@@ -130,7 +130,7 @@ nav {
   max-height:0;
   overflow:hidden;
   background:rgba(248,243,236,0.98);
-  border-top:1px solid rgba(107,62,38,0.12);
+  border-top:none;
   transition:max-height 0.28s ease;
 }
 .mobile-nav.open { max-height:520px; }
