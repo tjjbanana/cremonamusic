@@ -23,6 +23,8 @@ nav {
   background:rgba(248,243,236,0.45);
   backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
   -webkit-backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
+  border:none;
+  outline:none;
   border-bottom:none;
   box-shadow:none;
   height:70px;
@@ -73,6 +75,12 @@ nav {
 .nav-social a:hover { color:var(--brown); }
 .nav-social svg { width:14px; height:14px; fill:currentColor; }
 @media (max-width:1000px) { .nav-links .nav-social, .nav-links + .nav-social { display:none; } }
+/* iPad: bigger, bolder social icons in mobile-top-right */
+@media (max-width:1000px) {
+  .mobile-top-right .nav-social { display:flex !important; }
+  .mobile-top-right .nav-social a { color:var(--brown) !important; }
+  .mobile-top-right .nav-social svg { width:20px; height:20px; }
+}
 .lang-btn {
   color:#F5E6CC; border:none; cursor:pointer;
   padding:5px 12px; font-family:'Josefin Sans',sans-serif;
