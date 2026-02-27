@@ -17,7 +17,7 @@ html { scroll-behavior:smooth; }
 body { background:var(--cream); color:var(--text); font-family:'Josefin Sans',sans-serif; font-weight:300; letter-spacing:0.04em; }
 
 /* NAV */
-:root { --nav-collapse-breakpoint:1000px; }
+:root { --nav-collapse-breakpoint:991px; }
 nav {
   position:fixed; top:0; left:0; right:0; z-index:1000;
   background:rgba(248,243,236,0.45);
@@ -26,18 +26,17 @@ nav {
   border-bottom:none;
   box-shadow:0 1px 20px rgba(62,31,10,0.06);
   height:70px;
-  min-height:70px;
 }
 .nav-inner {
   max-width:1280px; margin:0 auto;
   display:flex; align-items:center; justify-content:space-between;
   gap:16px;
-  height:70px; padding:0 24px;
+  height:100%; padding:0 24px;
 }
 .nav-logo { margin-left:-6px; }
 .nav-logo img { height:48px; filter:sepia(1) saturate(3) hue-rotate(5deg) brightness(0.42) contrast(1.1); }
 
-@media (max-width:1000px) {
+@media (max-width:var(--nav-collapse-breakpoint)) {
   #navLogoImg { display:none; }
   #navLogoMobile { 
     display:block !important; 
@@ -53,14 +52,16 @@ nav {
   font-weight:400; transition:color 0.2s; position:relative; padding-bottom:3px;
   white-space:nowrap;
 }
-@media (max-width:1200px) and (min-width:1001px) {
+@media (max-width:1200px) and (min-width:992px) {
+  nav { height:64px; }
   .nav-inner { padding:0 14px; }
   .nav-logo img { height:42px; }
   .nav-links { gap:10px; }
   .nav-links a { font-size:0.56rem; letter-spacing:0.08em; }
   .lang-btn { font-size:0.56rem; padding:4px 9px; }
 }
-@media (max-width:1120px) and (min-width:1001px) {
+@media (max-width:1120px) and (min-width:992px) {
+  .nav-links .nav-social { display:none; }
   .nav-links { gap:8px; }
 }
 .nav-links a::after {
@@ -73,7 +74,7 @@ nav {
 .nav-social a { color:var(--brown-dark); transition:color 0.2s; display:flex; align-items:center; }
 .nav-social a:hover { color:var(--brown); }
 .nav-social svg { width:14px; height:14px; fill:currentColor; }
-@media (max-width:1000px) { .nav-links .nav-social, .nav-links + .nav-social { display:none; } }
+@media (max-width:var(--nav-collapse-breakpoint)) { .nav-links .nav-social, .nav-links + .nav-social { display:none; } }
 .lang-btn {
   color:#F5E6CC; border:none; cursor:pointer;
   padding:5px 12px; font-family:'Josefin Sans',sans-serif;
@@ -109,7 +110,7 @@ nav {
 }
 .mobile-menu-btn:hover { background:rgba(107,62,38,0.1); }
 .mobile-top-right { display:none; align-items:center; gap:10px; }
-@media (max-width:1000px) { 
+@media (max-width:var(--nav-collapse-breakpoint)) { 
   .mobile-top-right { display:flex; }
   .mobile-top-right .nav-social a { color:var(--brown); }
   .mobile-top-right .nav-social a:hover { color:var(--brown-dark); }
@@ -120,10 +121,10 @@ nav {
   max-height:0;
   overflow:hidden;
   background:rgba(248,243,236,0.98);
-  border-top:none;
+  border-top:1px solid rgba(107,62,38,0.12);
   transition:max-height 0.28s ease;
 }
-.mobile-nav.open { max-height:520px; border-top:1px solid rgba(107,62,38,0.12); }
+.mobile-nav.open { max-height:520px; }
 .mobile-nav-inner {
   display:flex;
   flex-direction:column;
@@ -145,11 +146,11 @@ nav {
 .mobile-nav-extras .nav-social a:hover { color:var(--brown); }
 .mobile-nav-extras .lang-btn { margin-top:0; }
 
-@media (max-width:1000px) {
+@media (max-width:var(--nav-collapse-breakpoint)) {
   .nav-links { display:none; }
   .mobile-menu-btn { display:block; }
-  .nav-inner { padding:0 16px; height:70px; }
-  #mainNav { height:auto; min-height:70px; }
+  .nav-inner { padding:0 16px; }
+  #mainNav { height:auto; }
 }
 
 @media (max-width:600px) {
@@ -520,8 +521,6 @@ body.zh span[data-en] { display:none; }
 /* FADE IN */
 .fade-in { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease,transform 0.7s ease; }
 .fade-in.visible { opacity:1; transform:translateY(0); }
-
-
 </style>
 </head>
 <body>
@@ -1167,7 +1166,7 @@ function mobileNavTo(id) {
 }
 
 window.addEventListener('resize', function() {
-  if (window.innerWidth > 1000) {
+  if (window.innerWidth > 767) {
     document.getElementById('mobileNav').classList.remove('open');
     document.getElementById('mobileBtn').textContent = '☰';
   }
@@ -1243,6 +1242,101 @@ window.addEventListener('scroll', function() {
 });
 </script>
 
+<!-- ADMIN CUSTOMIZATION LOADER -->
+<script>
+(function() {
+  try {
+    var data = localStorage.getItem('cremona_admin_data');
+    if (!data) return;
+    var d = JSON.parse(data);
+
+    // Hero section
+    if (d.heroTitle) {
+      var heroEl = document.querySelector('#home h1 [data-en]');
+      if (heroEl) heroEl.innerHTML = d.heroTitle;
+    }
+    if (d.heroSubtitle) {
+      var heroSub = document.querySelector('.hero-sub [data-en]');
+      if (heroSub) heroSub.textContent = d.heroSubtitle;
+    }
+    if (d.heroTagline) {
+      var heroTag = document.querySelector('.hero-tagline [data-en]');
+      if (heroTag) heroTag.textContent = d.heroTagline;
+    }
+    if (d.heroBg) {
+      document.getElementById('heroBg').style.backgroundImage = 'url(' + d.heroBg + ')';
+    }
+
+    // About section
+    if (d.aboutP1) {
+      var aboutPs = document.querySelectorAll('#about .section-desc [data-en]');
+      if (aboutPs[0]) aboutPs[0].textContent = d.aboutP1;
+    }
+    if (d.aboutP2) {
+      var aboutPs2 = document.querySelectorAll('#about .section-desc [data-en]');
+      if (aboutPs2[1]) aboutPs2[1].textContent = d.aboutP2;
+    }
+
+    // Achievements photos
+    if (d.achievements && d.achievements.length) {
+      var grid = document.querySelector('.achievements-grid');
+      if (grid) {
+        grid.innerHTML = '';
+        d.achievements.forEach(function(item) {
+          var card = document.createElement('div');
+          card.className = 'achievement-card';
+          if (item.img) {
+            var img = document.createElement('img');
+            img.src = item.img;
+            img.alt = item.caption || '';
+            card.appendChild(img);
+            if (item.caption) {
+              var overlay = document.createElement('div');
+              overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(62,31,10,0.8));padding:16px;color:#fff;font-size:0.75rem;letter-spacing:0.08em;';
+              overlay.textContent = item.caption;
+              card.appendChild(overlay);
+            }
+          } else {
+            card.innerHTML = '<div class="achievement-placeholder"><span>' + (item.icon || '🏆') + '</span><p>' + (item.caption || 'Photo coming soon') + '</p></div>';
+          }
+          grid.appendChild(card);
+        });
+      }
+    }
+
+    // Events
+    if (d.events && d.events.length) {
+      var evGrid = document.querySelector('.events-grid');
+      if (evGrid) {
+        evGrid.innerHTML = '';
+        d.events.forEach(function(ev) {
+          var card = document.createElement('div');
+          card.className = 'event-card';
+          if (!ev.title && !ev.date) {
+            card.classList.add('event-placeholder');
+          }
+          card.innerHTML =
+            '<div class="event-date">' + (ev.date || 'TBA') + '</div>' +
+            '<span class="event-month">' + (ev.month || 'Coming Soon') + '</span>' +
+            (ev.photo ? '<img src="' + ev.photo + '" alt="" style="width:100%;height:160px;object-fit:cover;margin-bottom:12px;border-radius:4px;">' : '') +
+            '<h3>' + (ev.title || 'Event') + '</h3>' +
+            '<p>' + (ev.desc || '') + '</p>';
+          evGrid.appendChild(card);
+        });
+      }
+    }
+
+    // Contact info
+    if (d.contactPhone) {
+      document.querySelectorAll('.contact-phone').forEach(function(el) { el.textContent = d.contactPhone; });
+    }
+    if (d.contactEmail) {
+      document.querySelectorAll('.contact-email').forEach(function(el) { el.textContent = d.contactEmail; });
+    }
+
+  } catch(e) { console.warn('Admin data load error:', e); }
+})();
+</script>
 
 </body>
 </html>

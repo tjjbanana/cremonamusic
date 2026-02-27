@@ -1,194 +1,757 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cremona Admin Editor</title>
-  <style>
-    :root { --brown:#3E1F0A; --gold:#C9A85C; --bg:#f7f2ec; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--brown); }
-    .login, .app { max-width:1100px; margin:30px auto; padding:0 16px; }
-    .card { background:#fff; border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,.08); padding:18px; }
-    h1,h2 { margin:0 0 10px; }
-    .muted { color:#7a5f4a; font-size:.92rem; }
-    input, textarea { width:100%; padding:9px; border:1px solid #ddd; border-radius:8px; font:inherit; }
-    textarea { min-height:72px; resize:vertical; }
-    .btn { border:none; border-radius:999px; padding:9px 14px; cursor:pointer; }
-    .primary { background:var(--brown); color:#fff; }
-    .ghost { background:#f1ece7; color:var(--brown); }
-    .row { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    .grid { display:grid; gap:10px; margin-top:12px; }
-    .item { border:1px solid #eee; border-radius:10px; padding:10px; background:#fff; }
-    label { display:block; font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:#7a5f4a; margin-bottom:6px; }
-    iframe { width:100%; height:520px; border:1px solid #ddd; border-radius:12px; background:#fff; }
-    .hidden { display:none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cremona Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F8F3EC;
+  --cream-dark: #EFE6D8;
+  --brown: #6B3E26;
+  --brown-light: #8B5E3C;
+  --brown-dark: #3E1F0A;
+  --gold: #C9A85C;
+  --text: #2E1A0E;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#1C0F06; color:#F8F3EC; font-family:'Josefin Sans',sans-serif; font-weight:300; letter-spacing:0.03em; min-height:100vh; }
+
+/* LOGIN SCREEN */
+#loginScreen {
+  display:flex; align-items:center; justify-content:center;
+  min-height:100vh;
+  background: radial-gradient(ellipse at center, #3E1F0A 0%, #1C0F06 70%);
+}
+.login-box {
+  background: rgba(62,31,10,0.4);
+  border: 1px solid rgba(201,168,92,0.2);
+  padding: 60px 48px;
+  text-align:center;
+  max-width:380px; width:90%;
+  backdrop-filter: blur(20px);
+}
+.login-logo {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem; font-weight:300;
+  color: var(--gold);
+  margin-bottom: 6px;
+  letter-spacing:0.1em;
+}
+.login-sub {
+  font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
+  color: rgba(201,168,92,0.5);
+  margin-bottom:40px;
+}
+.login-label {
+  display:block; font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
+  color: rgba(248,243,236,0.5); margin-bottom:10px; text-align:left;
+}
+.login-input {
+  width:100%; background: rgba(248,243,236,0.05);
+  border: 1px solid rgba(201,168,92,0.2);
+  color: #F8F3EC; font-family:'Josefin Sans',sans-serif;
+  font-size:0.85rem; letter-spacing:0.05em;
+  padding: 12px 16px; outline:none;
+  transition: border-color 0.2s;
+  margin-bottom:24px;
+}
+.login-input:focus { border-color: var(--gold); }
+.login-btn {
+  width:100%; background: var(--brown);
+  border:none; color: #F5E6CC;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase;
+  padding:14px; cursor:pointer;
+  transition: background 0.2s;
+}
+.login-btn:hover { background: var(--brown-light); }
+.login-error {
+  color: #e88; font-size:0.72rem;
+  margin-top:16px; display:none;
+  letter-spacing:0.08em;
+}
+
+/* ADMIN PANEL */
+#adminPanel { display:none; }
+
+header {
+  background: rgba(62,31,10,0.9);
+  border-bottom: 1px solid rgba(201,168,92,0.15);
+  padding: 0 32px;
+  display:flex; align-items:center; justify-content:space-between;
+  height: 60px;
+  position:sticky; top:0; z-index:100;
+  backdrop-filter:blur(20px);
+}
+.header-brand {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem; color:var(--gold); letter-spacing:0.1em;
+}
+.header-brand span {
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:rgba(201,168,92,0.5); display:block;
+}
+.header-actions { display:flex; gap:12px; align-items:center; }
+.btn-save {
+  background:var(--gold); color:#1C0F06;
+  border:none; font-family:'Josefin Sans',sans-serif;
+  font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase;
+  padding:9px 20px; cursor:pointer;
+  transition: filter 0.2s;
+  font-weight:600;
+}
+.btn-save:hover { filter:brightness(1.1); }
+.btn-preview {
+  background:transparent; color:var(--cream);
+  border:1px solid rgba(248,243,236,0.2);
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase;
+  padding:8px 18px; cursor:pointer;
+  transition: border-color 0.2s;
+  text-decoration:none; display:inline-flex; align-items:center;
+}
+.btn-preview:hover { border-color:var(--gold); color:var(--gold); }
+.btn-logout {
+  background:transparent; color:rgba(248,243,236,0.4);
+  border:none; font-family:'Josefin Sans',sans-serif;
+  font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase;
+  padding:8px 14px; cursor:pointer;
+  transition: color 0.2s;
+}
+.btn-logout:hover { color:var(--cream); }
+
+.admin-layout {
+  display:grid; grid-template-columns:200px 1fr;
+  min-height:calc(100vh - 60px);
+}
+
+/* SIDEBAR */
+.sidebar {
+  background: rgba(28,15,6,0.8);
+  border-right: 1px solid rgba(201,168,92,0.1);
+  padding: 24px 0;
+}
+.sidebar-nav a {
+  display:block; padding:12px 24px;
+  font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
+  color: rgba(248,243,236,0.45);
+  text-decoration:none;
+  transition: all 0.2s;
+  border-left:2px solid transparent;
+  cursor:pointer;
+}
+.sidebar-nav a:hover, .sidebar-nav a.active {
+  color: var(--gold);
+  border-left-color: var(--gold);
+  background: rgba(201,168,92,0.05);
+}
+.sidebar-section {
+  font-size:0.5rem; letter-spacing:0.3em; text-transform:uppercase;
+  color: rgba(201,168,92,0.25);
+  padding: 20px 24px 8px;
+}
+
+/* CONTENT */
+.content { padding:32px; overflow-y:auto; }
+
+.panel { display:none; }
+.panel.active { display:block; }
+
+.panel-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem; font-weight:300; color:var(--gold);
+  margin-bottom:6px;
+}
+.panel-desc {
+  font-size:0.72rem; color:rgba(248,243,236,0.4);
+  letter-spacing:0.08em; margin-bottom:32px;
+}
+
+.field-group { margin-bottom:28px; }
+.field-label {
+  display:block; font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase;
+  color: rgba(201,168,92,0.7);
+  margin-bottom:8px;
+}
+.field-input, .field-textarea {
+  width:100%; background: rgba(248,243,236,0.04);
+  border: 1px solid rgba(201,168,92,0.15);
+  color:#F8F3EC; font-family:'Josefin Sans',sans-serif;
+  font-size:0.82rem; letter-spacing:0.03em;
+  padding:10px 14px; outline:none;
+  transition:border-color 0.2s;
+  resize:vertical;
+}
+.field-input:focus, .field-textarea:focus { border-color: rgba(201,168,92,0.5); }
+.field-textarea { min-height:90px; }
+.field-hint { font-size:0.6rem; color:rgba(248,243,236,0.25); margin-top:6px; letter-spacing:0.05em; }
+
+/* Image upload */
+.img-upload-area {
+  border: 1.5px dashed rgba(201,168,92,0.25);
+  padding:24px; text-align:center;
+  cursor:pointer; transition:border-color 0.2s;
+  position:relative; overflow:hidden;
+}
+.img-upload-area:hover { border-color:rgba(201,168,92,0.6); }
+.img-upload-area.dragover { border-color:var(--gold); background:rgba(201,168,92,0.05); }
+.img-upload-area input[type=file] {
+  position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;
+}
+.img-upload-icon { font-size:1.8rem; margin-bottom:8px; opacity:0.4; }
+.img-upload-text { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(248,243,236,0.35); }
+.img-preview {
+  width:100%; max-height:200px; object-fit:cover;
+  display:none; margin-top:12px;
+}
+
+/* Achievement cards editor */
+.cards-editor { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; margin-top:8px; }
+.card-edit {
+  background:rgba(62,31,10,0.3);
+  border:1px solid rgba(201,168,92,0.12);
+  padding:18px;
+}
+.card-edit-header {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:14px;
+}
+.card-edit-num {
+  font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase;
+  color:rgba(201,168,92,0.4);
+}
+.btn-del {
+  background:transparent; border:none; color:rgba(248,243,236,0.2);
+  cursor:pointer; font-size:0.75rem; padding:2px 6px;
+  transition:color 0.2s;
+}
+.btn-del:hover { color:#e88; }
+.card-img-preview {
+  width:100%; height:140px; object-fit:cover;
+  margin-bottom:10px; display:none;
+}
+.btn-add-card {
+  background:rgba(62,31,10,0.3);
+  border:1.5px dashed rgba(201,168,92,0.2);
+  color:rgba(201,168,92,0.5);
+  width:100%; padding:32px;
+  cursor:pointer; font-family:'Josefin Sans',sans-serif;
+  font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
+  transition:all 0.2s;
+}
+.btn-add-card:hover { border-color:var(--gold); color:var(--gold); }
+
+/* Events editor */
+.events-editor { display:grid; gap:16px; margin-top:8px; }
+.event-edit {
+  background:rgba(62,31,10,0.3);
+  border:1px solid rgba(201,168,92,0.12);
+  padding:20px;
+}
+.event-edit-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+/* Toast */
+.toast {
+  position:fixed; bottom:32px; right:32px;
+  background:var(--brown);
+  border:1px solid rgba(201,168,92,0.3);
+  color:#F8F3EC; padding:14px 24px;
+  font-size:0.7rem; letter-spacing:0.12em;
+  opacity:0; transform:translateY(20px);
+  transition:all 0.3s; pointer-events:none;
+  z-index:9999;
+}
+.toast.show { opacity:1; transform:translateY(0); }
+
+.divider-line {
+  border:none; border-top:1px solid rgba(201,168,92,0.1);
+  margin:28px 0;
+}
+
+@media(max-width:600px){
+  .admin-layout{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  header{padding:0 16px;}
+  .content{padding:20px 16px;}
+  .event-edit-grid{grid-template-columns:1fr;}
+}
+</style>
 </head>
 <body>
-  <div class="login" id="loginView">
-    <div class="card">
-      <h1>Private Website Editor</h1>
-      <p class="muted">Only people with the access code can open this editor. Share only this file link: <strong>admin.html</strong>.</p>
-      <label for="pass">Access code</label>
-      <input id="pass" type="password" placeholder="Enter your private code" />
-      <div class="row">
-        <button class="btn primary" id="unlockBtn" type="button">Unlock Editor</button>
-      </div>
-      <p class="muted">Tip: change the code in this file by editing <code>ADMIN_ACCESS_CODE</code>.</p>
-    </div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">Cremona</div>
+    <div class="login-sub">Admin Panel</div>
+    <label class="login-label" for="pwInput">Password</label>
+    <input class="login-input" type="password" id="pwInput" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Enter Admin Panel</button>
+    <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
   </div>
+</div>
 
-  <div class="app hidden" id="appView">
-    <div class="card">
-      <h2>Cremona Content Manager (Private)</h2>
-      <p class="muted">Save updates here. The public page (<code>index.html</code>) has no edit button now.</p>
-      <div class="row">
-        <button class="btn primary" id="saveBtn" type="button">Save Changes</button>
-        <button class="btn ghost" id="exportBtn" type="button">Export JSON</button>
-        <button class="btn ghost" id="importBtn" type="button">Import JSON</button>
-        <button class="btn ghost" id="resetBtn" type="button">Reset to Original</button>
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <header>
+    <div class="header-brand">
+      Cremona
+      <span>Website Admin</span>
+    </div>
+    <div class="header-actions">
+      <a class="btn-preview" href="index2.html" target="_blank">↗ Preview Site</a>
+      <button class="btn-save" onclick="saveAll()">Save Changes</button>
+      <button class="btn-logout" onclick="logout()">Log Out</button>
+    </div>
+  </header>
+
+  <div class="admin-layout">
+    <nav class="sidebar">
+      <div class="sidebar-section">Sections</div>
+      <div class="sidebar-nav">
+        <a class="active" onclick="showPanel('hero')">Hero / Home</a>
+        <a onclick="showPanel('about')">About</a>
+        <a onclick="showPanel('achievements')">Achievements</a>
+        <a onclick="showPanel('events')">Events</a>
+        <a onclick="showPanel('contact')">Contact</a>
       </div>
-    </div>
+      <div class="sidebar-section" style="margin-top:20px;">Settings</div>
+      <div class="sidebar-nav">
+        <a onclick="showPanel('password')">Change Password</a>
+      </div>
+    </nav>
 
-    <div class="card" style="margin-top:14px;">
-      <h2>Text</h2>
-      <div class="grid" id="textFields"></div>
-    </div>
+    <div class="content">
 
-    <div class="card" style="margin-top:14px;">
-      <h2>Images</h2>
-      <div class="grid" id="imageFields"></div>
-    </div>
+      <!-- HERO -->
+      <div class="panel active" id="panel-hero">
+        <div class="panel-title">Hero Section</div>
+        <div class="panel-desc">Edit the main landing screen text and background photo.</div>
 
-    <div class="card" style="margin-top:14px;">
-      <h2>Live Preview</h2>
-      <iframe id="preview" src="index.html"></iframe>
-    </div>
-  </div>
+        <div class="field-group">
+          <label class="field-label">Tagline (small text above title)</label>
+          <input class="field-input" id="heroTagline" placeholder="e.g. Setia Alam · Malaysia">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Main Title (HTML allowed for &lt;em&gt; italic)</label>
+          <input class="field-input" id="heroTitle" placeholder="e.g. Cremona &lt;em&gt;Music&lt;/em&gt;&lt;br&gt;of Strings">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Subtitle</label>
+          <input class="field-input" id="heroSubtitle" placeholder="e.g. Music School & Instrument Shop">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Background Photo</label>
+          <div class="img-upload-area" id="heroBgArea">
+            <input type="file" accept="image/*" onchange="handleImgUpload(this,'heroBg','heroBgPreview','heroBgArea')">
+            <div class="img-upload-icon">🖼</div>
+            <div class="img-upload-text">Click or drag & drop to upload<br>Recommended: 1920×1080px</div>
+          </div>
+          <img id="heroBgPreview" class="img-preview">
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="panel" id="panel-about">
+        <div class="panel-title">About Section</div>
+        <div class="panel-desc">Edit the studio description paragraphs.</div>
+
+        <div class="field-group">
+          <label class="field-label">First Paragraph</label>
+          <textarea class="field-textarea" id="aboutP1" placeholder="Cremona Music of Strings is a dedicated music studio..."></textarea>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Second Paragraph</label>
+          <textarea class="field-textarea" id="aboutP2" placeholder="Our experienced teachers follow structured..."></textarea>
+        </div>
+      </div>
+
+      <!-- ACHIEVEMENTS -->
+      <div class="panel" id="panel-achievements">
+        <div class="panel-title">Achievements</div>
+        <div class="panel-desc">Upload photos and add captions for the student achievements gallery.</div>
+
+        <div class="cards-editor" id="achievementsEditor"></div>
+        <button class="btn-add-card" onclick="addAchievement()" style="margin-top:16px;">+ Add Achievement Photo</button>
+      </div>
+
+      <!-- EVENTS -->
+      <div class="panel" id="panel-events">
+        <div class="panel-title">Upcoming Events</div>
+        <div class="panel-desc">Manage your upcoming recitals, masterclasses and events.</div>
+
+        <div class="events-editor" id="eventsEditor"></div>
+        <button class="btn-add-card" onclick="addEvent()" style="margin-top:16px;">+ Add Event</button>
+      </div>
+
+      <!-- CONTACT -->
+      <div class="panel" id="panel-contact">
+        <div class="panel-title">Contact Info</div>
+        <div class="panel-desc">Update your phone number and email address displayed on the site.</div>
+
+        <div class="field-group">
+          <label class="field-label">Phone Number</label>
+          <input class="field-input" id="contactPhone" placeholder="e.g. +60 12-345 6789">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Email Address</label>
+          <input class="field-input" id="contactEmail" placeholder="e.g. info@cremona.com">
+        </div>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="panel" id="panel-password">
+        <div class="panel-title">Change Password</div>
+        <div class="panel-desc">Update your admin panel password.</div>
+
+        <div class="field-group">
+          <label class="field-label">Current Password</label>
+          <input class="field-input" type="password" id="pwCurrent">
+        </div>
+        <div class="field-group">
+          <label class="field-label">New Password</label>
+          <input class="field-input" type="password" id="pwNew">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Confirm New Password</label>
+          <input class="field-input" type="password" id="pwConfirm">
+        </div>
+        <button class="btn-save" onclick="changePassword()" style="margin-top:8px;">Update Password</button>
+        <p id="pwMsg" style="margin-top:12px;font-size:0.7rem;display:none;"></p>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /admin-layout -->
+</div><!-- /adminPanel -->
+
+<div class="toast" id="toast"></div>
 
 <script>
-(function(){
-  var ADMIN_ACCESS_CODE = 'CremonaOnly2026!';
-  var STORAGE_KEY = 'cremona-content-v2';
+// ─── AUTH ─────────────────────────────────────────────────────────────────
+var DEFAULT_PW = 'cremona2024';
+var SESSION_KEY = 'cremona_admin_session';
+var PW_KEY = 'cremona_admin_pw';
 
-  var loginView = document.getElementById('loginView');
-  var appView = document.getElementById('appView');
-  var unlockBtn = document.getElementById('unlockBtn');
-  var passInput = document.getElementById('pass');
-  var preview = document.getElementById('preview');
-  var textWrap = document.getElementById('textFields');
-  var imageWrap = document.getElementById('imageFields');
+function getStoredPw() {
+  return localStorage.getItem(PW_KEY) || DEFAULT_PW;
+}
 
-  function readState(){ try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ return {}; } }
-  function writeState(state){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-
-  function buildFields(doc){
-    var textNodes = Array.from(doc.querySelectorAll('[data-en], [data-zh]')).filter(function(el){ return el.children.length === 0; });
-    var imageNodes = Array.from(doc.querySelectorAll('img'));
-    var heroBg = doc.getElementById('heroBg');
-
-    textNodes.forEach(function(el, i){ if (!el.dataset.cmsKey) el.dataset.cmsKey = 'txt-' + (i+1); });
-    imageNodes.forEach(function(el, i){ if (!el.dataset.cmsKey) el.dataset.cmsKey = 'img-' + (el.id || (i+1)); });
-
-    var state = readState();
-    textWrap.innerHTML = '';
-    imageWrap.innerHTML = '';
-
-    textNodes.forEach(function(el){
-      var box = document.createElement('div'); box.className = 'item';
-      var label = document.createElement('label');
-      label.textContent = (el.hasAttribute('data-en') ? 'EN' : 'ZH') + ' · ' + el.dataset.cmsKey;
-      var ta = document.createElement('textarea');
-      ta.dataset.target = el.dataset.cmsKey;
-      ta.value = (state.text && state.text[el.dataset.cmsKey]) || el.textContent.trim();
-      box.appendChild(label); box.appendChild(ta); textWrap.appendChild(box);
-    });
-
-    if (heroBg){
-      var heroBox = document.createElement('div'); heroBox.className = 'item';
-      heroBox.innerHTML = '<label>Hero Background</label><input type="text" data-hero-bg placeholder="https://...">';
-      imageWrap.appendChild(heroBox);
-      var currentBg = '';
-      var m = heroBg.style.backgroundImage.match(/url\(["']?(.*?)["']?\)/);
-      if (m) currentBg = m[1];
-      heroBox.querySelector('input').value = state.heroBg || currentBg;
-    }
-
-    imageNodes.forEach(function(el){
-      var box = document.createElement('div'); box.className = 'item';
-      var label = document.createElement('label'); label.textContent = (el.alt || 'Image') + ' · ' + el.dataset.cmsKey;
-      var inp = document.createElement('input'); inp.type = 'text'; inp.dataset.target = el.dataset.cmsKey;
-      inp.value = (state.images && state.images[el.dataset.cmsKey]) || (el.getAttribute('src') || '');
-      box.appendChild(label); box.appendChild(inp); imageWrap.appendChild(box);
-    });
+function doLogin() {
+  var pw = document.getElementById('pwInput').value;
+  if (pw === getStoredPw()) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadAllData();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwInput').focus();
   }
+}
 
-  function applyToPreview(){
-    var doc = preview.contentDocument;
-    if (!doc) return;
-    var state = readState();
+function logout() {
+  sessionStorage.removeItem(SESSION_KEY);
+  location.reload();
+}
 
-    Array.from(doc.querySelectorAll('[data-en], [data-zh]')).filter(function(el){ return el.children.length === 0; }).forEach(function(el, i){
-      if (!el.dataset.cmsKey) el.dataset.cmsKey = 'txt-' + (i+1);
-      var v = state.text && state.text[el.dataset.cmsKey];
-      if (typeof v === 'string') el.textContent = v;
-    });
-
-    Array.from(doc.querySelectorAll('img')).forEach(function(el, i){
-      if (!el.dataset.cmsKey) el.dataset.cmsKey = 'img-' + (el.id || (i+1));
-      var v = state.images && state.images[el.dataset.cmsKey];
-      if (typeof v === 'string' && v.trim()) el.src = v.trim();
-    });
-
-    var heroBg = doc.getElementById('heroBg');
-    if (heroBg && typeof state.heroBg === 'string' && state.heroBg.trim()) {
-      heroBg.style.backgroundImage = 'url(' + state.heroBg.trim() + ')';
-    }
+function changePassword() {
+  var cur = document.getElementById('pwCurrent').value;
+  var nw  = document.getElementById('pwNew').value;
+  var cnf = document.getElementById('pwConfirm').value;
+  var msg = document.getElementById('pwMsg');
+  msg.style.display = 'block';
+  if (cur !== getStoredPw()) {
+    msg.style.color = '#e88';
+    msg.textContent = 'Current password is incorrect.';
+    return;
   }
+  if (!nw || nw.length < 6) {
+    msg.style.color = '#e88';
+    msg.textContent = 'New password must be at least 6 characters.';
+    return;
+  }
+  if (nw !== cnf) {
+    msg.style.color = '#e88';
+    msg.textContent = 'Passwords do not match.';
+    return;
+  }
+  localStorage.setItem(PW_KEY, nw);
+  msg.style.color = '#8ec48e';
+  msg.textContent = 'Password updated successfully.';
+  document.getElementById('pwCurrent').value = '';
+  document.getElementById('pwNew').value = '';
+  document.getElementById('pwConfirm').value = '';
+}
 
-  unlockBtn.addEventListener('click', function(){
-    if (passInput.value !== ADMIN_ACCESS_CODE){ alert('Wrong access code.'); return; }
-    loginView.classList.add('hidden');
-    appView.classList.remove('hidden');
-    preview.addEventListener('load', function(){
-      buildFields(preview.contentDocument);
-      applyToPreview();
+// Check session on load
+window.addEventListener('DOMContentLoaded', function() {
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadAllData();
+  }
+});
+
+// ─── PANEL NAV ─────────────────────────────────────────────────────────────
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('panel-'+id).classList.add('active');
+  document.querySelectorAll('.sidebar-nav a').forEach(function(a){ a.classList.remove('active'); });
+  event.target.classList.add('active');
+}
+
+// ─── DATA ──────────────────────────────────────────────────────────────────
+var DATA_KEY = 'cremona_admin_data';
+var imgStore = {};  // key -> base64
+
+function getData() {
+  try { return JSON.parse(localStorage.getItem(DATA_KEY)) || {}; } catch(e){ return {}; }
+}
+
+function loadAllData() {
+  var d = getData();
+  // Hero
+  if (d.heroTagline) document.getElementById('heroTagline').value = d.heroTagline;
+  if (d.heroTitle)   document.getElementById('heroTitle').value   = d.heroTitle;
+  if (d.heroSubtitle)document.getElementById('heroSubtitle').value= d.heroSubtitle;
+  if (d.heroBg) {
+    var prev = document.getElementById('heroBgPreview');
+    prev.src = d.heroBg; prev.style.display='block';
+  }
+  // About
+  if (d.aboutP1) document.getElementById('aboutP1').value = d.aboutP1;
+  if (d.aboutP2) document.getElementById('aboutP2').value = d.aboutP2;
+  // Achievements
+  var achs = d.achievements || [{icon:'🏆',caption:''},{icon:'🎖️',caption:''},{icon:'🌟',caption:''},{icon:'🎵',caption:''}];
+  renderAchievements(achs);
+  // Events
+  var evs = d.events || [{date:'TBA',month:'Coming Soon',title:'Student Recital',desc:'Our upcoming student recital — date to be announced.',photo:''},{date:'TBA',month:'Coming Soon',title:'Masterclass',desc:'Strings and piano masterclass with a guest educator.',photo:''},{date:'TBA',month:'Coming Soon',title:'Competition Prep',desc:'Intensive preparation sessions for students entering competitions.',photo:''}];
+  renderEvents(evs);
+  // Contact
+  if (d.contactPhone) document.getElementById('contactPhone').value = d.contactPhone;
+  if (d.contactEmail) document.getElementById('contactEmail').value = d.contactEmail;
+}
+
+function saveAll() {
+  var d = getData();
+  // Hero
+  d.heroTagline  = document.getElementById('heroTagline').value;
+  d.heroTitle    = document.getElementById('heroTitle').value;
+  d.heroSubtitle = document.getElementById('heroSubtitle').value;
+  // About
+  d.aboutP1 = document.getElementById('aboutP1').value;
+  d.aboutP2 = document.getElementById('aboutP2').value;
+  // Achievements
+  d.achievements = collectAchievements();
+  // Events
+  d.events = collectEvents();
+  // Contact
+  d.contactPhone = document.getElementById('contactPhone').value;
+  d.contactEmail = document.getElementById('contactEmail').value;
+
+  localStorage.setItem(DATA_KEY, JSON.stringify(d));
+  showToast('Changes saved! Refresh the main site to see them.');
+}
+
+// ─── IMAGE UPLOAD ───────────────────────────────────────────────────────────
+function handleImgUpload(input, storeKey, previewId, areaId) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var b64 = e.target.result;
+    imgStore[storeKey] = b64;
+    // Also persist directly to data
+    var d = getData();
+    d[storeKey] = b64;
+    localStorage.setItem(DATA_KEY, JSON.stringify(d));
+    var prev = document.getElementById(previewId);
+    if (prev) { prev.src = b64; prev.style.display='block'; }
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleCardImgUpload(input, cardIdx) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var b64 = e.target.result;
+    var prev = document.getElementById('ach-preview-'+cardIdx);
+    if (prev) { prev.src = b64; prev.style.display = 'block'; }
+    var hidden = document.getElementById('ach-img-'+cardIdx);
+    if (hidden) hidden.value = b64;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleEventImgUpload(input, evIdx) {
+  var file = input.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var b64 = e.target.result;
+    var prev = document.getElementById('ev-preview-'+evIdx);
+    if (prev) { prev.src = b64; prev.style.display='block'; }
+    var hidden = document.getElementById('ev-photo-'+evIdx);
+    if (hidden) hidden.value = b64;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ─── ACHIEVEMENTS ──────────────────────────────────────────────────────────
+var achCount = 0;
+var achItems = [];
+
+function renderAchievements(items) {
+  achItems = items || [];
+  achCount = achItems.length;
+  var el = document.getElementById('achievementsEditor');
+  el.innerHTML = '';
+  achItems.forEach(function(item, i) {
+    el.appendChild(makeAchCard(item, i));
+  });
+}
+
+function makeAchCard(item, i) {
+  var div = document.createElement('div');
+  div.className = 'card-edit';
+  div.id = 'ach-card-'+i;
+  div.innerHTML =
+    '<div class="card-edit-header">' +
+      '<span class="card-edit-num">Photo ' + (i+1) + '</span>' +
+      '<button class="btn-del" onclick="deleteAchievement('+i+')">✕ Remove</button>' +
+    '</div>' +
+    '<div class="img-upload-area" style="position:relative;overflow:hidden;margin-bottom:10px;">' +
+      '<input type="file" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" onchange="handleCardImgUpload(this,'+i+')">' +
+      '<div style="font-size:1.2rem;opacity:0.4;">📷</div>' +
+      '<div class="img-upload-text">Click to upload photo</div>' +
+    '</div>' +
+    '<img id="ach-preview-'+i+'" class="card-img-preview" ' + (item.img ? 'src="'+item.img+'" style="display:block;"' : '') + '>' +
+    '<input type="hidden" id="ach-img-'+i+'" value="'+(item.img||'')+'">' +
+    '<label class="field-label" style="margin-top:10px;">Caption</label>' +
+    '<input class="field-input" id="ach-caption-'+i+'" value="'+(item.caption||'')+'" placeholder="e.g. First place — ABRSM 2024">';
+  return div;
+}
+
+function addAchievement() {
+  var i = achCount++;
+  achItems.push({icon:'🏆', caption:''});
+  document.getElementById('achievementsEditor').appendChild(makeAchCard({icon:'🏆',caption:''},i));
+}
+
+function deleteAchievement(i) {
+  var card = document.getElementById('ach-card-'+i);
+  if (card) card.remove();
+}
+
+function collectAchievements() {
+  var results = [];
+  document.querySelectorAll('.card-edit').forEach(function(card) {
+    var id = card.id.replace('ach-card-','');
+    var imgEl = document.getElementById('ach-img-'+id);
+    var capEl = document.getElementById('ach-caption-'+id);
+    if (imgEl || capEl) {
+      results.push({
+        img:     imgEl  ? imgEl.value  : '',
+        caption: capEl  ? capEl.value  : ''
+      });
+    }
+  });
+  return results;
+}
+
+// ─── EVENTS ────────────────────────────────────────────────────────────────
+var evCount = 0;
+var evItems = [];
+
+function renderEvents(items) {
+  evItems = items || [];
+  evCount = evItems.length;
+  var el = document.getElementById('eventsEditor');
+  el.innerHTML = '';
+  evItems.forEach(function(item, i) {
+    el.appendChild(makeEventCard(item, i));
+  });
+}
+
+function makeEventCard(ev, i) {
+  var div = document.createElement('div');
+  div.className = 'event-edit';
+  div.id = 'ev-card-'+i;
+  div.innerHTML =
+    '<div class="card-edit-header" style="margin-bottom:16px;">' +
+      '<span class="card-edit-num">Event ' + (i+1) + '</span>' +
+      '<button class="btn-del" onclick="deleteEvent('+i+')">✕ Remove</button>' +
+    '</div>' +
+    '<div class="event-edit-grid">' +
+      '<div class="field-group" style="margin-bottom:0;">' +
+        '<label class="field-label">Date (number)</label>' +
+        '<input class="field-input" id="ev-date-'+i+'" value="'+(ev.date||'TBA')+'" placeholder="e.g. 15">' +
+      '</div>' +
+      '<div class="field-group" style="margin-bottom:0;">' +
+        '<label class="field-label">Month / Label</label>' +
+        '<input class="field-input" id="ev-month-'+i+'" value="'+(ev.month||'Coming Soon')+'" placeholder="e.g. March 2025">' +
+      '</div>' +
+    '</div>' +
+    '<div class="field-group" style="margin-top:12px;">' +
+      '<label class="field-label">Event Title</label>' +
+      '<input class="field-input" id="ev-title-'+i+'" value="'+(ev.title||'')+'" placeholder="e.g. Spring Recital">' +
+    '</div>' +
+    '<div class="field-group">' +
+      '<label class="field-label">Description</label>' +
+      '<textarea class="field-textarea" id="ev-desc-'+i+'" placeholder="Brief event description...">'+(ev.desc||'')+'</textarea>' +
+    '</div>' +
+    '<div class="field-group">' +
+      '<label class="field-label">Event Photo (optional)</label>' +
+      '<div class="img-upload-area" style="position:relative;overflow:hidden;">' +
+        '<input type="file" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" onchange="handleEventImgUpload(this,'+i+')">' +
+        '<div style="font-size:1.2rem;opacity:0.4;">📷</div>' +
+        '<div class="img-upload-text">Click to upload photo (optional)</div>' +
+      '</div>' +
+      '<img id="ev-preview-'+i+'" class="img-preview" '+(ev.photo?'src="'+ev.photo+'" style="display:block;"':'')+' style="max-height:140px;">' +
+      '<input type="hidden" id="ev-photo-'+i+'" value="'+(ev.photo||'')+'">' +
+    '</div>';
+  return div;
+}
+
+function addEvent() {
+  var i = evCount++;
+  evItems.push({date:'TBA', month:'Coming Soon', title:'', desc:'', photo:''});
+  document.getElementById('eventsEditor').appendChild(makeEventCard({date:'TBA',month:'Coming Soon',title:'',desc:'',photo:''},i));
+}
+
+function deleteEvent(i) {
+  var card = document.getElementById('ev-card-'+i);
+  if (card) card.remove();
+}
+
+function collectEvents() {
+  var results = [];
+  document.querySelectorAll('.event-edit').forEach(function(card) {
+    var id = card.id.replace('ev-card-','');
+    results.push({
+      date:  document.getElementById('ev-date-'+id)  ? document.getElementById('ev-date-'+id).value  : 'TBA',
+      month: document.getElementById('ev-month-'+id) ? document.getElementById('ev-month-'+id).value : 'Coming Soon',
+      title: document.getElementById('ev-title-'+id) ? document.getElementById('ev-title-'+id).value : '',
+      desc:  document.getElementById('ev-desc-'+id)  ? document.getElementById('ev-desc-'+id).value  : '',
+      photo: document.getElementById('ev-photo-'+id) ? document.getElementById('ev-photo-'+id).value : ''
     });
-    preview.src = 'index.html';
   });
+  return results;
+}
 
-  document.getElementById('saveBtn').addEventListener('click', function(){
-    var state = { text:{}, images:{} };
-    textWrap.querySelectorAll('textarea[data-target]').forEach(function(el){ state.text[el.dataset.target] = el.value; });
-    imageWrap.querySelectorAll('input[data-target]').forEach(function(el){ state.images[el.dataset.target] = el.value; });
-    var hero = imageWrap.querySelector('input[data-hero-bg]');
-    if (hero) state.heroBg = hero.value;
-    writeState(state);
-    applyToPreview();
-    alert('Saved. Open index.html to view your updated content.');
-  });
-
-  document.getElementById('resetBtn').addEventListener('click', function(){
-    localStorage.removeItem(STORAGE_KEY);
-    preview.src = 'index.html';
-  });
-
-  document.getElementById('exportBtn').addEventListener('click', function(){
-    var data = localStorage.getItem(STORAGE_KEY) || '{}';
-    navigator.clipboard.writeText(data).then(function(){ alert('JSON copied to clipboard.'); }, function(){ alert(data); });
-  });
-
-  document.getElementById('importBtn').addEventListener('click', function(){
-    var raw = prompt('Paste content JSON');
-    if (!raw) return;
-    try {
-      JSON.parse(raw);
-      localStorage.setItem(STORAGE_KEY, raw);
-      preview.src = 'index.html';
-    } catch(e){ alert('Invalid JSON.'); }
-  });
-})();
+// ─── TOAST ─────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3500);
+}
 </script>
 </body>
 </html>
