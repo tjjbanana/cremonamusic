@@ -955,38 +955,7 @@ function openShopModal(key) {
   document.body.style.overflow = 'hidden';
 }
 
-// Carousel - centered single slide with neighbors
-var carouselImgs = [IMG_showroom, IMG_cello_room, IMG_violin_shop, IMG_logo_wall, IMG_reception, IMG_awards, IMG_reception2];
-var carouselIndex = 0;
-var viewport = document.getElementById('carouselViewport');
-
-// Create img elements
-var slides = carouselImgs.map(function(src) {
-  var img = document.createElement('img');
-  img.src = src; img.alt = 'Cremona Music'; img.className = 'carousel-slide';
-  viewport.appendChild(img);
-  return img;
-});
-
-function updateCarousel() {
-  var total = slides.length;
-  slides.forEach(function(slide, i) {
-    var diff = (i - carouselIndex + total) % total;
-    if (diff === 0) slide.className = 'carousel-slide center';
-    else if (diff === 1) slide.className = 'carousel-slide right';
-    else if (diff === total - 1) slide.className = 'carousel-slide left';
-    else if (diff === 2) slide.className = 'carousel-slide far-right';
-    else if (diff === total - 2) slide.className = 'carousel-slide far-left';
-    else { slide.className = 'carousel-slide'; slide.style.opacity = '0'; return; }
-    slide.style.opacity = '';
-  });
-}
-
-updateCarousel();
-setInterval(function() {
-  carouselIndex = (carouselIndex + 1) % carouselImgs.length;
-  updateCarousel();
-}, 4000);
+// Carousel is loaded from Firebase below
 
 // Assign images
 document.getElementById('navLogoImg').src = IMG_logo;
@@ -1315,17 +1284,25 @@ function applyContent(d) {
   }
 
   // ── Carousel ──────────────────────────────────────────
-  if (d.carouselImgs && d.carouselImgs.length) {
+  if (d.carouselImgs) {
     const viewport = document.getElementById('carouselViewport');
     if (viewport) {
       viewport.innerHTML = '';
-      const imgs = d.carouselImgs.filter(s => s);
-      const slides = imgs.map(function(src) {
+      // Firebase may return array as object with numeric keys — normalise to array
+      const rawList = Array.isArray(d.carouselImgs)
+        ? d.carouselImgs
+        : Object.keys(d.carouselImgs).sort((a,b)=>a-b).map(k => d.carouselImgs[k]);
+      const slides = [];
+      rawList.forEach(function(item) {
+        if (!item) return;
+        const src = (item && typeof item === 'object') ? (item.src || '') : item;
+        if (!src) return;
         const img = document.createElement('img');
         img.src = src; img.alt = 'Cremona Music'; img.className = 'carousel-slide';
         viewport.appendChild(img);
-        return img;
+        slides.push(img);
       });
+      if (slides.length === 0) return;
       let idx = 0;
       function updateC() {
         const total = slides.length;
