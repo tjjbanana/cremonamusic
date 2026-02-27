@@ -57,7 +57,8 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
 .panel-title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--gold);margin-bottom:5px;}
 .panel-desc{font-size:0.7rem;color:rgba(248,243,236,0.35);letter-spacing:0.08em;margin-bottom:30px;line-height:1.6;}
 
-.field-group{margin-bottom:16px;}
+/* ── FIELDS ───────────────────────────────── */
+.field-group{margin-bottom:26px;}
 .field-label{display:block;font-size:0.56rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,92,0.65);margin-bottom:7px;}
 .field-input,.field-textarea{width:100%;background:rgba(248,243,236,0.04);border:1px solid rgba(201,168,92,0.14);color:#F8F3EC;font-family:'Josefin Sans',sans-serif;font-size:0.82rem;letter-spacing:0.03em;padding:10px 14px;outline:none;transition:border-color 0.2s;resize:vertical;}
 .field-input:focus,.field-textarea:focus{border-color:rgba(201,168,92,0.5);}
@@ -71,13 +72,13 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
 .img-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .img-upload-icon{font-size:1.6rem;opacity:0.35;margin-bottom:6px;}
 .img-upload-text{font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(248,243,236,0.3);}
-.img-preview-thumb{width:100%;max-height:180px;object-fit:cover;display:none;margin-top:10px;border:1px solid rgba(201,168,92,0.15);}
+.img-preview-thumb{width:100%;max-height:180px;object-fit:cover;display:none;margin-top:10px;}
 .img-uploading{font-size:0.62rem;color:var(--gold);margin-top:8px;display:none;letter-spacing:0.1em;animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 
 /* ── ACHIEVEMENT CARDS ────────────────────── */
-.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:14px;align-items:start;}
-.card-edit{background:rgba(62,31,10,0.28);border:1px solid rgba(201,168,92,0.1);padding:16px;display:flex;flex-direction:column;}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-bottom:14px;}
+.card-edit{background:rgba(62,31,10,0.28);border:1px solid rgba(201,168,92,0.1);padding:16px;}
 .card-edit-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .card-num{font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,92,0.35);}
 .btn-del{background:transparent;border:none;color:rgba(248,243,236,0.18);cursor:pointer;font-size:0.7rem;padding:2px 6px;transition:color 0.2s;}
@@ -106,17 +107,30 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
 .step-text a:hover{text-decoration:underline;}
 .step-text code{background:rgba(201,168,92,0.12);padding:1px 5px;font-size:0.72rem;color:var(--gold);}
 
-/* ── SECTION BOX ──────────────────────────── */
-.section-box{background:rgba(62,31,10,0.28);border:1px solid rgba(201,168,92,0.1);padding:20px;margin-bottom:16px;border-radius:2px;}
-.section-box-title{font-size:0.56rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(201,168,92,0.65);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid rgba(201,168,92,0.08);}
+/* ── MOBILE SIDEBAR TOGGLE ──────────────────── */
+.sidebar-toggle{display:none;background:none;border:none;color:var(--gold);font-size:1.3rem;cursor:pointer;padding:4px 8px;line-height:1;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;}
+.sidebar-overlay.open{display:block;}
 
-@media(max-width:640px){
+@media(max-width:1000px){
   .admin-layout{grid-template-columns:1fr;}
-  .sidebar{display:none;}
+  .sidebar{
+    position:fixed;top:60px;left:0;bottom:0;width:220px;
+    z-index:200;transform:translateX(-100%);
+    transition:transform 0.28s ease;
+    overflow-y:auto;
+  }
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-toggle{display:inline-flex;align-items:center;}
   header{padding:0 16px;}
-  .content{padding:18px 14px;}
+  .content{padding:20px 16px;}
   .ev-grid2{grid-template-columns:1fr;}
   .cards-grid{grid-template-columns:1fr;}
+  .header-actions .btn-preview{display:none;}
+}
+@media(max-width:480px){
+  .header-brand span{display:none;}
+  .btn-save{padding:8px 14px;}
 }
 </style>
 </head>
@@ -142,7 +156,7 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
 <!-- ══════════════ ADMIN ══════════════ -->
 <div id="adminPanel">
   <header>
-    <div class="header-brand">Cremona <span>Website Admin</span></div>
+    <div style="display:flex;align-items:center;gap:10px;"><button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button><div class="header-brand">Cremona <span>Website Admin</span></div></div>
     <div class="header-actions">
       <span class="save-status" id="saveStatus"></span>
       <a class="btn-preview" href="index.html" target="_blank">↗ Preview</a>
@@ -152,7 +166,8 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
   </header>
 
   <div class="admin-layout">
-    <nav class="sidebar">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <nav class="sidebar" id="adminSidebar">
       <div class="sidebar-section">Sections</div>
       <div class="sidebar-nav">
         <a class="active" data-panel="hero"         onclick="showPanel('hero',this)">Hero / Home</a>
@@ -956,7 +971,10 @@ function populateFields(d) {
   set('heroBtnExplore_en', d.heroBtnExplore_en); set('heroBtnExplore_zh', d.heroBtnExplore_zh);
   set('heroBtnContact_en', d.heroBtnContact_en); set('heroBtnContact_zh', d.heroBtnContact_zh);
   set('heroScroll_en', d.heroScroll_en);   set('heroScroll_zh', d.heroScroll_zh);
-  if (d.heroBg) { const p=document.getElementById('heroBgPreview'); p.src=d.heroBg; p.style.display='block'; }
+  if (d.heroBg) { 
+    const p=document.getElementById('heroBgPreview'); p.src=d.heroBg; p.style.display='block';
+    const area=document.getElementById('heroBgArea'); if(area){area.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace';}
+  }
   // Carousel
   renderCarousel(d.carouselImgs || []);
   // About
@@ -983,7 +1001,9 @@ function populateFields(d) {
   });
   set('card_piano_badge_en', d.card_piano_badge_en); set('card_piano_badge_zh', d.card_piano_badge_zh);
   set('card_theory_badge_en', d.card_theory_badge_en); set('card_theory_badge_zh', d.card_theory_badge_zh);
-  if (d.lessonsBg) { const p=document.getElementById('lessonsBgPreview'); p.src=d.lessonsBg; p.style.display='block'; }
+  if (d.lessonsBg) { const p=document.getElementById('lessonsBgPreview'); p.src=d.lessonsBg; p.style.display='block';
+    const t=p.previousElementSibling; if(t&&t.classList.contains('img-uploading')){ const a=t.previousElementSibling; if(a&&a.classList.contains('img-upload-area')) a.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace'; }
+  }
   // Recital
   set('recitalLabel_en', d.recitalLabel_en); set('recitalLabel_zh', d.recitalLabel_zh);
   set('recitalTitle_en', d.recitalTitle_en); set('recitalTitle_zh', d.recitalTitle_zh);
@@ -992,7 +1012,9 @@ function populateFields(d) {
     set('recitalFeat'+i+'Title_en', d['recitalFeat'+i+'Title_en']); set('recitalFeat'+i+'Title_zh', d['recitalFeat'+i+'Title_zh']);
     set('recitalFeat'+i+'Desc_en',  d['recitalFeat'+i+'Desc_en']);  set('recitalFeat'+i+'Desc_zh',  d['recitalFeat'+i+'Desc_zh']);
   }
-  if (d.recitalImg) { const p=document.getElementById('recitalImgPreview'); p.src=d.recitalImg; p.style.display='block'; }
+  if (d.recitalImg) { const p=document.getElementById('recitalImgPreview'); p.src=d.recitalImg; p.style.display='block';
+    const t=p.previousElementSibling; if(t&&t.classList.contains('img-uploading')){ const a=t.previousElementSibling; if(a&&a.classList.contains('img-upload-area')) a.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace'; }
+  }
   // Shop
   set('shopLabel_en', d.shopLabel_en); set('shopLabel_zh', d.shopLabel_zh);
   set('shopTitle_en', d.shopTitle_en); set('shopTitle_zh', d.shopTitle_zh);
@@ -1001,8 +1023,12 @@ function populateFields(d) {
   set('shopStringsModalDesc_en', d.shopStringsModalDesc_en); set('shopStringsModalDesc_zh', d.shopStringsModalDesc_zh);
   set('shopPianoLabel_en', d.shopPianoLabel_en); set('shopPianoLabel_zh', d.shopPianoLabel_zh);
   set('shopPianoModalDesc_en', d.shopPianoModalDesc_en); set('shopPianoModalDesc_zh', d.shopPianoModalDesc_zh);
-  if (d.shopStringsImg) { const p=document.getElementById('shopStringsPreview'); p.src=d.shopStringsImg; p.style.display='block'; }
-  if (d.shopPianoImg)   { const p=document.getElementById('shopPianoPreview');   p.src=d.shopPianoImg;   p.style.display='block'; }
+  if (d.shopStringsImg) { const p=document.getElementById('shopStringsPreview'); p.src=d.shopStringsImg; p.style.display='block';
+    const t=p.previousElementSibling; if(t&&t.classList.contains('img-uploading')){ const a=t.previousElementSibling; if(a&&a.classList.contains('img-upload-area')) a.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace'; }
+  }
+  if (d.shopPianoImg)   { const p=document.getElementById('shopPianoPreview');   p.src=d.shopPianoImg;   p.style.display='block';
+    const t=p.previousElementSibling; if(t&&t.classList.contains('img-uploading')){ const a=t.previousElementSibling; if(a&&a.classList.contains('img-upload-area')) a.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace'; }
+  }
   // Contact
   set('contactLabel_en', d.contactLabel_en); set('contactLabel_zh', d.contactLabel_zh);
   set('contactTitle_en', d.contactTitle_en); set('contactTitle_zh', d.contactTitle_zh);
@@ -1030,7 +1056,10 @@ window.saveAll = async function() {
   const v  = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
   const getImgVal = (previewId) => {
     const el = document.getElementById(previewId);
-    return (el && el.style.display !== 'none' && el.src && !el.src.endsWith(location.href)) ? el.src : '';
+    if (!el || el.style.display === 'none') return '';
+    const src = el.getAttribute('src') || el.src || '';
+    if (!src || src === location.href || src.endsWith(location.pathname)) return '';
+    return src;
   };
   const cards = ['piano','violin','cello','singing','percussion','marimba','theory'];
   const cardData = {};
@@ -1437,6 +1466,23 @@ function setSaveStatus(msg) {
   document.getElementById('saveStatus').textContent = msg;
 }
 
+
+// ── MOBILE SIDEBAR ────────────────────────────────────
+window.toggleSidebar = function() {
+  const sidebar = document.getElementById('adminSidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+};
+window.closeSidebar = function() {
+  document.getElementById('adminSidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+};
+// Close sidebar when panel link clicked on mobile
+document.querySelectorAll('.sidebar-nav a').forEach(function(a) {
+  a.addEventListener('click', function() {
+    if (window.innerWidth <= 1000) closeSidebar();
+  });
+});
+
 </script>
-</body>
-</html>
