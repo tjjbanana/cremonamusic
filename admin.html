@@ -152,7 +152,11 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
       <div class="sidebar-section">Sections</div>
       <div class="sidebar-nav">
         <a class="active" data-panel="hero"         onclick="showPanel('hero',this)">Hero / Home</a>
+        <a data-panel="carousel"                    onclick="showPanel('carousel',this)">Carousel Photos</a>
         <a data-panel="about"                       onclick="showPanel('about',this)">About</a>
+        <a data-panel="lessons"                     onclick="showPanel('lessons',this)">Music Lessons</a>
+        <a data-panel="recital"                     onclick="showPanel('recital',this)">Recital Hall</a>
+        <a data-panel="shop"                        onclick="showPanel('shop',this)">Instrument Shop</a>
         <a data-panel="achievements"                onclick="showPanel('achievements',this)">Achievements</a>
         <a data-panel="events"                      onclick="showPanel('events',this)">Events</a>
         <a data-panel="contact"                     onclick="showPanel('contact',this)">Contact</a>
@@ -194,7 +198,71 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
         </div>
       </div>
 
-      <!-- ABOUT -->
+      <!-- CAROUSEL -->
+      <div class="panel" id="panel-carousel">
+        <div class="panel-title">Carousel Photos</div>
+        <div class="panel-desc">Upload photos for the scrolling carousel strip between the About and Lessons sections. Add up to 10 photos.</div>
+        <div class="cards-grid" id="carouselGrid"></div>
+        <button class="btn-add" onclick="addCarouselPhoto()" style="margin-top:4px;">+ Add Carousel Photo</button>
+      </div>
+
+      <!-- LESSONS -->
+      <div class="panel" id="panel-lessons">
+        <div class="panel-title">Music Lessons</div>
+        <div class="panel-desc">Upload a background photo for the Music Lessons section.</div>
+        <div class="field-group">
+          <label class="field-label">Lessons Section Background Photo</label>
+          <div class="img-upload-area">
+            <input type="file" accept="image/*" onchange="uploadImage(this,'lessonsBg','lessonsBgPreview')">
+            <div class="img-upload-icon">🎵</div>
+            <div class="img-upload-text">Click or drag & drop · Recommended 1920×800</div>
+          </div>
+          <div class="img-uploading" id="lessonsBgUploading">Uploading…</div>
+          <img id="lessonsBgPreview" class="img-preview-thumb">
+        </div>
+      </div>
+
+      <!-- RECITAL HALL -->
+      <div class="panel" id="panel-recital">
+        <div class="panel-title">Recital Hall</div>
+        <div class="panel-desc">Upload the main photo shown in the Recital Hall / Performances & Events section.</div>
+        <div class="field-group">
+          <label class="field-label">Recital Hall Photo</label>
+          <div class="img-upload-area">
+            <input type="file" accept="image/*" onchange="uploadImage(this,'recitalImg','recitalImgPreview')">
+            <div class="img-upload-icon">🎭</div>
+            <div class="img-upload-text">Click or drag & drop · Recommended 800×420px</div>
+          </div>
+          <div class="img-uploading" id="recitalImgUploading">Uploading…</div>
+          <img id="recitalImgPreview" class="img-preview-thumb">
+        </div>
+      </div>
+
+      <!-- SHOP -->
+      <div class="panel" id="panel-shop">
+        <div class="panel-title">Instrument Shop</div>
+        <div class="panel-desc">Upload the two photos shown in the Instrument Shop section.</div>
+        <div class="field-group">
+          <label class="field-label">Strings Photo (left — violins, cellos)</label>
+          <div class="img-upload-area">
+            <input type="file" accept="image/*" onchange="uploadImage(this,'shopStringsImg','shopStringsPreview')">
+            <div class="img-upload-icon">🎻</div>
+            <div class="img-upload-text">Click or drag & drop · Recommended 800×480px</div>
+          </div>
+          <div class="img-uploading" id="shopStringsImgUploading">Uploading…</div>
+          <img id="shopStringsPreview" class="img-preview-thumb">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Piano Photo (right — Kawai pianos)</label>
+          <div class="img-upload-area">
+            <input type="file" accept="image/*" onchange="uploadImage(this,'shopPianoImg','shopPianoPreview')">
+            <div class="img-upload-icon">🎹</div>
+            <div class="img-upload-text">Click or drag & drop · Recommended 800×480px</div>
+          </div>
+          <div class="img-uploading" id="shopPianoImgUploading">Uploading…</div>
+          <img id="shopPianoPreview" class="img-preview-thumb">
+        </div>
+      </div>
       <div class="panel" id="panel-about">
         <div class="panel-title">About Section</div>
         <div class="panel-desc">Edit the two description paragraphs under "Our Story".</div>
@@ -420,6 +488,15 @@ function populateFields(d) {
   if (d.heroTitle)    document.getElementById('heroTitle').value    = d.heroTitle;
   if (d.heroSubtitle) document.getElementById('heroSubtitle').value = d.heroSubtitle;
   if (d.heroBg) { const p=document.getElementById('heroBgPreview'); p.src=d.heroBg; p.style.display='block'; }
+  // Carousel
+  renderCarousel(d.carouselImgs || []);
+  // Lessons bg
+  if (d.lessonsBg) { const p=document.getElementById('lessonsBgPreview'); p.src=d.lessonsBg; p.style.display='block'; }
+  // Recital
+  if (d.recitalImg) { const p=document.getElementById('recitalImgPreview'); p.src=d.recitalImg; p.style.display='block'; }
+  // Shop
+  if (d.shopStringsImg) { const p=document.getElementById('shopStringsPreview'); p.src=d.shopStringsImg; p.style.display='block'; }
+  if (d.shopPianoImg)   { const p=document.getElementById('shopPianoPreview');   p.src=d.shopPianoImg;   p.style.display='block'; }
   // About
   if (d.aboutP1) document.getElementById('aboutP1').value = d.aboutP1;
   if (d.aboutP2) document.getElementById('aboutP2').value = d.aboutP2;
@@ -438,17 +515,26 @@ window.saveAll = async function() {
   const btn = document.getElementById('btnSave');
   btn.disabled = true;
   setSaveStatus('Saving…');
+  const getImgVal = (previewId) => {
+    const el = document.getElementById(previewId);
+    return (el && el.style.display !== 'none' && el.src && !el.src.endsWith(location.href)) ? el.src : '';
+  };
   const d = {
-    heroTagline:  document.getElementById('heroTagline').value,
-    heroTitle:    document.getElementById('heroTitle').value,
-    heroSubtitle: document.getElementById('heroSubtitle').value,
-    heroBg:       document.getElementById('heroBgPreview').src.startsWith('data:') ? document.getElementById('heroBgPreview').src : (document.getElementById('heroBgPreview').style.display!=='none' ? document.getElementById('heroBgPreview').src : ''),
-    aboutP1:      document.getElementById('aboutP1').value,
-    aboutP2:      document.getElementById('aboutP2').value,
-    achievements: collectAchievements(),
-    events:       collectEvents(),
-    contactPhone: document.getElementById('contactPhone').value,
-    contactEmail: document.getElementById('contactEmail').value,
+    heroTagline:    document.getElementById('heroTagline').value,
+    heroTitle:      document.getElementById('heroTitle').value,
+    heroSubtitle:   document.getElementById('heroSubtitle').value,
+    heroBg:         getImgVal('heroBgPreview'),
+    carouselImgs:   collectCarousel(),
+    lessonsBg:      getImgVal('lessonsBgPreview'),
+    recitalImg:     getImgVal('recitalImgPreview'),
+    shopStringsImg: getImgVal('shopStringsPreview'),
+    shopPianoImg:   getImgVal('shopPianoPreview'),
+    aboutP1:        document.getElementById('aboutP1').value,
+    aboutP2:        document.getElementById('aboutP2').value,
+    achievements:   collectAchievements(),
+    events:         collectEvents(),
+    contactPhone:   document.getElementById('contactPhone').value,
+    contactEmail:   document.getElementById('contactEmail').value,
   };
   try {
     await set(ref(db, 'siteContent'), d);
@@ -524,6 +610,73 @@ window.uploadEventImage = function(input, idx) {
   };
   reader.readAsDataURL(file);
 };
+
+// ── CAROUSEL ──────────────────────────────────────────
+let carCount = 0;
+
+window.renderCarousel = function(items) {
+  const grid = document.getElementById('carouselGrid');
+  grid.innerHTML = '';
+  carCount = 0;
+  items.forEach(src => {
+    const i = carCount++;
+    grid.appendChild(makeCarouselCard(src, i));
+  });
+};
+
+function makeCarouselCard(src, i) {
+  const div = document.createElement('div');
+  div.className = 'card-edit';
+  div.id = 'car-card-'+i;
+  div.innerHTML = `
+    <div class="card-edit-hdr">
+      <span class="card-num">Photo ${i+1}</span>
+      <button class="btn-del" onclick="deleteCar(${i})">✕ Remove</button>
+    </div>
+    <div class="img-upload-area" style="position:relative;overflow:hidden;margin-bottom:8px;">
+      <input type="file" accept="image/*" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;" onchange="uploadCarouselImg(this,${i})">
+      <div class="img-upload-icon" style="font-size:1.2rem;">📷</div>
+      <div class="img-upload-text">Click to upload</div>
+    </div>
+    <img id="car-prev-${i}" class="card-img-prev" ${src ? `src="${src}" style="display:block;"` : ''}>
+    <input type="hidden" id="car-img-${i}" value="${src||''}">
+  `;
+  return div;
+}
+
+window.addCarouselPhoto = function() {
+  const i = carCount++;
+  document.getElementById('carouselGrid').appendChild(makeCarouselCard('', i));
+};
+
+window.deleteCar = function(i) {
+  const card = document.getElementById('car-card-'+i);
+  if (card) card.remove();
+};
+
+window.uploadCarouselImg = function(input, idx) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const b64 = e.target.result;
+    const prev = document.getElementById('car-prev-'+idx);
+    if (prev) { prev.src=b64; prev.style.display='block'; }
+    const hid = document.getElementById('car-img-'+idx);
+    if (hid) hid.value = b64;
+  };
+  reader.readAsDataURL(file);
+};
+
+function collectCarousel() {
+  const results = [];
+  document.querySelectorAll('[id^="car-card-"]').forEach(card => {
+    const i = card.id.replace('car-card-','');
+    const hid = document.getElementById('car-img-'+i);
+    if (hid && hid.value) results.push(hid.value);
+  });
+  return results;
+}
 
 // ── ACHIEVEMENTS ──────────────────────────────────────
 let achCount = 0;

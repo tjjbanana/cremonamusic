@@ -1334,6 +1334,59 @@ function applyContent(d) {
     }
   }
 
+  // ── Carousel ──────────────────────────────────────────
+  if (d.carouselImgs && d.carouselImgs.length) {
+    const viewport = document.getElementById('carouselViewport');
+    if (viewport) {
+      viewport.innerHTML = '';
+      const imgs = d.carouselImgs.filter(s => s);
+      const slides = imgs.map(function(src) {
+        const img = document.createElement('img');
+        img.src = src; img.alt = 'Cremona Music'; img.className = 'carousel-slide';
+        viewport.appendChild(img);
+        return img;
+      });
+      let idx = 0;
+      function updateC() {
+        const total = slides.length;
+        slides.forEach(function(slide, i) {
+          const diff = (i - idx + total) % total;
+          if (diff === 0) slide.className = 'carousel-slide center';
+          else if (diff === 1) slide.className = 'carousel-slide right';
+          else if (diff === total-1) slide.className = 'carousel-slide left';
+          else if (diff === 2) slide.className = 'carousel-slide far-right';
+          else if (diff === total-2) slide.className = 'carousel-slide far-left';
+          else { slide.className = 'carousel-slide'; slide.style.opacity='0'; return; }
+          slide.style.opacity='';
+        });
+      }
+      updateC();
+      setInterval(function(){ idx=(idx+1)%slides.length; updateC(); }, 4000);
+    }
+  }
+
+  // ── Recital Hall ──────────────────────────────────────
+  if (d.recitalImg) {
+    const el = document.getElementById('recitalImg');
+    if (el) el.src = d.recitalImg;
+  }
+
+  // ── Shop ──────────────────────────────────────────────
+  if (d.shopStringsImg) {
+    const el = document.getElementById('shopStringsImg');
+    if (el) el.src = d.shopStringsImg;
+  }
+  if (d.shopPianoImg) {
+    const el = document.getElementById('shopPianoImg');
+    if (el) el.src = d.shopPianoImg;
+  }
+
+  // ── Music Lessons background ──────────────────────────
+  if (d.lessonsBg) {
+    const el = document.getElementById('lessons');
+    if (el) { el.style.backgroundImage='url('+d.lessonsBg+')'; el.style.backgroundSize='cover'; el.style.backgroundPosition='center'; }
+  }
+
   // ── Contact ───────────────────────────────────────────
   if (d.contactPhone) document.querySelectorAll('.contact-phone').forEach(el => el.textContent = d.contactPhone);
   if (d.contactEmail) document.querySelectorAll('.contact-email').forEach(el => el.textContent = d.contactEmail);
