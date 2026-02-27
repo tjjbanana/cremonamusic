@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cremona Admin Panel</title>
-<link rel="icon" type="image/png" href="data:image/png;base64,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">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -107,30 +106,13 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
 .step-text a:hover{text-decoration:underline;}
 .step-text code{background:rgba(201,168,92,0.12);padding:1px 5px;font-size:0.72rem;color:var(--gold);}
 
-/* ── MOBILE SIDEBAR TOGGLE ──────────────────── */
-.sidebar-toggle{display:none;background:none;border:none;color:var(--gold);font-size:1.3rem;cursor:pointer;padding:4px 8px;line-height:1;}
-.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;}
-.sidebar-overlay.open{display:block;}
-
-@media(max-width:1000px){
+@media(max-width:640px){
   .admin-layout{grid-template-columns:1fr;}
-  .sidebar{
-    position:fixed;top:60px;left:0;bottom:0;width:220px;
-    z-index:200;transform:translateX(-100%);
-    transition:transform 0.28s ease;
-    overflow-y:auto;
-  }
-  .sidebar.open{transform:translateX(0);}
-  .sidebar-toggle{display:inline-flex;align-items:center;}
+  .sidebar{display:none;}
   header{padding:0 16px;}
-  .content{padding:20px 16px;}
+  .content{padding:18px 14px;}
   .ev-grid2{grid-template-columns:1fr;}
   .cards-grid{grid-template-columns:1fr;}
-  .header-actions .btn-preview{display:none;}
-}
-@media(max-width:480px){
-  .header-brand span{display:none;}
-  .btn-save{padding:8px 14px;}
 }
 </style>
 </head>
@@ -156,18 +138,17 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
 <!-- ══════════════ ADMIN ══════════════ -->
 <div id="adminPanel">
   <header>
-    <div style="display:flex;align-items:center;gap:10px;"><button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()">☰</button><div class="header-brand">Cremona <span>Website Admin</span></div></div>
+    <div class="header-brand">Cremona <span>Website Admin</span></div>
     <div class="header-actions">
       <span class="save-status" id="saveStatus"></span>
-      <a class="btn-preview" href="index.html" target="_blank">↗ Preview</a>
+      <a class="btn-preview" href="index2.html" target="_blank">↗ Preview</a>
       <button class="btn-save" id="btnSave" onclick="saveAll()">Save Changes</button>
       <button class="btn-logout" onclick="logout()">Log Out</button>
     </div>
   </header>
 
   <div class="admin-layout">
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-    <nav class="sidebar" id="adminSidebar">
+    <nav class="sidebar">
       <div class="sidebar-section">Sections</div>
       <div class="sidebar-nav">
         <a class="active" data-panel="hero"         onclick="showPanel('hero',this)">Hero / Home</a>
@@ -971,10 +952,7 @@ function populateFields(d) {
   set('heroBtnExplore_en', d.heroBtnExplore_en); set('heroBtnExplore_zh', d.heroBtnExplore_zh);
   set('heroBtnContact_en', d.heroBtnContact_en); set('heroBtnContact_zh', d.heroBtnContact_zh);
   set('heroScroll_en', d.heroScroll_en);   set('heroScroll_zh', d.heroScroll_zh);
-  if (d.heroBg) { 
-    const p=document.getElementById('heroBgPreview'); p.src=d.heroBg; p.style.display='block';
-    const area=document.getElementById('heroBgArea'); if(area){area.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace';}
-  }
+  if (d.heroBg) { const p=document.getElementById('heroBgPreview'); p.src=d.heroBg; p.style.display='block'; }
   // Carousel
   renderCarousel(d.carouselImgs || []);
   // About
@@ -1001,9 +979,7 @@ function populateFields(d) {
   });
   set('card_piano_badge_en', d.card_piano_badge_en); set('card_piano_badge_zh', d.card_piano_badge_zh);
   set('card_theory_badge_en', d.card_theory_badge_en); set('card_theory_badge_zh', d.card_theory_badge_zh);
-  if (d.lessonsBg) { const p=document.getElementById('lessonsBgPreview'); p.src=d.lessonsBg; p.style.display='block';
-    const t=p.previousElementSibling; if(t&&t.classList.contains('img-uploading')){ const a=t.previousElementSibling; if(a&&a.classList.contains('img-upload-area')) a.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace'; }
-  }
+  if (d.lessonsBg) { const p=document.getElementById('lessonsBgPreview'); p.src=d.lessonsBg; p.style.display='block'; }
   // Recital
   set('recitalLabel_en', d.recitalLabel_en); set('recitalLabel_zh', d.recitalLabel_zh);
   set('recitalTitle_en', d.recitalTitle_en); set('recitalTitle_zh', d.recitalTitle_zh);
@@ -1012,9 +988,7 @@ function populateFields(d) {
     set('recitalFeat'+i+'Title_en', d['recitalFeat'+i+'Title_en']); set('recitalFeat'+i+'Title_zh', d['recitalFeat'+i+'Title_zh']);
     set('recitalFeat'+i+'Desc_en',  d['recitalFeat'+i+'Desc_en']);  set('recitalFeat'+i+'Desc_zh',  d['recitalFeat'+i+'Desc_zh']);
   }
-  if (d.recitalImg) { const p=document.getElementById('recitalImgPreview'); p.src=d.recitalImg; p.style.display='block';
-    const t=p.previousElementSibling; if(t&&t.classList.contains('img-uploading')){ const a=t.previousElementSibling; if(a&&a.classList.contains('img-upload-area')) a.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace'; }
-  }
+  if (d.recitalImg) { const p=document.getElementById('recitalImgPreview'); p.src=d.recitalImg; p.style.display='block'; }
   // Shop
   set('shopLabel_en', d.shopLabel_en); set('shopLabel_zh', d.shopLabel_zh);
   set('shopTitle_en', d.shopTitle_en); set('shopTitle_zh', d.shopTitle_zh);
@@ -1023,12 +997,8 @@ function populateFields(d) {
   set('shopStringsModalDesc_en', d.shopStringsModalDesc_en); set('shopStringsModalDesc_zh', d.shopStringsModalDesc_zh);
   set('shopPianoLabel_en', d.shopPianoLabel_en); set('shopPianoLabel_zh', d.shopPianoLabel_zh);
   set('shopPianoModalDesc_en', d.shopPianoModalDesc_en); set('shopPianoModalDesc_zh', d.shopPianoModalDesc_zh);
-  if (d.shopStringsImg) { const p=document.getElementById('shopStringsPreview'); p.src=d.shopStringsImg; p.style.display='block';
-    const t=p.previousElementSibling; if(t&&t.classList.contains('img-uploading')){ const a=t.previousElementSibling; if(a&&a.classList.contains('img-upload-area')) a.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace'; }
-  }
-  if (d.shopPianoImg)   { const p=document.getElementById('shopPianoPreview');   p.src=d.shopPianoImg;   p.style.display='block';
-    const t=p.previousElementSibling; if(t&&t.classList.contains('img-uploading')){ const a=t.previousElementSibling; if(a&&a.classList.contains('img-upload-area')) a.querySelector('.img-upload-text').textContent='✓ Current photo saved — click to replace'; }
-  }
+  if (d.shopStringsImg) { const p=document.getElementById('shopStringsPreview'); p.src=d.shopStringsImg; p.style.display='block'; }
+  if (d.shopPianoImg)   { const p=document.getElementById('shopPianoPreview');   p.src=d.shopPianoImg;   p.style.display='block'; }
   // Contact
   set('contactLabel_en', d.contactLabel_en); set('contactLabel_zh', d.contactLabel_zh);
   set('contactTitle_en', d.contactTitle_en); set('contactTitle_zh', d.contactTitle_zh);
@@ -1056,10 +1026,7 @@ window.saveAll = async function() {
   const v  = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
   const getImgVal = (previewId) => {
     const el = document.getElementById(previewId);
-    if (!el || el.style.display === 'none') return '';
-    const src = el.getAttribute('src') || el.src || '';
-    if (!src || src === location.href || src.endsWith(location.pathname)) return '';
-    return src;
+    return (el && el.style.display !== 'none' && el.src && !el.src.endsWith(location.href)) ? el.src : '';
   };
   const cards = ['piano','violin','cello','singing','percussion','marimba','theory'];
   const cardData = {};
@@ -1181,28 +1148,22 @@ window.uploadImage = function(input, storeKey, previewId) {
   const uploadingId = storeKey + 'Uploading';
   const upEl = document.getElementById(uploadingId);
   if (upEl) upEl.style.display = 'block';
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const b64 = e.target.result;
+  compressImage(file, 1600, 0.80, function(b64) {
     const prev = document.getElementById(previewId);
     if (prev) { prev.src = b64; prev.style.display = 'block'; }
     if (upEl) upEl.style.display = 'none';
-  };
-  reader.readAsDataURL(file);
+  });
 };
 
 window.uploadCardImage = function(input, idx) {
   const file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const b64 = e.target.result;
+  compressImage(file, 800, 0.80, function(b64) {
     const prev = document.getElementById('ach-prev-'+idx);
     if (prev) { prev.src=b64; prev.style.display='block'; }
     const hid = document.getElementById('ach-img-'+idx);
     if (hid) hid.value = b64;
-  };
-  reader.readAsDataURL(file);
+  });
 };
 
 window.uploadEventImage = function(input, idx) {
@@ -1275,18 +1236,35 @@ window.deleteCar = function(i) {
   if (card) card.remove();
 };
 
+
+// ── IMAGE COMPRESSION ─────────────────────────────────
+function compressImage(file, maxWidth, quality, callback) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      let w = img.width, h = img.height;
+      if (w > maxWidth) { h = Math.round(h * maxWidth / w); w = maxWidth; }
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      callback(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
 window.uploadCarouselImg = function(input, idx) {
   const file = input.files[0];
   if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const b64 = e.target.result;
+  compressImage(file, 1200, 0.75, function(b64) {
     const prev = document.getElementById('car-prev-'+idx);
     if (prev) { prev.src=b64; prev.style.display='block'; }
     const hid = document.getElementById('car-img-'+idx);
     if (hid) hid.value = b64;
-  };
-  reader.readAsDataURL(file);
+  });
 };
 
 function collectCarousel() {
@@ -1466,23 +1444,6 @@ function setSaveStatus(msg) {
   document.getElementById('saveStatus').textContent = msg;
 }
 
-
-// ── MOBILE SIDEBAR ────────────────────────────────────
-window.toggleSidebar = function() {
-  const sidebar = document.getElementById('adminSidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-  sidebar.classList.toggle('open');
-  overlay.classList.toggle('open');
-};
-window.closeSidebar = function() {
-  document.getElementById('adminSidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
-};
-// Close sidebar when panel link clicked on mobile
-document.querySelectorAll('.sidebar-nav a').forEach(function(a) {
-  a.addEventListener('click', function() {
-    if (window.innerWidth <= 1000) closeSidebar();
-  });
-});
-
 </script>
+</body>
+</html>
