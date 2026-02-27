@@ -24,11 +24,9 @@ nav {
   backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
   -webkit-backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
   border:none;
-  border-color:transparent;
   outline:none;
-  border-bottom:none !important;
-  box-shadow:none !important;
-  box-shadow:0 0 0 transparent !important;
+  border-bottom:none;
+  box-shadow:none;
   height:70px;
 }
 .nav-inner {
@@ -51,20 +49,26 @@ nav {
 .nav-links { display:flex; align-items:center; gap:16px; flex-wrap:nowrap; }
 .nav-links a {
   text-decoration:none; color:var(--brown-dark);
-  font-size:0.6rem; letter-spacing:0.09em; text-transform:uppercase;
+  font-size:0.65rem; letter-spacing:0.09em; text-transform:uppercase;
   font-weight:400; transition:color 0.2s; position:relative; padding-bottom:3px;
   white-space:nowrap;
+}
+/* Chinese nav: larger, no letter-spacing, remove uppercase (it has no effect on CJK but keeps consistent) */
+body.zh .nav-links a {
+  font-size:0.75rem; letter-spacing:0.03em; text-transform:none;
 }
 @media (max-width:1200px) and (min-width:1001px) {
   .nav-inner { padding:0 14px; }
   .nav-logo img { height:42px; }
   .nav-links { gap:10px; }
-  .nav-links a { font-size:0.56rem; letter-spacing:0.08em; }
+  .nav-links a { font-size:0.58rem; letter-spacing:0.08em; }
+  body.zh .nav-links a { font-size:0.68rem; letter-spacing:0.02em; }
   .lang-btn { font-size:0.56rem; padding:4px 9px; }
 }
 @media (max-width:1120px) and (min-width:1001px) {
   .nav-links { gap:6px; }
-  .nav-links a { font-size:0.53rem; letter-spacing:0.07em; }
+  .nav-links a { font-size:0.55rem; letter-spacing:0.07em; }
+  body.zh .nav-links a { font-size:0.64rem; letter-spacing:0.02em; }
   .nav-social svg { width:13px; height:13px; }
 }
 .nav-links a::after {
@@ -132,6 +136,9 @@ nav {
   background:rgba(248,243,236,0.98);
   border-top:none;
   transition:max-height 0.28s ease;
+}
+.mobile-nav.open {
+  border-top:1px solid rgba(107,62,38,0.12);
 }
 .mobile-nav.open { max-height:520px; }
 .mobile-nav-inner {
