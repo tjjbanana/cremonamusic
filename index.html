@@ -1308,14 +1308,13 @@ function applyContent(d) {
       if (descEn) { const s = p.querySelector('[data-en]'); if (s) s.textContent = descEn; }
       if (descZh) { const s = p.querySelector('[data-zh]'); if (s) s.textContent = descZh; }
     }
-    // Badge text
+    // Badge text — every card has its own badge field
     const badge = card.querySelector('.lesson-badge');
     if (badge) {
-      const badgeKey = k === 'piano' ? 'card_piano_badge' : k === 'theory' ? 'card_theory_badge' : null;
-      if (badgeKey) {
-        if (d[badgeKey+'_en']) { const s = badge.querySelector('[data-en]'); if (s) s.textContent = d[badgeKey+'_en']; }
-        if (d[badgeKey+'_zh']) { const s = badge.querySelector('[data-zh]'); if (s) s.textContent = d[badgeKey+'_zh']; }
-      }
+      const bEn = d['card_'+k+'_badge_en'];
+      const bZh = d['card_'+k+'_badge_zh'];
+      if (bEn) { const s = badge.querySelector('[data-en]'); if (s) s.textContent = bEn; }
+      if (bZh) { const s = badge.querySelector('[data-zh]'); if (s) s.textContent = bZh; }
     }
   });
   if (d.lessonsBg) {
@@ -1512,6 +1511,28 @@ function applyContent(d) {
       setInterval(function(){ idx=(idx+1)%slides.length; updateC(); }, 4000);
     }
   }
+
+  // ── Modal data — update lessons object so tapped cards show Firebase text ──
+  const modalKeys = ['piano','violin','cello','singing','percussion','marimba','theory'];
+  modalKeys.forEach(function(k) {
+    if (!lessons[k]) return;
+    const titleEn    = d['card_'+k+'_title_en'];
+    const titleZh    = d['card_'+k+'_title_zh'];
+    const subtitleEn = d['modal_'+k+'_subtitle_en'];
+    const subtitleZh = d['modal_'+k+'_subtitle_zh'];
+    const descEn     = d['modal_'+k+'_desc_en'];
+    const descZh     = d['modal_'+k+'_desc_zh'];
+    const featsEnRaw = d['modal_'+k+'_feats_en'];
+    const featsZhRaw = d['modal_'+k+'_feats_zh'];
+    if (titleEn)    lessons[k].en.title    = titleEn;
+    if (titleZh)    lessons[k].zh.title    = titleZh;
+    if (subtitleEn) lessons[k].en.subtitle = subtitleEn;
+    if (subtitleZh) lessons[k].zh.subtitle = subtitleZh;
+    if (descEn)     lessons[k].en.desc     = descEn;
+    if (descZh)     lessons[k].zh.desc     = descZh;
+    if (featsEnRaw) lessons[k].en.features = featsEnRaw.split('\n').map(function(f){return f.trim();}).filter(Boolean);
+    if (featsZhRaw) lessons[k].zh.features = featsZhRaw.split('\n').map(function(f){return f.trim();}).filter(Boolean);
+  });
 }
 
 const CACHE_KEY = 'cremona_content_cache';
