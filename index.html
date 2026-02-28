@@ -1499,12 +1499,24 @@ function applyContent(d) {
   }
 }
 
+const CACHE_KEY = 'cremona_content_cache';
+
+// Show cached content instantly on load
+try {
+  const cached = localStorage.getItem(CACHE_KEY);
+  if (cached) applyContent(JSON.parse(cached));
+} catch(e) {}
+
+// Then connect to Firebase and update in background
 try {
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
-  // Live-sync: page updates instantly when admin saves
   onValue(ref(db, 'siteContent'), (snap) => {
-    applyContent(snap.val());
+    const data = snap.val();
+    if (!data) return;
+    applyContent(data);
+    // Save latest to cache for next visit
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch(e) {}
   });
 } catch(e) {
   console.warn('Firebase not configured yet:', e.message);
