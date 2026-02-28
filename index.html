@@ -1232,72 +1232,231 @@ const firebaseConfig = {
 function applyContent(d) {
   if (!d) return;
 
+  // Helper: set text on [data-en] and [data-zh] spans inside a selector
+  function setText(selector, enVal, zhVal) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    if (enVal !== undefined && enVal !== '') { const s = el.querySelector('[data-en]'); if (s) s.textContent = enVal; }
+    if (zhVal !== undefined && zhVal !== '') { const s = el.querySelector('[data-zh]'); if (s) s.textContent = zhVal; }
+  }
+  function setHtml(selector, enVal, zhVal) {
+    const el = document.querySelector(selector);
+    if (!el) return;
+    if (enVal !== undefined && enVal !== '') { const s = el.querySelector('[data-en]'); if (s) s.innerHTML = enVal; }
+    if (zhVal !== undefined && zhVal !== '') { const s = el.querySelector('[data-zh]'); if (s) s.innerHTML = zhVal; }
+  }
+
   // ── Hero ──────────────────────────────────────────────
-  if (d.heroTagline) {
-    const el = document.querySelector('.hero-tagline [data-en]');
-    if (el) el.textContent = d.heroTagline;
-  }
-  if (d.heroTitle) {
-    const el = document.querySelector('#home h1 [data-en]');
-    if (el) el.innerHTML = d.heroTitle;
-  }
-  if (d.heroSubtitle) {
-    const el = document.querySelector('.hero-sub [data-en]');
-    if (el) el.textContent = d.heroSubtitle;
-  }
+  setText('.hero-tagline', d.heroTagline, d.heroTagline_zh);
+  setHtml('#home h1', d.heroTitle, d.heroTitle_zh);
+  setText('.hero-sub', d.heroSubtitle, d.heroSubtitle_zh);
+  if (d.heroBtnExplore_en || d.heroBtnExplore_zh) setText('.hero-btns .btn-primary', d.heroBtnExplore_en, d.heroBtnExplore_zh);
   if (d.heroBg) {
     const el = document.getElementById('heroBg');
     if (el) el.style.backgroundImage = 'url(' + d.heroBg + ')';
   }
 
   // ── About ─────────────────────────────────────────────
-  const aboutPs = document.querySelectorAll('#about .section-desc [data-en]');
-  if (d.aboutP1 && aboutPs[0]) aboutPs[0].textContent = d.aboutP1;
-  if (d.aboutP2 && aboutPs[1]) aboutPs[1].textContent = d.aboutP2;
+  if (d.aboutLabel_en || d.aboutLabel_zh) setText('#about .section-label', d.aboutLabel_en, d.aboutLabel_zh);
+  if (d.aboutTitle_en || d.aboutTitle_zh) setHtml('#about .section-title', d.aboutTitle_en, d.aboutTitle_zh);
+  const aboutPs = document.querySelectorAll('#about .section-desc');
+  if (aboutPs[0]) {
+    if (d.aboutP1) { const s = aboutPs[0].querySelector('[data-en]'); if (s) s.textContent = d.aboutP1; }
+    if (d.aboutP1_zh) { const s = aboutPs[0].querySelector('[data-zh]'); if (s) s.textContent = d.aboutP1_zh; }
+  }
+  if (aboutPs[1]) {
+    if (d.aboutP2) { const s = aboutPs[1].querySelector('[data-en]'); if (s) s.textContent = d.aboutP2; }
+    if (d.aboutP2_zh) { const s = aboutPs[1].querySelector('[data-zh]'); if (s) s.textContent = d.aboutP2_zh; }
+  }
+  // Badges
+  const badges = document.querySelectorAll('#about .award-badge');
+  if (badges[0]) {
+    if (d.badge1Num) { const s = badges[0].querySelector('.num'); if (s) s.textContent = d.badge1Num; }
+    if (d.badge1Label_en) { const s = badges[0].querySelector('[data-en]'); if (s) s.textContent = d.badge1Label_en; }
+    if (d.badge1Label_zh) { const s = badges[0].querySelector('[data-zh]'); if (s) s.textContent = d.badge1Label_zh; }
+  }
+  if (badges[1]) {
+    if (d.badge2Num) { const s = badges[1].querySelector('.num'); if (s) s.textContent = d.badge2Num; }
+    if (d.badge2Label_en) { const s = badges[1].querySelector('[data-en]'); if (s) s.textContent = d.badge2Label_en; }
+    if (d.badge2Label_zh) { const s = badges[1].querySelector('[data-zh]'); if (s) s.textContent = d.badge2Label_zh; }
+  }
+  if (badges[2]) {
+    if (d.badge3Num) { const s = badges[2].querySelector('.num'); if (s) s.textContent = d.badge3Num; }
+    if (d.badge3Label_en) { const s = badges[2].querySelector('[data-en]'); if (s) s.textContent = d.badge3Label_en; }
+    if (d.badge3Label_zh) { const s = badges[2].querySelector('[data-zh]'); if (s) s.textContent = d.badge3Label_zh; }
+  }
+
+  // ── Lessons section ───────────────────────────────────
+  if (d.lessonsLabel_en || d.lessonsLabel_zh) setText('#lessons .section-label', d.lessonsLabel_en, d.lessonsLabel_zh);
+  if (d.lessonsTitle_en || d.lessonsTitle_zh) setHtml('#lessons .section-title', d.lessonsTitle_en, d.lessonsTitle_zh);
+  if (d.lessonsDesc_en || d.lessonsDesc_zh) setText('#lessons .section-desc', d.lessonsDesc_en, d.lessonsDesc_zh);
+  // Lesson cards
+  const cardKeys = ['piano','violin','cello','singing','percussion','marimba','theory'];
+  const lessonCards = document.querySelectorAll('.lesson-card');
+  cardKeys.forEach(function(k, idx) {
+    const card = lessonCards[idx];
+    if (!card) return;
+    const titleEn = d['card_'+k+'_title_en'], titleZh = d['card_'+k+'_title_zh'];
+    const descEn  = d['card_'+k+'_desc_en'],  descZh  = d['card_'+k+'_desc_zh'];
+    const h3 = card.querySelector('h3');
+    if (h3) {
+      if (titleEn) { const s = h3.querySelector('[data-en]'); if (s) s.textContent = titleEn; }
+      if (titleZh) { const s = h3.querySelector('[data-zh]'); if (s) s.textContent = titleZh; }
+    }
+    const p = card.querySelector('p');
+    if (p) {
+      if (descEn) { const s = p.querySelector('[data-en]'); if (s) s.textContent = descEn; }
+      if (descZh) { const s = p.querySelector('[data-zh]'); if (s) s.textContent = descZh; }
+    }
+    // Badge text
+    const badge = card.querySelector('.lesson-badge');
+    if (badge) {
+      const badgeKey = k === 'piano' ? 'card_piano_badge' : k === 'theory' ? 'card_theory_badge' : null;
+      if (badgeKey) {
+        if (d[badgeKey+'_en']) { const s = badge.querySelector('[data-en]'); if (s) s.textContent = d[badgeKey+'_en']; }
+        if (d[badgeKey+'_zh']) { const s = badge.querySelector('[data-zh]'); if (s) s.textContent = d[badgeKey+'_zh']; }
+      }
+    }
+  });
+  if (d.lessonsBg) {
+    const el = document.getElementById('lessons');
+    if (el) { el.style.backgroundImage='url('+d.lessonsBg+')'; el.style.backgroundSize='cover'; el.style.backgroundPosition='center'; }
+  }
+
+  // ── Recital Hall ──────────────────────────────────────
+  if (d.recitalLabel_en || d.recitalLabel_zh) setText('#recital .section-label', d.recitalLabel_en, d.recitalLabel_zh);
+  if (d.recitalTitle_en || d.recitalTitle_zh) setHtml('#recital .section-title', d.recitalTitle_en, d.recitalTitle_zh);
+  if (d.recitalDesc_en || d.recitalDesc_zh) setText('#recital .section-desc', d.recitalDesc_en, d.recitalDesc_zh);
+  // Recital features
+  const recitalFeats = document.querySelectorAll('#recital .recital-feature');
+  [1,2,3].forEach(function(n, idx) {
+    const feat = recitalFeats[idx];
+    if (!feat) return;
+    const h4 = feat.querySelector('h4');
+    const p  = feat.querySelector('p');
+    const titleEn = d['recitalFeat'+n+'Title_en'], titleZh = d['recitalFeat'+n+'Title_zh'];
+    const descEn  = d['recitalFeat'+n+'Desc_en'],  descZh  = d['recitalFeat'+n+'Desc_zh'];
+    if (h4) {
+      if (titleEn) { const s = h4.querySelector('[data-en]'); if (s) s.textContent = titleEn; }
+      if (titleZh) { const s = h4.querySelector('[data-zh]'); if (s) s.textContent = titleZh; }
+    }
+    if (p) {
+      if (descEn) { const s = p.querySelector('[data-en]'); if (s) s.textContent = descEn; }
+      if (descZh) { const s = p.querySelector('[data-zh]'); if (s) s.textContent = descZh; }
+    }
+  });
+  if (d.recitalImg) {
+    const el = document.getElementById('recitalImg');
+    if (el) el.src = d.recitalImg;
+  }
+
+  // ── Shop ──────────────────────────────────────────────
+  if (d.shopLabel_en || d.shopLabel_zh) setText('#shop .section-label', d.shopLabel_en, d.shopLabel_zh);
+  if (d.shopTitle_en || d.shopTitle_zh) setHtml('#shop .section-title', d.shopTitle_en, d.shopTitle_zh);
+  if (d.shopDesc_en || d.shopDesc_zh) setText('#shop .section-desc', d.shopDesc_en, d.shopDesc_zh);
+  const shopBlocks = document.querySelectorAll('.shop-img-block');
+  if (shopBlocks[0]) {
+    if (d.shopStringsLabel_en) { const s = shopBlocks[0].querySelector('.shop-img-label [data-en]'); if (s) s.textContent = d.shopStringsLabel_en; }
+    if (d.shopStringsLabel_zh) { const s = shopBlocks[0].querySelector('.shop-img-label [data-zh]'); if (s) s.textContent = d.shopStringsLabel_zh; }
+  }
+  if (shopBlocks[1]) {
+    if (d.shopPianoLabel_en) { const s = shopBlocks[1].querySelector('.shop-img-label [data-en]'); if (s) s.textContent = d.shopPianoLabel_en; }
+    if (d.shopPianoLabel_zh) { const s = shopBlocks[1].querySelector('.shop-img-label [data-zh]'); if (s) s.textContent = d.shopPianoLabel_zh; }
+  }
+  if (d.shopStringsImg) {
+    const el = document.getElementById('shopStringsImg');
+    if (el) el.src = d.shopStringsImg;
+  }
+  if (d.shopPianoImg) {
+    const el = document.getElementById('shopPianoImg');
+    if (el) el.src = d.shopPianoImg;
+  }
+
+  // ── Contact ───────────────────────────────────────────
+  if (d.contactLabel_en || d.contactLabel_zh) setText('#contact .section-label', d.contactLabel_en, d.contactLabel_zh);
+  if (d.contactTitle_en || d.contactTitle_zh) setHtml('#contact .section-title', d.contactTitle_en, d.contactTitle_zh);
+  const contactItems = document.querySelectorAll('.contact-item');
+  // Address (item 0)
+  if (contactItems[0] && d.contactAddress) { const p = contactItems[0].querySelector('p'); if (p) p.innerHTML = d.contactAddress.replace(/\n/g,'<br>'); }
+  // Phone (item 1)
+  if (contactItems[1]) {
+    if (d.contactPhone) { const p = contactItems[1].querySelector('p'); if (p) p.textContent = d.contactPhone; }
+  }
+  // Location (item 2)
+  if (contactItems[2] && d.contactLocation) { const p = contactItems[2].querySelector('p'); if (p) p.textContent = d.contactLocation; }
+  // Footer address/phone
+  if (d.contactPhone) document.querySelectorAll('.contact-phone').forEach(el => el.textContent = d.contactPhone);
+  if (d.contactEmail) document.querySelectorAll('.contact-email').forEach(el => el.textContent = d.contactEmail);
+  // WhatsApp button
+  if (d.contactWhatsapp) {
+    document.querySelectorAll('a.wa-btn').forEach(el => {
+      el.href = 'https://wa.me/' + d.contactWhatsapp.replace(/[^0-9]/g,'');
+    });
+    const footerWa = document.querySelector('footer a[href*="wa.me"]');
+    if (footerWa) footerWa.href = 'https://wa.me/' + d.contactWhatsapp.replace(/[^0-9]/g,'');
+    const modalWa = document.querySelector('.modal-cta[href*="wa.me"]');
+    if (modalWa) modalWa.href = 'https://wa.me/' + d.contactWhatsapp.replace(/[^0-9]/g,'');
+  }
+  if (d.contactWaBtnLabel_en || d.contactWaBtnLabel_zh) {
+    document.querySelectorAll('a.wa-btn').forEach(el => {
+      if (d.contactWaBtnLabel_en) { const s = el.querySelector('[data-en]'); if (s) s.textContent = d.contactWaBtnLabel_en; }
+      if (d.contactWaBtnLabel_zh) { const s = el.querySelector('[data-zh]'); if (s) s.textContent = d.contactWaBtnLabel_zh; }
+    });
+  }
 
   // ── Achievements ──────────────────────────────────────
-  if (d.achievements && d.achievements.length) {
-    const grid = document.querySelector('.achievements-grid');
-    if (grid) {
-      grid.innerHTML = '';
-      d.achievements.forEach(function(item) {
-        const card = document.createElement('div');
-        card.className = 'achievement-card';
-        if (item.img) {
-          const img = document.createElement('img');
-          img.src = item.img;
-          img.alt = item.caption || '';
-          card.appendChild(img);
-          if (item.caption) {
-            const overlay = document.createElement('div');
-            overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(62,31,10,0.8));padding:16px;color:#fff;font-size:0.75rem;letter-spacing:0.08em;';
-            overlay.textContent = item.caption;
-            card.appendChild(overlay);
+  if (d.achievements) {
+    const list = Array.isArray(d.achievements)
+      ? d.achievements
+      : Object.keys(d.achievements).sort((a,b)=>a-b).map(k=>d.achievements[k]);
+    if (list.length) {
+      const grid = document.querySelector('.achievements-grid');
+      if (grid) {
+        grid.innerHTML = '';
+        list.forEach(function(item) {
+          const card = document.createElement('div');
+          card.className = 'achievement-card';
+          if (item.img) {
+            const img = document.createElement('img');
+            img.src = item.img;
+            img.alt = item.caption || '';
+            card.appendChild(img);
+            if (item.caption) {
+              const overlay = document.createElement('div');
+              overlay.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(62,31,10,0.8));padding:16px;color:#fff;font-size:0.75rem;letter-spacing:0.08em;';
+              overlay.textContent = item.caption;
+              card.appendChild(overlay);
+            }
+          } else {
+            card.innerHTML = '<div class="achievement-placeholder"><span>' + (item.icon||'🏆') + '</span><p>' + (item.caption||'Photo coming soon') + '</p></div>';
           }
-        } else {
-          card.innerHTML = '<div class="achievement-placeholder"><span>' + (item.icon||'🏆') + '</span><p>' + (item.caption||'Photo coming soon') + '</p></div>';
-        }
-        grid.appendChild(card);
-      });
+          grid.appendChild(card);
+        });
+      }
     }
   }
 
   // ── Events ────────────────────────────────────────────
-  if (d.events && d.events.length) {
-    const evGrid = document.querySelector('.events-grid');
-    if (evGrid) {
-      evGrid.innerHTML = '';
-      d.events.forEach(function(ev) {
-        const card = document.createElement('div');
-        card.className = 'event-card';
-        card.innerHTML =
-          '<div class="event-date">' + (ev.date||'TBA') + '</div>' +
-          '<span class="event-month">' + (ev.month||'Coming Soon') + '</span>' +
-          (ev.photo ? '<img src="'+ev.photo+'" alt="" style="width:100%;height:160px;object-fit:cover;margin-bottom:12px;border-radius:4px;">' : '') +
-          '<h3>' + (ev.title||'Event') + '</h3>' +
-          '<p>' + (ev.desc||'') + '</p>';
-        evGrid.appendChild(card);
-      });
+  if (d.events) {
+    const list = Array.isArray(d.events)
+      ? d.events
+      : Object.keys(d.events).sort((a,b)=>a-b).map(k=>d.events[k]);
+    if (list.length) {
+      const evGrid = document.querySelector('.events-grid');
+      if (evGrid) {
+        evGrid.innerHTML = '';
+        list.forEach(function(ev) {
+          const card = document.createElement('div');
+          card.className = 'event-card';
+          card.innerHTML =
+            '<div class="event-date">' + (ev.date||'TBA') + '</div>' +
+            '<span class="event-month">' + (ev.month||'Coming Soon') + '</span>' +
+            (ev.photo ? '<img src="'+ev.photo+'" alt="" style="width:100%;height:160px;object-fit:cover;margin-bottom:12px;border-radius:4px;">' : '') +
+            '<h3>' + (ev.title||'Event') + '</h3>' +
+            '<p>' + (ev.desc||'') + '</p>';
+          evGrid.appendChild(card);
+        });
+      }
     }
   }
 
@@ -1306,10 +1465,9 @@ function applyContent(d) {
     const viewport = document.getElementById('carouselViewport');
     if (viewport) {
       viewport.innerHTML = '';
-      // Firebase may return array as object with numeric keys — normalise to array
       const rawList = Array.isArray(d.carouselImgs)
         ? d.carouselImgs
-        : Object.keys(d.carouselImgs).sort((a,b)=>a-b).map(k => d.carouselImgs[k]);
+        : Object.keys(d.carouselImgs).sort((a,b)=>Number(a)-Number(b)).map(k => d.carouselImgs[k]);
       const slides = [];
       rawList.forEach(function(item) {
         if (!item) return;
@@ -1339,32 +1497,6 @@ function applyContent(d) {
       setInterval(function(){ idx=(idx+1)%slides.length; updateC(); }, 4000);
     }
   }
-
-  // ── Recital Hall ──────────────────────────────────────
-  if (d.recitalImg) {
-    const el = document.getElementById('recitalImg');
-    if (el) el.src = d.recitalImg;
-  }
-
-  // ── Shop ──────────────────────────────────────────────
-  if (d.shopStringsImg) {
-    const el = document.getElementById('shopStringsImg');
-    if (el) el.src = d.shopStringsImg;
-  }
-  if (d.shopPianoImg) {
-    const el = document.getElementById('shopPianoImg');
-    if (el) el.src = d.shopPianoImg;
-  }
-
-  // ── Music Lessons background ──────────────────────────
-  if (d.lessonsBg) {
-    const el = document.getElementById('lessons');
-    if (el) { el.style.backgroundImage='url('+d.lessonsBg+')'; el.style.backgroundSize='cover'; el.style.backgroundPosition='center'; }
-  }
-
-  // ── Contact ───────────────────────────────────────────
-  if (d.contactPhone) document.querySelectorAll('.contact-phone').forEach(el => el.textContent = d.contactPhone);
-  if (d.contactEmail) document.querySelectorAll('.contact-email').forEach(el => el.textContent = d.contactEmail);
 }
 
 try {

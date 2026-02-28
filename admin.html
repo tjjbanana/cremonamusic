@@ -1027,7 +1027,10 @@ window.saveAll = async function() {
   const v  = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
   const getImgVal = (previewId) => {
     const el = document.getElementById(previewId);
-    return (el && el.style.display !== 'none' && el.src && !el.src.endsWith(location.href)) ? el.src : '';
+    if (!el || el.style.display === 'none') return '';
+    const src = el.getAttribute('src') || '';
+    if (!src || src === '' || src === location.href || src === window.location.origin + '/' || src === window.location.origin) return '';
+    return src;
   };
   const cards = ['piano','violin','cello','singing','percussion','marimba','theory'];
   const cardData = {};
