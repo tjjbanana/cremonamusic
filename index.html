@@ -1376,26 +1376,41 @@ function applyContent(d) {
   if (d.contactLabel_en || d.contactLabel_zh) setText('#contact .section-label', d.contactLabel_en, d.contactLabel_zh);
   if (d.contactTitle_en || d.contactTitle_zh) setHtml('#contact .section-title', d.contactTitle_en, d.contactTitle_zh);
   const contactItems = document.querySelectorAll('.contact-item');
-  // Address (item 0)
-  if (contactItems[0] && d.contactAddress) { const p = contactItems[0].querySelector('p'); if (p) p.innerHTML = d.contactAddress.replace(/\n/g,'<br>'); }
-  // Phone (item 1)
+  // Address label (item 0)
+  if (contactItems[0]) {
+    if (d.contactAddrLabel_en) { const h4 = contactItems[0].querySelector('h4 [data-en]'); if (h4) h4.textContent = d.contactAddrLabel_en; }
+    if (d.contactAddrLabel_zh) { const h4 = contactItems[0].querySelector('h4 [data-zh]'); if (h4) h4.textContent = d.contactAddrLabel_zh; }
+    if (d.contactAddress) { const p = contactItems[0].querySelector('p'); if (p) p.innerHTML = d.contactAddress.replace(/\n/g,'<br>'); }
+  }
+  // Phone label (item 1)
   if (contactItems[1]) {
+    if (d.contactPhoneLabel_en) { const h4 = contactItems[1].querySelector('h4 [data-en]'); if (h4) h4.textContent = d.contactPhoneLabel_en; }
+    if (d.contactPhoneLabel_zh) { const h4 = contactItems[1].querySelector('h4 [data-zh]'); if (h4) h4.textContent = d.contactPhoneLabel_zh; }
     if (d.contactPhone) { const p = contactItems[1].querySelector('p'); if (p) p.textContent = d.contactPhone; }
   }
-  // Location (item 2)
-  if (contactItems[2] && d.contactLocation) { const p = contactItems[2].querySelector('p'); if (p) p.textContent = d.contactLocation; }
+  // Location label (item 2)
+  if (contactItems[2]) {
+    if (d.contactLocationLabel_en) { const h4 = contactItems[2].querySelector('h4 [data-en]'); if (h4) h4.textContent = d.contactLocationLabel_en; }
+    if (d.contactLocationLabel_zh) { const h4 = contactItems[2].querySelector('h4 [data-zh]'); if (h4) h4.textContent = d.contactLocationLabel_zh; }
+    if (d.contactLocation) { const p = contactItems[2].querySelector('p'); if (p) p.textContent = d.contactLocation; }
+  }
   // Footer address/phone
   if (d.contactPhone) document.querySelectorAll('.contact-phone').forEach(el => el.textContent = d.contactPhone);
   if (d.contactEmail) document.querySelectorAll('.contact-email').forEach(el => el.textContent = d.contactEmail);
+  // Social note at bottom of events section
+  if (d.contactSocialNote_en || d.contactSocialNote_zh) {
+    const noteEl = document.querySelector('#events [data-en]');
+    if (noteEl && d.contactSocialNote_en) noteEl.textContent = d.contactSocialNote_en;
+    const noteZh = document.querySelector('#events [data-zh]');
+    if (noteZh && d.contactSocialNote_zh) noteZh.textContent = d.contactSocialNote_zh;
+  }
   // WhatsApp button
   if (d.contactWhatsapp) {
-    document.querySelectorAll('a.wa-btn').forEach(el => {
-      el.href = 'https://wa.me/' + d.contactWhatsapp.replace(/[^0-9]/g,'');
-    });
-    const footerWa = document.querySelector('footer a[href*="wa.me"]');
-    if (footerWa) footerWa.href = 'https://wa.me/' + d.contactWhatsapp.replace(/[^0-9]/g,'');
+    // Accept either a full URL like https://wa.me/601234 or just the number
+    const waHref = d.contactWhatsapp.startsWith('http') ? d.contactWhatsapp : 'https://wa.me/' + d.contactWhatsapp.replace(/[^0-9]/g,'');
+    document.querySelectorAll('a.wa-btn, a[href*="wa.me"]').forEach(el => { el.href = waHref; });
     const modalWa = document.querySelector('.modal-cta[href*="wa.me"]');
-    if (modalWa) modalWa.href = 'https://wa.me/' + d.contactWhatsapp.replace(/[^0-9]/g,'');
+    if (modalWa) modalWa.href = waHref;
   }
   if (d.contactWaBtnLabel_en || d.contactWaBtnLabel_zh) {
     document.querySelectorAll('a.wa-btn').forEach(el => {

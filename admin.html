@@ -953,7 +953,7 @@ function populateFields(d) {
   set('heroBtnExplore_en', d.heroBtnExplore_en); set('heroBtnExplore_zh', d.heroBtnExplore_zh);
   set('heroBtnContact_en', d.heroBtnContact_en); set('heroBtnContact_zh', d.heroBtnContact_zh);
   set('heroScroll_en', d.heroScroll_en);   set('heroScroll_zh', d.heroScroll_zh);
-  if (d.heroBg) { const p=document.getElementById('heroBgPreview'); p.src=d.heroBg; p.style.display='block'; }
+  if (d.heroBg)         { const p=document.getElementById('heroBgPreview');      p.src=d.heroBg;         p.style.display='block'; }
   // Carousel
   renderCarousel(d.carouselImgs || []);
   // About
@@ -980,7 +980,7 @@ function populateFields(d) {
   });
   set('card_piano_badge_en', d.card_piano_badge_en); set('card_piano_badge_zh', d.card_piano_badge_zh);
   set('card_theory_badge_en', d.card_theory_badge_en); set('card_theory_badge_zh', d.card_theory_badge_zh);
-  if (d.lessonsBg) { const p=document.getElementById('lessonsBgPreview'); p.src=d.lessonsBg; p.style.display='block'; }
+  if (d.lessonsBg)      { const p=document.getElementById('lessonsBgPreview');  p.src=d.lessonsBg;      p.style.display='block'; }
   // Recital
   set('recitalLabel_en', d.recitalLabel_en); set('recitalLabel_zh', d.recitalLabel_zh);
   set('recitalTitle_en', d.recitalTitle_en); set('recitalTitle_zh', d.recitalTitle_zh);
@@ -989,7 +989,7 @@ function populateFields(d) {
     set('recitalFeat'+i+'Title_en', d['recitalFeat'+i+'Title_en']); set('recitalFeat'+i+'Title_zh', d['recitalFeat'+i+'Title_zh']);
     set('recitalFeat'+i+'Desc_en',  d['recitalFeat'+i+'Desc_en']);  set('recitalFeat'+i+'Desc_zh',  d['recitalFeat'+i+'Desc_zh']);
   }
-  if (d.recitalImg) { const p=document.getElementById('recitalImgPreview'); p.src=d.recitalImg; p.style.display='block'; }
+  if (d.recitalImg)     { const p=document.getElementById('recitalImgPreview'); p.src=d.recitalImg;     p.style.display='block'; }
   // Shop
   set('shopLabel_en', d.shopLabel_en); set('shopLabel_zh', d.shopLabel_zh);
   set('shopTitle_en', d.shopTitle_en); set('shopTitle_zh', d.shopTitle_zh);
@@ -1027,9 +1027,13 @@ window.saveAll = async function() {
   const v  = (id) => { const el = document.getElementById(id); return el ? el.value : ''; };
   const getImgVal = (previewId) => {
     const el = document.getElementById(previewId);
-    if (!el || el.style.display === 'none') return '';
+    if (!el) return '';
     const src = el.getAttribute('src') || '';
-    if (!src || src === '' || src === location.href || src === window.location.origin + '/' || src === window.location.origin) return '';
+    // Empty, placeholder, or element hidden by CSS default (no inline display set means hidden)
+    if (!src || src === location.href || src === window.location.origin + '/' || src === window.location.origin) return '';
+    // If display is explicitly set to none, skip
+    if (el.style.display === 'none') return '';
+    // Must have a real src
     return src;
   };
   const cards = ['piano','violin','cello','singing','percussion','marimba','theory'];
@@ -1095,9 +1099,6 @@ window.saveAll = async function() {
     shopPianoModalDesc_en: v('shopPianoModalDesc_en'), shopPianoModalDesc_zh: v('shopPianoModalDesc_zh'),
     shopStringsImg: getImgVal('shopStringsPreview'),
     shopPianoImg:   getImgVal('shopPianoPreview'),
-    // About
-    aboutP1: v('aboutP1'),
-    aboutP2: v('aboutP2'),
     // Achievements & Events
     achievements: collectAchievements(),
     events:        collectEvents(),
@@ -1149,7 +1150,7 @@ window.changePassword = async function() {
 window.uploadImage = function(input, storeKey, previewId) {
   const file = input.files[0];
   if (!file) return;
-  const uploadingId = storeKey + 'Uploading';
+  const uploadingId = previewId.replace('Preview', 'Uploading');
   const upEl = document.getElementById(uploadingId);
   if (upEl) upEl.style.display = 'block';
   compressImage(file, 1600, 0.80, function(b64) {
