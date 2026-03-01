@@ -157,9 +157,9 @@ header{background:rgba(62,31,10,0.92);border-bottom:1px solid rgba(201,168,92,0.
         <a data-panel="about"                       onclick="showPanel('about',this)">About</a>
         <a data-panel="lessons"                     onclick="showPanel('lessons',this)">Music Lessons</a>
         <a data-panel="recital"                     onclick="showPanel('recital',this)">Recital Hall</a>
-        <a data-panel="shop"                        onclick="showPanel('shop',this)">Instrument Shop</a>
         <a data-panel="achievements"                onclick="showPanel('achievements',this)">Achievements</a>
         <a data-panel="events"                      onclick="showPanel('events',this)">Events</a>
+        <a data-panel="shop"                        onclick="showPanel('shop',this)">Instrument Shop</a>
         <a data-panel="contact"                     onclick="showPanel('contact',this)">Contact</a>
       </div>
       <div class="sidebar-section">Settings</div>
@@ -494,6 +494,25 @@ Competition &amp; exam preparation</textarea></div>
           <div class="ev-grid2">
             <div class="field-group"><label class="field-label">Badge — EN</label><input class="field-input" id="card_theory_badge_en" value="Group &amp; One-on-One"></div>
             <div class="field-group"><label class="field-label">Badge — 中文</label><input class="field-input" id="card_theory_badge_zh" value="小組及一對一"></div>
+          </div>
+          <div style="border-top:1px solid rgba(201,168,92,0.1);padding-top:12px;margin-top:4px;">
+            <div style="font-size:0.52rem;letter-spacing:0.18em;color:rgba(201,168,92,0.4);margin-bottom:8px;">MODAL DETAILS (shown when card is tapped)</div>
+            <div class="ev-grid2">
+              <div class="field-group"><label class="field-label">Modal Subtitle — EN</label><input class="field-input" id="modal_theory_subtitle_en" value="Theory · Group &amp; One-on-One · All Levels"></div>
+              <div class="field-group"><label class="field-label">Modal Subtitle — 中文</label><input class="field-input" id="modal_theory_subtitle_zh" value="樂理 · 小組及一對一 · 所有程度"></div>
+            </div>
+            <div class="field-group"><label class="field-label">Modal Description — English</label><textarea class="field-textarea" id="modal_theory_desc_en">Our music theory programme offers structured classes from beginner to ABRSM Grade 8. Students develop a strong understanding of notation, harmony, ear training and sight-reading — essential skills that complement any instrument. Available as group or one-on-one sessions.</textarea></div>
+            <div class="field-group"><label class="field-label">Modal Description — 中文</label><textarea class="field-textarea" id="modal_theory_desc_zh">我們的樂理課程提供從初學到ABRSM八級的系統性教學。學生將深入學習記譜法、和聲、聽音訓練和視奏——這些都是補充任何樂器學習的重要技能。提供小組或一對一課程。</textarea></div>
+            <div class="field-group"><label class="field-label">Features (one per line) — English</label><textarea class="field-textarea" id="modal_theory_feats_en">Beginner to ABRSM Grade 8
+Notation, harmony &amp; ear training
+Sight-reading skills
+Group &amp; one-on-one sessions
+Children &amp; adults welcome</textarea></div>
+            <div class="field-group"><label class="field-label">Features (one per line) — 中文</label><textarea class="field-textarea" id="modal_theory_feats_zh">初學至ABRSM八級
+記譜法、和聲與聽音訓練
+視奏技巧
+小組及一對一課程
+歡迎兒童及成人</textarea></div>
           </div>
         </div>
 
@@ -992,11 +1011,9 @@ function populateFields(d) {
   cards.forEach(k => {
     set('card_'+k+'_title_en', d['card_'+k+'_title_en']); set('card_'+k+'_title_zh', d['card_'+k+'_title_zh']);
     set('card_'+k+'_desc_en',  d['card_'+k+'_desc_en']);  set('card_'+k+'_desc_zh',  d['card_'+k+'_desc_zh']);
-    if (k !== 'theory') {
-      set('modal_'+k+'_subtitle_en', d['modal_'+k+'_subtitle_en']); set('modal_'+k+'_subtitle_zh', d['modal_'+k+'_subtitle_zh']);
-      set('modal_'+k+'_desc_en',     d['modal_'+k+'_desc_en']);     set('modal_'+k+'_desc_zh',     d['modal_'+k+'_desc_zh']);
-      set('modal_'+k+'_feats_en',    d['modal_'+k+'_feats_en']);    set('modal_'+k+'_feats_zh',    d['modal_'+k+'_feats_zh']);
-    }
+    set('modal_'+k+'_subtitle_en', d['modal_'+k+'_subtitle_en']); set('modal_'+k+'_subtitle_zh', d['modal_'+k+'_subtitle_zh']);
+    set('modal_'+k+'_desc_en',     d['modal_'+k+'_desc_en']);     set('modal_'+k+'_desc_zh',     d['modal_'+k+'_desc_zh']);
+    set('modal_'+k+'_feats_en',    d['modal_'+k+'_feats_en']);    set('modal_'+k+'_feats_zh',    d['modal_'+k+'_feats_zh']);
   });
   set('card_piano_badge_en', d.card_piano_badge_en); set('card_piano_badge_zh', d.card_piano_badge_zh);
   set('card_violin_badge_en', d.card_violin_badge_en); set('card_violin_badge_zh', d.card_violin_badge_zh);
@@ -1070,14 +1087,12 @@ window.saveAll = async function() {
     cardData['card_'+k+'_desc_zh']  = v('card_'+k+'_desc_zh');
     cardData['card_'+k+'_badge_en'] = v('card_'+k+'_badge_en');
     cardData['card_'+k+'_badge_zh'] = v('card_'+k+'_badge_zh');
-    if (k !== 'theory') {
-      cardData['modal_'+k+'_subtitle_en'] = v('modal_'+k+'_subtitle_en');
-      cardData['modal_'+k+'_subtitle_zh'] = v('modal_'+k+'_subtitle_zh');
-      cardData['modal_'+k+'_desc_en']     = v('modal_'+k+'_desc_en');
-      cardData['modal_'+k+'_desc_zh']     = v('modal_'+k+'_desc_zh');
-      cardData['modal_'+k+'_feats_en']    = v('modal_'+k+'_feats_en');
-      cardData['modal_'+k+'_feats_zh']    = v('modal_'+k+'_feats_zh');
-    }
+    cardData['modal_'+k+'_subtitle_en'] = v('modal_'+k+'_subtitle_en');
+    cardData['modal_'+k+'_subtitle_zh'] = v('modal_'+k+'_subtitle_zh');
+    cardData['modal_'+k+'_desc_en']     = v('modal_'+k+'_desc_en');
+    cardData['modal_'+k+'_desc_zh']     = v('modal_'+k+'_desc_zh');
+    cardData['modal_'+k+'_feats_en']    = v('modal_'+k+'_feats_en');
+    cardData['modal_'+k+'_feats_zh']    = v('modal_'+k+'_feats_zh');
   });
   const recitalFeats = {};
   for (let i=1;i<=3;i++) {
