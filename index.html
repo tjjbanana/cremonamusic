@@ -1124,6 +1124,40 @@ function closeModal(e) {
 }
 document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModalBtn(); });
 
+// ── Shop modal data ──────────────────────────────────
+var shopData = {
+  strings: {
+    icon: '🎻',
+    en: { title: 'Violins & Cellos', subtitle: 'Taiwanese Luthiers · Handcrafted', desc: 'We carry a curated selection of handcrafted string instruments by renowned Taiwanese luthiers. Each violin and cello is carefully selected for tone quality and playability, suitable for students and professionals alike.', features: ['Handcrafted by Taiwanese luthiers', 'Student and professional grades', 'Violins available in all sizes', 'Expert setup and adjustment'] },
+    zh: { title: '小提琴 & 大提琴', subtitle: '台灣製琴師 · 手工製作', desc: '我們精選台灣知名製琴師手工製作的弦樂器。每把小提琴和大提琴都經過仔細挑選，音色優良，適合學生和專業人士使用。', features: ['台灣製琴師手工製作', '學生及專業級樂器', '各尺寸小提琴均有售', '專業調音和調整服務'] }
+  },
+  piano: {
+    icon: '🎹',
+    en: { title: 'Kawai Pianos', subtitle: 'Authorised Kawai Dealer', desc: 'As an authorised Kawai dealer, we offer a range of digital and acoustic pianos for students and performers. Visit our showroom to try our instruments and find the perfect piano for your home or studio.', features: ['Authorised Kawai dealer', 'Digital and acoustic models', 'Student to professional range', 'Visit our showroom to try in person'] },
+    zh: { title: 'Kawai 鋼琴', subtitle: 'Kawai 授權經銷商', desc: '作為Kawai授權經銷商，我們提供各種數位和原聲鋼琴，適合學生和表演者。歡迎到訪我們的展示室試奏，找到最適合您家庭或工作室的鋼琴。', features: ['Kawai授權經銷商', '數位及原聲鋼琴型號', '學生至專業級系列', '歡迎到訪展示室試奏'] }
+  }
+};
+window.openShopModal = function(key) {
+  var data = shopData[key];
+  if (!data) return;
+  var zh = document.body.classList.contains('zh');
+  var d = zh ? data.zh : data.en;
+  document.getElementById('modalIcon').textContent = data.icon;
+  document.getElementById('modalTitle').textContent = d.title;
+  document.getElementById('modalSubtitle').textContent = d.subtitle;
+  document.getElementById('modalDesc').textContent = d.desc;
+  var feats = document.getElementById('modalFeatures');
+  feats.innerHTML = '';
+  d.features.forEach(function(f) {
+    var div = document.createElement('div');
+    div.className = 'modal-feature';
+    div.textContent = f;
+    feats.appendChild(div);
+  });
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
 // Assign click handlers to lesson cards
 var cardKeys = ['piano','violin','cello','singing','percussion','marimba','theory'];
 document.querySelectorAll('.lesson-card').forEach(function(card, i) {
@@ -1489,6 +1523,7 @@ function applyContent(d) {
         if (!src) return;
         const img = document.createElement('img');
         img.src = src; img.alt = 'Cremona Music'; img.className = 'carousel-slide';
+        img.loading = 'eager'; img.fetchPriority = 'high';
         viewport.appendChild(img);
         slides.push(img);
       });
@@ -1510,6 +1545,28 @@ function applyContent(d) {
       updateC();
       setInterval(function(){ idx=(idx+1)%slides.length; updateC(); }, 4000);
     }
+  }
+
+  // ── Shop modal data — update from Firebase ────────────────────────────────
+  if (d.shopStringsModalDesc_en || d.shopStringsModalDesc_zh || d.shopStringsLabel_en) {
+    if (d.shopStringsLabel_en) shopData.strings.en.title = d.shopStringsLabel_en;
+    if (d.shopStringsLabel_zh) shopData.strings.zh.title = d.shopStringsLabel_zh;
+    if (d.shopStringsModalDesc_en) shopData.strings.en.desc = d.shopStringsModalDesc_en;
+    if (d.shopStringsModalDesc_zh) shopData.strings.zh.desc = d.shopStringsModalDesc_zh;
+    if (d.shopStringsModalFeats_en) shopData.strings.en.features = d.shopStringsModalFeats_en.split('\n').map(f=>f.trim()).filter(Boolean);
+    if (d.shopStringsModalFeats_zh) shopData.strings.zh.features = d.shopStringsModalFeats_zh.split('\n').map(f=>f.trim()).filter(Boolean);
+    if (d.shopStringsModalSubtitle_en) shopData.strings.en.subtitle = d.shopStringsModalSubtitle_en;
+    if (d.shopStringsModalSubtitle_zh) shopData.strings.zh.subtitle = d.shopStringsModalSubtitle_zh;
+  }
+  if (d.shopPianoModalDesc_en || d.shopPianoModalDesc_zh || d.shopPianoLabel_en) {
+    if (d.shopPianoLabel_en) shopData.piano.en.title = d.shopPianoLabel_en;
+    if (d.shopPianoLabel_zh) shopData.piano.zh.title = d.shopPianoLabel_zh;
+    if (d.shopPianoModalDesc_en) shopData.piano.en.desc = d.shopPianoModalDesc_en;
+    if (d.shopPianoModalDesc_zh) shopData.piano.zh.desc = d.shopPianoModalDesc_zh;
+    if (d.shopPianoModalFeats_en) shopData.piano.en.features = d.shopPianoModalFeats_en.split('\n').map(f=>f.trim()).filter(Boolean);
+    if (d.shopPianoModalFeats_zh) shopData.piano.zh.features = d.shopPianoModalFeats_zh.split('\n').map(f=>f.trim()).filter(Boolean);
+    if (d.shopPianoModalSubtitle_en) shopData.piano.en.subtitle = d.shopPianoModalSubtitle_en;
+    if (d.shopPianoModalSubtitle_zh) shopData.piano.zh.subtitle = d.shopPianoModalSubtitle_zh;
   }
 
   // ── Modal data — update lessons object so tapped cards show Firebase text ──

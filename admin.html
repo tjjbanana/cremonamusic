@@ -615,8 +615,20 @@ Children &amp; adults welcome</textarea></div>
             <div class="field-group"><label class="field-label">Image Label — EN</label><input class="field-input" id="shopStringsLabel_en" value="Violins &amp; Cellos"></div>
             <div class="field-group"><label class="field-label">Image Label — 中文</label><input class="field-input" id="shopStringsLabel_zh" value="小提琴 &amp; 大提琴"></div>
           </div>
+          <div class="ev-grid2">
+            <div class="field-group"><label class="field-label">Modal Subtitle — EN</label><input class="field-input" id="shopStringsModalSubtitle_en" value="Taiwanese Luthiers · Handcrafted"></div>
+            <div class="field-group"><label class="field-label">Modal Subtitle — 中文</label><input class="field-input" id="shopStringsModalSubtitle_zh" value="台灣製琴師 · 手工製作"></div>
+          </div>
           <div class="field-group"><label class="field-label">Modal Description — English</label><textarea class="field-textarea" id="shopStringsModalDesc_en">We carry a curated selection of handcrafted string instruments by renowned Taiwanese luthiers. Each violin and cello is carefully selected for tone quality and playability, suitable for students and professionals alike.</textarea></div>
           <div class="field-group"><label class="field-label">Modal Description — 中文</label><textarea class="field-textarea" id="shopStringsModalDesc_zh">我們精選台灣知名製琴師手工製作的弦樂器。每把小提琴和大提琴都經過仔細挑選，音色優良，適合學生和專業人士使用。</textarea></div>
+          <div class="field-group"><label class="field-label">Modal Features (one per line) — English</label><textarea class="field-textarea" id="shopStringsModalFeats_en">Handcrafted by Taiwanese luthiers
+Student and professional grades
+Violins available in all sizes
+Expert setup and adjustment</textarea></div>
+          <div class="field-group"><label class="field-label">Modal Features (one per line) — 中文</label><textarea class="field-textarea" id="shopStringsModalFeats_zh">台灣製琴師手工製作
+學生及專業級樂器
+各尺寸小提琴均有售
+專業調音和調整服務</textarea></div>
           <div class="field-group">
             <label class="field-label">Strings Photo (left — violins, cellos)</label>
             <div class="img-upload-area">
@@ -635,8 +647,20 @@ Children &amp; adults welcome</textarea></div>
             <div class="field-group"><label class="field-label">Image Label — EN</label><input class="field-input" id="shopPianoLabel_en" value="Kawai Pianos"></div>
             <div class="field-group"><label class="field-label">Image Label — 中文</label><input class="field-input" id="shopPianoLabel_zh" value="Kawai 鋼琴"></div>
           </div>
+          <div class="ev-grid2">
+            <div class="field-group"><label class="field-label">Modal Subtitle — EN</label><input class="field-input" id="shopPianoModalSubtitle_en" value="Authorised Kawai Dealer"></div>
+            <div class="field-group"><label class="field-label">Modal Subtitle — 中文</label><input class="field-input" id="shopPianoModalSubtitle_zh" value="Kawai 授權經銷商"></div>
+          </div>
           <div class="field-group"><label class="field-label">Modal Description — English</label><textarea class="field-textarea" id="shopPianoModalDesc_en">As an authorised Kawai dealer, we offer a range of digital and acoustic pianos for students and performers. Visit our showroom to try our instruments and find the perfect piano for your home or studio.</textarea></div>
           <div class="field-group"><label class="field-label">Modal Description — 中文</label><textarea class="field-textarea" id="shopPianoModalDesc_zh">作為Kawai授權經銷商，我們提供各種數位和原聲鋼琴，適合學生和表演者。歡迎到訪我們的展示室試奏，找到最適合您家庭或工作室的鋼琴。</textarea></div>
+          <div class="field-group"><label class="field-label">Modal Features (one per line) — English</label><textarea class="field-textarea" id="shopPianoModalFeats_en">Authorised Kawai dealer
+Digital and acoustic models
+Student to professional range
+Visit our showroom to try in person</textarea></div>
+          <div class="field-group"><label class="field-label">Modal Features (one per line) — 中文</label><textarea class="field-textarea" id="shopPianoModalFeats_zh">Kawai授權經銷商
+數位及原聲鋼琴型號
+學生至專業級系列
+歡迎到訪展示室試奏</textarea></div>
           <div class="field-group">
             <label class="field-label">Piano Photo (right — Kawai pianos)</label>
             <div class="img-upload-area">
@@ -1037,9 +1061,13 @@ function populateFields(d) {
   set('shopTitle_en', d.shopTitle_en); set('shopTitle_zh', d.shopTitle_zh);
   set('shopDesc_en',  d.shopDesc_en);  set('shopDesc_zh',  d.shopDesc_zh);
   set('shopStringsLabel_en', d.shopStringsLabel_en); set('shopStringsLabel_zh', d.shopStringsLabel_zh);
+  set('shopStringsModalSubtitle_en', d.shopStringsModalSubtitle_en); set('shopStringsModalSubtitle_zh', d.shopStringsModalSubtitle_zh);
   set('shopStringsModalDesc_en', d.shopStringsModalDesc_en); set('shopStringsModalDesc_zh', d.shopStringsModalDesc_zh);
+  set('shopStringsModalFeats_en', d.shopStringsModalFeats_en); set('shopStringsModalFeats_zh', d.shopStringsModalFeats_zh);
   set('shopPianoLabel_en', d.shopPianoLabel_en); set('shopPianoLabel_zh', d.shopPianoLabel_zh);
+  set('shopPianoModalSubtitle_en', d.shopPianoModalSubtitle_en); set('shopPianoModalSubtitle_zh', d.shopPianoModalSubtitle_zh);
   set('shopPianoModalDesc_en', d.shopPianoModalDesc_en); set('shopPianoModalDesc_zh', d.shopPianoModalDesc_zh);
+  set('shopPianoModalFeats_en', d.shopPianoModalFeats_en); set('shopPianoModalFeats_zh', d.shopPianoModalFeats_zh);
   if (d.shopStringsImg) { const p=document.getElementById('shopStringsPreview'); p.src=d.shopStringsImg; p.style.display='block'; }
   if (d.shopPianoImg)   { const p=document.getElementById('shopPianoPreview');   p.src=d.shopPianoImg;   p.style.display='block'; }
   // Contact
@@ -1141,9 +1169,13 @@ window.saveAll = async function() {
     shopTitle_en: v('shopTitle_en'), shopTitle_zh: v('shopTitle_zh'),
     shopDesc_en:  v('shopDesc_en'),  shopDesc_zh:  v('shopDesc_zh'),
     shopStringsLabel_en: v('shopStringsLabel_en'), shopStringsLabel_zh: v('shopStringsLabel_zh'),
+    shopStringsModalSubtitle_en: v('shopStringsModalSubtitle_en'), shopStringsModalSubtitle_zh: v('shopStringsModalSubtitle_zh'),
     shopStringsModalDesc_en: v('shopStringsModalDesc_en'), shopStringsModalDesc_zh: v('shopStringsModalDesc_zh'),
+    shopStringsModalFeats_en: v('shopStringsModalFeats_en'), shopStringsModalFeats_zh: v('shopStringsModalFeats_zh'),
     shopPianoLabel_en: v('shopPianoLabel_en'), shopPianoLabel_zh: v('shopPianoLabel_zh'),
+    shopPianoModalSubtitle_en: v('shopPianoModalSubtitle_en'), shopPianoModalSubtitle_zh: v('shopPianoModalSubtitle_zh'),
     shopPianoModalDesc_en: v('shopPianoModalDesc_en'), shopPianoModalDesc_zh: v('shopPianoModalDesc_zh'),
+    shopPianoModalFeats_en: v('shopPianoModalFeats_en'), shopPianoModalFeats_zh: v('shopPianoModalFeats_zh'),
     shopStringsImg: getImgVal('shopStringsPreview'),
     shopPianoImg:   getImgVal('shopPianoPreview'),
     // Achievements & Events
