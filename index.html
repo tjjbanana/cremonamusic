@@ -1597,7 +1597,33 @@ const CACHE_KEY = 'cremona_content_cache';
 // Show cached content instantly on load
 try {
   const cached = localStorage.getItem(CACHE_KEY);
-  if (cached) applyContent(JSON.parse(cached));
+  if (cached) {
+    const parsedCache = JSON.parse(cached);
+    applyContent(parsedCache);
+
+    // Preload all images from cache so browser has them ready
+    const imgUrls = [];
+    if (parsedCache.heroBg) imgUrls.push(parsedCache.heroBg);
+    if (parsedCache.recitalImg) imgUrls.push(parsedCache.recitalImg);
+    if (parsedCache.shopStringsImg) imgUrls.push(parsedCache.shopStringsImg);
+    if (parsedCache.shopPianoImg) imgUrls.push(parsedCache.shopPianoImg);
+    if (parsedCache.carouselImgs) {
+      const list = Array.isArray(parsedCache.carouselImgs)
+        ? parsedCache.carouselImgs
+        : Object.values(parsedCache.carouselImgs);
+      list.forEach(item => {
+        const src = item && typeof item === 'object' ? item.src : item;
+        if (src) imgUrls.push(src);
+      });
+    }
+    imgUrls.forEach(url => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = url;
+      document.head.appendChild(link);
+    });
+  }
 } catch(e) {}
 
 // Then connect to Firebase and update in background
