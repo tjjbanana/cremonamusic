@@ -1020,7 +1020,7 @@ var lessons = {
     }
   },
   piano: {
-    icon: '🎹',
+    icon: '<img src="piano.png" alt="piano" width="105" height="125">',
     en: {
       title: 'Piano Lessons',
       subtitle: 'Keys · One-on-One · All Levels',
@@ -1100,10 +1100,10 @@ function openModal(key) {
   var data = lessons[key];
   var zh = document.body.classList.contains('zh');
   var d = zh ? data.zh : data.en;
-  document.getElementById('modalIcon').textContent = data.icon;
-  document.getElementById('modalTitle').textContent = d.title;
-  document.getElementById('modalSubtitle').textContent = d.subtitle;
-  document.getElementById('modalDesc').textContent = d.desc;
+  document.getElementById('modalIcon').innerHTML = data.icon;
+  document.getElementById('modalTitle').innerHTML = d.title;
+  document.getElementById('modalSubtitle').innerHTML = d.subtitle;
+  document.getElementById('modalDesc').innerHTML = d.desc;
   var feats = document.getElementById('modalFeatures');
   feats.innerHTML = '';
   d.features.forEach(function(f) {
